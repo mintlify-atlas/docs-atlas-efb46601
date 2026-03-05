@@ -1,0 +1,1250 @@
+---
+title: "50+ Integrations"
+description: "Connect with POS systems, ERP platforms, supply chain distributors, communication tools, and enterprise software for seamless operations"
+---
+
+## Overview
+
+Salsa as a Service v2.0 integrates with 50+ restaurant systems, business platforms, and enterprise tools to create a unified operational ecosystem. From real-time POS sync to automated supplier ordering, our integrations eliminate manual data entry and streamline your workflows.
+
+<CardGroup cols={3}>
+  <Card title="POS Systems" icon="cash-register">
+    12+ major POS platforms with real-time sales and inventory sync
+  </Card>
+  <Card title="Supply Chain" icon="truck">
+    Direct integration with top food distributors for automated ordering
+  </Card>
+  <Card title="Enterprise ERP" icon="building">
+    SAP, Oracle, Microsoft Dynamics for enterprise-grade operations
+  </Card>
+</CardGroup>
+
+---
+
+## Integration Categories
+
+<CardGroup cols={3}>
+  <Card title="Point of Sale (POS)" icon="cash-register" href="#pos-systems">
+    Connect with major POS platforms for real-time sales and inventory sync.
+  </Card>
+  <Card title="Supply Chain" icon="truck" href="#supply-chain-distributors">
+    Integrate with food distributors and suppliers for automated ordering.
+  </Card>
+  <Card title="Kitchen Management" icon="utensils" href="#kitchen-systems">
+    Sync with KDS, recipe management, and kitchen automation systems.
+  </Card>
+  <Card title="Enterprise Systems" icon="building" href="#enterprise-erp">
+    Connect with ERP, accounting, and business intelligence platforms.
+  </Card>
+  <Card title="Communication" icon="bell" href="#team-communication">
+    Integrate with Slack, Teams, SMS, and other communication tools.
+  </Card>
+  <Card title="IoT & Hardware" icon="signal" href="#iot-hardware">
+    Connect sensors, scales, and smart kitchen equipment.
+  </Card>
+</CardGroup>
+
+---
+
+## POS Systems
+
+### Native POS Integrations
+
+<Tabs>
+  <Tab title="Square">
+    <Badge color="green" shape="rounded" size="md">⭐ Native Integration</Badge>
+    <Badge color="blue" shape="rounded" size="md">Setup: 5 mins</Badge>
+    <Badge color="gray" shape="rounded" size="md">Square v2 API</Badge>
+
+    **Features:**
+    - Real-time sales sync (< 5 second delay)
+    - Bidirectional inventory updates
+    - Automatic menu mapping with AI
+    - Multi-location support
+    - Payment reconciliation
+    - Order history and analytics
+
+    **Setup:**
+```bash
+# Quick setup via CLI
+salsa integrations add square \
+  --oauth \
+  --locations all \
+  --sync realtime
+```
+
+    **Benefits:**
+    - Eliminate manual inventory counts
+    - Automatic recipe deduction from sales
+    - Real-time stock level updates
+    - Accurate demand forecasting data
+
+    <Note>
+      **Square POS** is the #1 recommended POS for small to medium restaurants. Setup takes under 5 minutes with OAuth authentication.
+    </Note>
+  </Tab>
+  
+  <Tab title="Toast">
+    <Badge color="green" shape="rounded" size="md">⭐ Native Integration</Badge>
+    <Badge color="blue" shape="rounded" size="md">Setup: 10 mins</Badge>
+    <Badge color="gray" shape="rounded" size="md">Toast API v2</Badge>
+
+    **Features:**
+    - Real-time menu and inventory sync
+    - Complex menu structure support (modifiers, combos)
+    - Multi-location restaurant groups
+    - Labor integration and scheduling
+    - Gift card and loyalty program sync
+    - Kitchen display system (KDS) integration
+
+    **Setup via SDK:**
+```javascript
+const salsa = new SalsaClient(apiKey);
+
+await salsa.integrations.connect({
+  provider: "toast",
+  credentials: {
+    clientId: process.env.TOAST_CLIENT_ID,
+    clientSecret: process.env.TOAST_CLIENT_SECRET,
+    restaurantGuid: process.env.TOAST_RESTAURANT_GUID,
+  },
+  options: {
+    syncInterval: "5m",
+    includeLabor: true,
+    menuMapping: "auto",
+  },
+});
+```
+
+    **Advanced Features:**
+    - Menu modifier mapping for custom salsa options
+    - Labor cost integration for production planning
+    - Loyalty point tracking
+    - Gift card balance sync
+  </Tab>
+  
+  <Tab title="Clover">
+    <Badge color="green" shape="rounded" size="md">⭐ Native Integration</Badge>
+    <Badge color="blue" shape="rounded" size="md">Setup: 5 mins</Badge>
+
+    **Features:**
+    - Clover App Market integration
+    - Real-time inventory sync
+    - Order management
+    - Customer data sync
+    - Reporting integration
+    - Payment processing data
+
+    **Installation**: 
+    
+    Available in Clover App Market. Search for "Salsa as a Service v2.0" in your Clover dashboard and click "Install".
+
+    **Data Sync:**
+    - Sales transactions: Real-time
+    - Inventory levels: Every 5 minutes
+    - Customer data: Hourly
+    - Reports: Daily
+  </Tab>
+  
+  <Tab title="Lightspeed">
+    <Badge color="yellow" shape="rounded" size="md">⭐ Certified Partner</Badge>
+    <Badge color="blue" shape="rounded" size="md">Setup: 15 mins</Badge>
+
+    **Features:**
+    - Menu and inventory sync
+    - Sales reporting integration
+    - Multi-location support
+    - Customer data integration
+    - Reservation system sync
+
+    **Compatibility**: Lightspeed Restaurant (formerly Upserve)
+
+    **Setup Process:**
+    1. Generate API credentials in Lightspeed dashboard
+    2. Add integration in Salsa Settings > Integrations
+    3. Map menu items to recipes
+    4. Enable real-time sync
+  </Tab>
+  
+  <Tab title="TouchBistro">
+    <Badge color="yellow" shape="rounded" size="md">⭐ Certified Partner</Badge>
+    <Badge color="blue" shape="rounded" size="md">Setup: 15 mins</Badge>
+
+    **Features:**
+    - Menu and inventory sync
+    - Tableside ordering integration
+    - Multi-location support
+    - Reservation integration
+    - Floor plan and table management
+
+    **Best For**: Full-service restaurants with table service
+  </Tab>
+  
+  <Tab title="Revel">
+    <Badge color="yellow" shape="rounded" size="md">⭐ Certified Partner</Badge>
+    <Badge color="blue" shape="rounded" size="md">Setup: 20 mins</Badge>
+
+    **Features:**
+    - Enterprise-grade integration
+    - Multi-location support
+    - Advanced reporting
+    - Inventory management sync
+    - Employee management integration
+
+    **Best For**: Enterprise restaurant chains (10+ locations)
+  </Tab>
+</Tabs>
+
+### Additional POS Integrations
+
+<CardGroup cols={3}>
+  <Card title="NCR Aloha" icon="cash-register">
+    <Badge color="yellow" shape="rounded" size="sm">Certified</Badge>
+    
+    Enterprise POS with full inventory and sales sync
+  </Card>
+  
+  <Card title="Micros (Oracle)" icon="cash-register">
+    <Badge color="yellow" shape="rounded" size="sm">Certified</Badge>
+    
+    Legacy enterprise system with custom integration
+  </Card>
+  
+  <Card title="Shopify POS" icon="cash-register">
+    <Badge color="green" shape="rounded" size="sm">Native</Badge>
+    
+    Perfect for retail salsa sales and e-commerce
+  </Card>
+  
+  <Card title="Vend" icon="cash-register">
+    <Badge color="gray" shape="rounded" size="sm">API</Badge>
+    
+    Cloud POS with inventory management
+  </Card>
+  
+  <Card title="Upserve" icon="cash-register">
+    <Badge color="yellow" shape="rounded" size="sm">Certified</Badge>
+    
+    Restaurant management and POS platform
+  </Card>
+  
+  <Card title="Custom POS" icon="code">
+    <Badge color="gray" shape="rounded" size="sm">API</Badge>
+    
+    Build custom integration using our REST/GraphQL API
+  </Card>
+</CardGroup>
+
+---
+
+## Supply Chain & Distributors
+
+Automate ingredient ordering with direct distributor integrations:
+
+<Tabs>
+  <Tab title="Sysco">
+    <Badge color="green" shape="rounded" size="md">⭐ Native Integration</Badge>
+    <Badge color="blue" shape="rounded" size="md">Top Integration</Badge>
+
+    **Features:**
+    - Automated ordering based on AI forecasts
+    - Real-time inventory availability
+    - Pricing and catalog updates
+    - Order tracking and delivery notifications
+    - Invoice reconciliation
+    - Historical order analysis
+
+    **Benefits:**
+    - 40% reduction in ordering time
+    - Optimal order quantities based on forecast
+    - Automatic price comparison
+    - Reduced stockouts by 60%
+    - Better supplier relationships
+
+```python
+# Example: Automated Sysco ordering
+from salsa_sdk import SalsaClient
+
+client = SalsaClient(api_key="your_key")
+
+sysco_config = client.suppliers.configure("sysco", {
+    "account_number": "123456789",
+    "delivery_window": "tue-thu",
+    "auto_order": True,
+    "approval_threshold": 500,
+    "preferred_items": True
+})
+
+# Get AI-recommended order
+recommended_order = client.suppliers.get_recommended_order(
+    supplier="sysco",
+    forecast_days=7
+)
+
+print(f"Recommended order total: ${recommended_order.total}")
+for item in recommended_order.items:
+    print(f"  {item.name}: {item.quantity} {item.unit}")
+```
+
+    **Order Automation:**
+    - AI calculates ingredient needs from 7-day forecast
+    - System checks current inventory levels
+    - Generates optimal order quantities
+    - Submits order automatically or sends for approval
+    - Tracks delivery and updates inventory on receipt
+  </Tab>
+  
+  <Tab title="US Foods">
+    <Badge color="green" shape="rounded" size="md">⭐ Native Integration</Badge>
+
+    **Features:**
+    - Direct ordering through US Foods Connect
+    - Product catalog integration (50,000+ items)
+    - Pricing and availability
+    - Delivery scheduling
+    - Digital invoicing
+    - Promotional pricing alerts
+
+    **Setup**: Link your US Foods account in **Settings > Integrations > Suppliers > US Foods**
+
+    **Smart Features:**
+    - AI suggests alternative products when items unavailable
+    - Automatic substitution approval workflow
+    - Price history tracking
+    - Seasonal product recommendations
+  </Tab>
+  
+  <Tab title="Performance Food Group">
+    <Badge color="yellow" shape="rounded" size="md">⭐ Certified Partner</Badge>
+
+    **Features:**
+    - PFG ordering system integration
+    - Multi-brand support
+    - Real-time inventory checking
+    - Order history and analytics
+    - Delivery tracking
+
+    **Brands Supported**:
+    - Performance Foodservice
+    - Vistar
+    - Roma
+    - Reinhart
+    - PFG Customized
+
+    **Best For**: Regional distributors and specialized products
+  </Tab>
+  
+  <Tab title="Gordon Food Service">
+    <Badge color="yellow" shape="rounded" size="md">⭐ Certified Partner</Badge>
+
+    **Features:**
+    - GFS Direct ordering
+    - Product information and specs
+    - Delivery management
+    - Price updates
+    - Nutrition data integration
+
+    **Regions**: US and Canada
+
+    **Unique Features:**
+    - GFS private label product recommendations
+    - Cost savings analysis vs branded products
+    - Sustainability scoring for eco-conscious operations
+  </Tab>
+  
+  <Tab title="Local Suppliers">
+    <Badge color="gray" shape="rounded" size="md">Custom Integration</Badge>
+
+    **Integration Options:**
+    - Custom supplier integration via API
+    - Email-based ordering with templates
+    - Manual order creation with saved templates
+    - CSV import/export for bulk operations
+    - EDI integration for enterprise suppliers
+
+    **Setup**: Contact our integration team at integrations@salsaasaservice.com for custom supplier connections
+
+```javascript
+// Example: Custom supplier integration
+const customSupplier = await salsa.suppliers.addCustom({
+  name: "Local Tomato Farm",
+  contact: {
+    email: "orders@localtomatoes.com",
+    phone: "+1-555-0123",
+  },
+  ordering: {
+    method: "email",
+    template: "standard_order_template",
+    lead_time_days: 2,
+  },
+  catalog: [
+    { sku: "TOMATO-ORG-LG", name: "Organic Tomatoes", unit: "lb", price: 2.50 },
+    { sku: "CILANTRO-FRESH", name: "Fresh Cilantro", unit: "bunch", price: 1.25 },
+  ]
+});
+```
+  </Tab>
+</Tabs>
+
+### Additional Distributor Integrations
+
+<CardGroup cols={3}>
+  <Card title="Restaurant Depot" icon="warehouse">
+    <Badge color="gray" shape="rounded" size="sm">API</Badge>
+    
+    Cash and carry with online ordering integration
+  </Card>
+  
+  <Card title="Chefs' Warehouse" icon="hat-chef">
+    <Badge color="yellow" shape="rounded" size="sm">Partner</Badge>
+    
+    Specialty and artisan ingredient sourcing
+  </Card>
+  
+  <Card title="Shamrock Foods" icon="truck">
+    <Badge color="yellow" shape="rounded" size="sm">Partner</Badge>
+    
+    Regional distributor with broad catalog
+  </Card>
+</CardGroup>
+
+---
+
+## Enterprise ERP Systems
+
+Connect with enterprise resource planning systems for large-scale operations:
+
+<Tabs>
+  <Tab title="SAP">
+    **SAP Products Supported:**
+    - SAP Business One
+    - SAP S/4HANA
+    - SAP ECC
+
+    **Integration Points:**
+    - **Materials Management (MM)**: Ingredient inventory and purchasing
+    - **Financial Accounting (FI)**: Cost tracking and P&L
+    - **Controlling (CO)**: Cost center allocation
+    - **Production Planning (PP)**: Manufacturing and batch production
+
+    **Data Flow:**
+```
+Salsa → SAP:
+- Purchase orders and requisitions
+- Inventory movements and transactions
+- Production data and batch records
+- Quality control results
+- Cost allocations
+
+SAP → Salsa:
+- Master data (ingredients, suppliers, GL accounts)
+- Cost centers and profit centers
+- Supplier catalogs and contracts
+- Approved vendor lists
+```
+
+    **Setup**: Enterprise customers receive dedicated SAP integration support with certified consultants.
+
+    **Benefits:**
+    - Unified financial reporting
+    - Automated GL posting
+    - Multi-entity consolidation
+    - Compliance and audit trails
+  </Tab>
+  
+  <Tab title="Oracle">
+    **Oracle Products Supported:**
+    - Oracle E-Business Suite
+    - Oracle Cloud ERP
+    - Oracle NetSuite
+
+    **Integration Points:**
+    - Supply chain management
+    - Financial management
+    - Procurement
+    - Inventory management
+    - Manufacturing
+
+    **API Support**: REST and SOAP APIs supported
+
+    **NetSuite Integration:**
+```javascript
+// Example: Sync production data to NetSuite
+await salsa.erp.sync({
+  platform: "netsuite",
+  entity: "production_batch",
+  data: {
+    batch_id: "BATCH-2024-001",
+    recipe: "House Salsa",
+    quantity: 25,
+    unit: "gallons",
+    cost_center: "CC-PROD-001",
+    gl_account: "5100-COGS",
+  }
+});
+```
+  </Tab>
+  
+  <Tab title="Microsoft Dynamics">
+    **Dynamics Products Supported:**
+    - Dynamics 365 Finance
+    - Dynamics 365 Supply Chain Management
+    - Dynamics 365 Business Central
+
+    **Integration**: Native Azure AD integration with SSO support
+
+    **Features:**
+    - Single sign-on (SSO) with Azure AD
+    - Real-time financial data sync
+    - Purchase order automation
+    - Inventory reconciliation
+    - Production cost tracking
+
+    **Best For**: Microsoft-centric enterprises with Azure infrastructure
+  </Tab>
+  
+  <Tab title="Infor">
+    **Infor Products Supported:**
+    - Infor CloudSuite Industrial
+    - Infor M3
+    - Infor LN
+
+    **Integration Points:**
+    - Manufacturing execution
+    - Supply chain planning
+    - Financial management
+    - Quality management
+
+    **Industry Focus**: Food and beverage manufacturing
+  </Tab>
+</Tabs>
+
+---
+
+## Accounting Software
+
+Seamless integration with accounting platforms:
+
+<CardGroup cols={3}>
+  <Card title="QuickBooks Online" icon="file-invoice-dollar">
+    <Badge color="green" shape="rounded" size="sm">Native</Badge>
+    
+    **Features:**
+    - Automated expense tracking
+    - Invoice reconciliation
+    - Cost of goods sold (COGS) calculation
+    - P&L integration
+    - Supplier payment tracking
+    
+    **Setup**: OAuth connection in 2 minutes
+  </Card>
+  
+  <Card title="Xero" icon="file-invoice">
+    <Badge color="green" shape="rounded" size="sm">Native</Badge>
+    
+    **Features:**
+    - Bank reconciliation
+    - Purchase order sync
+    - Inventory valuation
+    - Chart of accounts mapping
+    - Multi-currency support
+  </Card>
+  
+  <Card title="FreshBooks" icon="file-lines">
+    <Badge color="yellow" shape="rounded" size="sm">Certified</Badge>
+    
+    **Features:**
+    - Expense categorization
+    - Time tracking integration
+    - Invoice creation
+    - Payment tracking
+    - Financial reports
+  </Card>
+</CardGroup>
+
+---
+
+## Team Communication
+
+Integrate with communication platforms for real-time alerts and updates:
+
+<Tabs>
+  <Tab title="Slack">
+    <Badge color="green" shape="rounded" size="md">⭐ Native Bot</Badge>
+
+    **Features:**
+    - Real-time alerts and notifications
+    - Production updates
+    - Quality alerts
+    - Inventory warnings
+    - Custom channel routing
+    - Interactive buttons and workflows
+
+    **Bot Commands:**
+```
+/salsa forecast          # View today's forecast
+/salsa inventory [item]  # Check stock levels
+/salsa production        # Current production status
+/salsa quality           # Recent quality scores
+/salsa order [supplier]  # Check pending orders
+/salsa help              # Show all commands
+```
+
+    **Setup**: Add the Salsa bot from Slack App Directory
+
+    **Notification Examples:**
+    - "⚠️ Low inventory alert: Tomatoes below reorder point (5 lbs remaining)"
+    - "✅ Batch BATCH-2024-001 completed with quality score 9.2/10"
+    - "📦 Sysco delivery scheduled for tomorrow 8:00 AM"
+    - "🔥 Demand forecast shows 40% increase for Friday - consider extra production"
+  </Tab>
+  
+  <Tab title="Microsoft Teams">
+    <Badge color="green" shape="rounded" size="md">⭐ Native Integration</Badge>
+
+    **Features:**
+    - Teams channel integration
+    - Adaptive cards for rich notifications
+    - Bot commands and interactions
+    - File sharing (reports, exports)
+    - Calendar integration for production schedules
+
+    **Integration**: Available in Microsoft Teams App Store
+
+    **Adaptive Card Example:**
+    - Production summary cards with inline actions
+    - Quality alerts with approve/reject buttons
+    - Order approvals with one-click confirmation
+    - Forecast summaries with charts
+  </Tab>
+  
+  <Tab title="SMS & Voice">
+    **Providers:**
+    <Badge color="gray" shape="rounded" size="md">Twilio</Badge>
+    <Badge color="gray" shape="rounded" size="md">AWS SNS</Badge>
+    <Badge color="gray" shape="rounded" size="md">Custom Gateway</Badge>
+
+    **Use Cases:**
+    - Critical alerts (temperature violations, equipment failure)
+    - Delivery notifications
+    - Approval requests for large orders
+    - Emergency notifications
+    - After-hours alerts to on-call staff
+
+    **Setup**: Configure in **Settings > Notifications > SMS**
+
+```python
+# Example: Configure SMS alerts
+client.notifications.configure_sms({
+    "provider": "twilio",
+    "account_sid": "AC...",
+    "auth_token": "...",
+    "from_number": "+1-555-0100",
+    "recipients": {
+        "critical": ["+1-555-0101", "+1-555-0102"],
+        "warnings": ["+1-555-0103"],
+        "info": []
+    },
+    "quiet_hours": {
+        "enabled": True,
+        "start": "22:00",
+        "end": "06:00",
+        "critical_only": True
+    }
+})
+```
+  </Tab>
+  
+  <Tab title="Discord">
+    <Badge color="gray" shape="rounded" size="md">Webhook</Badge>
+
+    **Features:**
+    - Webhook-based notifications
+    - Embed rich messages
+    - Multi-channel routing
+    - Role-based mentions
+
+    **Best For**: Tech-savvy teams and developer-focused operations
+  </Tab>
+</Tabs>
+
+---
+
+## Business Intelligence & Analytics
+
+Connect with BI tools for advanced analytics and custom reporting:
+
+<Tabs>
+  <Tab title="Tableau">
+    **Integration Type:** Native Connector
+
+    **Features:**
+    - Direct connection to Salsa data warehouse
+    - Pre-built dashboard templates
+    - Real-time data refresh
+    - Custom metrics and dimensions
+    - Drill-down capabilities
+
+    **Data Available:**
+    - Production metrics and trends
+    - Inventory analytics and forecasts
+    - Quality trends and anomalies
+    - Cost analysis and variances
+    - Forecast accuracy tracking
+    - Supplier performance
+
+    **Setup:**
+    1. Install Salsa connector in Tableau
+    2. Connect using API credentials
+    3. Import pre-built dashboards
+    4. Customize to your needs
+
+    **Pre-built Dashboards:**
+    - Executive Production Dashboard
+    - Quality Control Analytics
+    - Inventory Management Overview
+    - Cost Analysis and Trends
+    - Forecast Accuracy Metrics
+  </Tab>
+  
+  <Tab title="Power BI">
+    **Integration Type:** Native Connector
+
+    **Features:**
+    - Power BI Desktop and Service support
+    - Scheduled refresh (hourly, daily)
+    - Row-level security for multi-location
+    - Custom visuals
+    - Mobile app support
+
+    **Install:** Search "Salsa as a Service" in Power BI connectors
+
+```python
+# Example: Power BI data model
+Tables:
+- FactProduction (daily production batches)
+- FactSales (POS sales transactions)
+- FactInventory (inventory movements)
+- DimRecipe (recipe master)
+- DimIngredient (ingredient master)
+- DimDate (calendar)
+- DimLocation (multi-location)
+```
+
+    **DAX Measures Included:**
+    - Production efficiency %
+    - Inventory turnover
+    - Waste percentage
+    - Quality score averages
+    - Forecast vs actual variance
+  </Tab>
+  
+  <Tab title="Looker">
+    **Integration Type:** LookML Models
+
+    **Features:**
+    - Pre-built LookML models
+    - Embedded analytics in your app
+    - Custom explores
+    - API integration
+    - Scheduled deliveries
+
+    **Contact:** Enterprise customers receive LookML support and custom model development
+
+    **Best For**: SaaS companies and embedded analytics use cases
+  </Tab>
+  
+  <Tab title="Google Data Studio">
+    **Integration Type:** API Connector
+
+    **Features:**
+    - Free Google tool integration
+    - Real-time data refresh
+    - Collaborative dashboards
+    - Shareable reports
+    - Mobile-friendly
+
+    **Setup**: Use Google Sheets connector or direct API integration
+  </Tab>
+</Tabs>
+
+---
+
+## IoT & Hardware
+
+Connect sensors, scales, and smart kitchen equipment:
+
+<CardGroup cols={3}>
+  <Card title="Smart Scales" icon="scale-balanced">
+    <Badge color="green" shape="rounded" size="sm">Native</Badge>
+    
+    **Supported:**
+    - Mettler Toledo
+    - Ohaus
+    - A&D Weighing
+    
+    Auto-record ingredient weights during production
+  </Card>
+  
+  <Card title="Temperature Sensors" icon="temperature-half">
+    <Badge color="green" shape="rounded" size="sm">Native</Badge>
+    
+    **Supported:**
+    - Monnit
+    - SensorPush
+    - Govee
+    
+    HACCP-compliant temperature logging
+  </Card>
+  
+  <Card title="pH Meters" icon="flask">
+    <Badge color="yellow" shape="rounded" size="sm">Certified</Badge>
+    
+    **Supported:**
+    - Hanna Instruments
+    - Mettler Toledo
+    - Apera
+    
+    Automated quality testing integration
+  </Card>
+  
+  <Card title="Label Printers" icon="print">
+    <Badge color="gray" shape="rounded" size="sm">API</Badge>
+    
+    **Supported:**
+    - Zebra
+    - Brother
+    - Dymo
+    
+    Auto-print batch labels with QR codes
+  </Card>
+  
+  <Card title="Barcode Scanners" icon="barcode">
+    <Badge color="green" shape="rounded" size="sm">Native</Badge>
+    
+    **Supported:**
+    - USB/Bluetooth scanners
+    - Mobile app camera
+    - Handheld devices
+    
+    Quick ingredient tracking and verification
+  </Card>
+  
+  <Card title="Smart Cameras" icon="camera">
+    <Badge color="yellow" shape="rounded" size="sm">Beta</Badge>
+    
+    **Supported:**
+    - Computer vision for quality
+    - Visual inspection AI
+    - Defect detection
+    
+    Automated visual quality control
+  </Card>
+</CardGroup>
+
+---
+
+## Custom Integrations
+
+Build custom integrations using our comprehensive API:
+
+<Steps>
+  <Step title="Review Documentation">
+    Explore our [API Reference](/api/overview) and developer guides:
+    
+    - REST API documentation
+    - GraphQL schema and playground
+    - Webhook event catalog
+    - SDK references (8 languages)
+  </Step>
+  
+  <Step title="Get API Credentials">
+    Generate API keys from your dashboard:
+    
+    Navigate to **Settings > Developer > API Keys**
+    
+    **Key Types:**
+    - Production keys (live data)
+    - Sandbox keys (testing)
+    - Read-only keys (analytics/reporting)
+    - Webhook signing keys
+  </Step>
+  
+  <Step title="Choose SDK">
+    Leverage our official SDKs for faster development:
+    
+    <CardGroup cols={4}>
+      <Card title="JavaScript" icon="js">
+        <Badge color="gray" shape="rounded" size="sm">Node.js / Browser</Badge>
+        
+        ```bash
+        npm install @salsa/sdk
+        ```
+      </Card>
+      
+      <Card title="Python" icon="python">
+        <Badge color="gray" shape="rounded" size="sm">3.8+</Badge>
+        
+        ```bash
+        pip install salsa-sdk
+        ```
+      </Card>
+      
+      <Card title="PHP" icon="php">
+        <Badge color="gray" shape="rounded" size="sm">7.4+</Badge>
+        
+        ```bash
+        composer require salsa/sdk
+        ```
+      </Card>
+      
+      <Card title="Ruby" icon="gem">
+        <Badge color="gray" shape="rounded" size="sm">2.7+</Badge>
+        
+        ```bash
+        gem install salsa-sdk
+        ```
+      </Card>
+    </CardGroup>
+    
+    **Also Available**: Go, Java, C#, Swift
+  </Step>
+  
+  <Step title="Test in Sandbox">
+    Use our sandbox environment for safe testing:
+    
+    - Sandbox endpoint: `https://sandbox-api.salsaasaservice.com`
+    - Test data pre-populated
+    - No impact on production
+    - Full feature parity
+    
+```javascript
+const salsa = new SalsaClient({
+  apiKey: 'sandbox_key_...',
+  environment: 'sandbox'
+});
+
+// Test your integration safely
+const forecast = await salsa.forecast.get({
+  days: 7,
+  location_id: 'test_loc_123'
+});
+```
+  </Step>
+  
+  <Step title="Deploy to Production">
+    Move to production after thorough testing:
+    
+    1. Switch to production API key
+    2. Update endpoint URLs
+    3. Configure webhooks
+    4. Set up monitoring and alerts
+    5. Document your integration
+  </Step>
+</Steps>
+
+### Integration Examples
+
+<CodeGroup>
+```javascript Custom Dashboard Integration
+// Build custom production dashboard
+const salsa = new SalsaClient({ apiKey: 'prod_key_...' });
+
+// Get today's production data
+const production = await salsa.production.getBatches({
+  date: new Date(),
+  status: ['in_progress', 'completed']
+});
+
+// Get quality scores
+const quality = await salsa.quality.getScores({
+  batch_ids: production.map(b => b.id)
+});
+
+// Display in your custom dashboard
+renderDashboard({ production, quality });
+```
+
+```python ERP Sync Integration
+from salsa_sdk import SalsaClient
+import erp_system
+
+client = SalsaClient(api_key="prod_key_...")
+
+# Get completed batches
+batches = client.production.get_batches(
+    status="completed",
+    start_date="2024-01-01"
+)
+
+# Sync to ERP system
+for batch in batches:
+    erp_system.create_production_order({
+        "batch_id": batch.id,
+        "recipe": batch.recipe.name,
+        "quantity": batch.quantity,
+        "cost_center": "CC-PROD-001",
+        "gl_account": "5100-COGS",
+        "total_cost": batch.total_cost
+    })
+```
+
+```php Webhook Handler
+<?php
+require 'vendor/autoload.php';
+
+use Salsa\Webhook;
+
+// Verify webhook signature
+$webhook = new Webhook($_ENV['WEBHOOK_SECRET']);
+if (!$webhook->verify($_SERVER['HTTP_X_SALSA_SIGNATURE'], file_get_contents('php://input'))) {
+    http_response_code(401);
+    exit('Invalid signature');
+}
+
+$event = json_decode(file_get_contents('php://input'));
+
+// Handle different event types
+switch ($event->type) {
+    case 'quality.alert.created':
+        sendCriticalAlert($event->data);
+        break;
+    
+    case 'production.batch.completed':
+        updateInventory($event->data);
+        break;
+    
+    case 'forecast.updated':
+        adjustProductionSchedule($event->data);
+        break;
+}
+
+http_response_code(200);
+?>
+```
+</CodeGroup>
+
+---
+
+## Webhook Events
+
+Subscribe to real-time events:
+
+<Accordion title="Production Events">
+  - `production.batch.created`
+  - `production.batch.started`
+  - `production.batch.completed`
+  - `production.batch.cancelled`
+  - `production.schedule.updated`
+</Accordion>
+
+<Accordion title="Quality Events">
+  - `quality.alert.created`
+  - `quality.score.recorded`
+  - `quality.threshold.violated`
+  - `quality.test.completed`
+</Accordion>
+
+<Accordion title="Inventory Events">
+  - `inventory.level.low`
+  - `inventory.level.critical`
+  - `inventory.movement.recorded`
+  - `inventory.reorder.triggered`
+  - `inventory.receipt.recorded`
+</Accordion>
+
+<Accordion title="Forecast Events">
+  - `forecast.updated`
+  - `forecast.spike_detected`
+  - `forecast.accuracy.calculated`
+</Accordion>
+
+<Accordion title="IoT Events">
+  - `sensor.reading.anomaly`
+  - `sensor.offline`
+  - `sensor.battery.low`
+  - `equipment.maintenance.predicted`
+</Accordion>
+
+---
+
+## Integration Support
+
+<CardGroup cols={2}>
+  <Card title="Developer Portal" icon="code">
+    Interactive API explorer and testing tools at developers.salsaasaservice.com
+  </Card>
+  
+  <Card title="Integration Guides" icon="book">
+    Step-by-step guides for all major integrations with screenshots and examples
+  </Card>
+  
+  <Card title="Video Tutorials" icon="video">
+    Watch integration setup videos for popular platforms and use cases
+  </Card>
+  
+  <Card title="Community Forum" icon="comments">
+    Ask questions and share integration tips with other developers
+  </Card>
+  
+  <Card title="Email Support" icon="envelope">
+    integrations@salsaasaservice.com for integration assistance
+  </Card>
+  
+  <Card title="Enterprise Support" icon="headset">
+    Dedicated integration engineers for Enterprise customers
+  </Card>
+</CardGroup>
+
+---
+
+## Request New Integration
+
+Don't see your system listed? We're constantly adding new integrations.
+
+<Steps>
+  <Step title="Submit Request">
+    Submit an integration request through your dashboard:
+    
+    Navigate to **Settings > Integrations > Request Integration**
+    
+    Provide:
+    - System name and vendor
+    - Your use case
+    - Number of locations/users
+    - Urgency level
+  </Step>
+  
+  <Step title="Vote on Requests">
+    Vote for requested integrations to help us prioritize:
+    
+    See all requests at **Integrations > Request Board**
+  </Step>
+  
+  <Step title="Track Progress">
+    Follow the development progress:
+    
+    - **Requested**: Under review
+    - **Planned**: Scheduled for development
+    - **In Development**: Actively building
+    - **Beta**: Available for testing
+    - **Released**: Generally available
+  </Step>
+  
+  <Step title="Beta Testing">
+    Join beta programs to test new integrations early:
+    
+    - Early access to features
+    - Influence final implementation
+    - Free during beta period
+    - Priority support
+  </Step>
+</Steps>
+
+### Most Requested (Coming Soon)
+
+<CardGroup cols={3}>
+  <Card title="DoorDash Drive" icon="truck-fast">
+    <Badge color="blue" shape="rounded" size="sm">In Development</Badge>
+    
+    Delivery integration for salsa distribution
+  </Card>
+  
+  <Card title="Uber Eats Manager" icon="utensils">
+    <Badge color="blue" shape="rounded" size="sm">Planned</Badge>
+    
+    Direct menu and order integration
+  </Card>
+  
+  <Card title="OpenTable" icon="calendar-check">
+    <Badge color="blue" shape="rounded" size="sm">Planned</Badge>
+    
+    Reservation data for better forecasting
+  </Card>
+  
+  <Card title="7shifts" icon="users">
+    <Badge color="blue" shape="rounded" size="sm">Planned</Badge>
+    
+    Staff scheduling and labor optimization
+  </Card>
+  
+  <Card title="HotSchedules" icon="clock">
+    <Badge color="gray" shape="rounded" size="sm">Requested</Badge>
+    
+    Labor management integration
+  </Card>
+  
+  <Card title="Yelp Guest Manager" icon="star">
+    <Badge color="gray" shape="rounded" size="sm">Requested</Badge>
+    
+    Waitlist and reservation sync
+  </Card>
+</CardGroup>
+
+---
+
+## Integration Best Practices
+
+<Warning>
+  **Security Best Practices**:
+  
+  - Never commit API keys to version control
+  - Use environment variables for credentials
+  - Rotate API keys quarterly
+  - Use read-only keys for reporting
+  - Enable IP whitelisting for production
+  - Verify webhook signatures
+</Warning>
+
+<Note>
+  **Performance Tips**:
+  
+  - Use webhooks instead of polling
+  - Implement exponential backoff for retries
+  - Cache frequently accessed data
+  - Use GraphQL for complex queries
+  - Batch operations when possible
+  - Monitor rate limits
+</Note>
+
+---
+
+## Troubleshooting
+
+<Accordion title="Integration Not Syncing">
+  **Check**:
+  1. API credentials are valid and not expired
+  2. IP address is whitelisted (if enabled)
+  3. Integration status in dashboard shows "Connected"
+  4. No recent error logs in Integration > Logs
+  
+  **Resolution**:
+  - Disconnect and reconnect the integration
+  - Verify permissions and scopes
+  - Check third-party system status
+  - Contact support if issue persists
+</Accordion>
+
+<Accordion title="Webhook Not Receiving Events">
+  **Verify**:
+  - Webhook URL is publicly accessible
+  - SSL certificate is valid
+  - Endpoint returns 200 status code
+  - Signature verification is correct
+  
+  **Test**: Use webhook testing tool in dashboard to send test events
+</Accordion>
+
+<Accordion title="Data Discrepancies">
+  **Common Causes**:
+  - Time zone differences
+  - Data mapping errors
+  - Sync delays
+  - Filtering differences
+  
+  **Resolution**: Check sync logs and verify field mappings in integration settings
+</Accordion>
+
+<Note>
+  **Need Help?** Contact integration support at integrations@salsaasaservice.com or use the chat widget in your dashboard.
+</Note>

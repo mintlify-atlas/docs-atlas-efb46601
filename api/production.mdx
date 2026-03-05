@@ -1,0 +1,520 @@
+---
+title: "Production Tracking"
+description: "Track salsa production batches, quality metrics, and yield data"
+---
+
+# Production Tracking API
+
+The Production Tracking API enables you to manage salsa production batches from start to finish, record quality metrics, track yields, and maintain complete production history.
+
+## Base URL
+
+```
+https://api.salsaasaservice.com/v2/production
+```
+
+---
+
+## Start Production Batch
+
+Begin tracking a new salsa production batch. This creates a batch record and can optionally deduct ingredients from inventory.
+
+<CodeGroup>
+```http Request
+POST /production/batches
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+```
+
+```bash cURL
+curl -X POST "https://api.salsaasaservice.com/v2/production/batches" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "recipe_id": "rec_456",
+    "batch_number": "BATCH-2024-001",
+    "planned_quantity": 5.0,
+    "production_date": "2024-01-15T08:00:00Z",
+    "assigned_chef": "chef_123"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.salsaasaservice.com/v2/production/batches', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    recipe_id: 'rec_456',
+    batch_number: 'BATCH-2024-001',
+    planned_quantity: 5.0,
+    production_date: '2024-01-15T08:00:00Z',
+    assigned_chef: 'chef_123'
+  })
+});
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://api.salsaasaservice.com/v2/production/batches',
+    headers={'Authorization': 'Bearer YOUR_API_KEY'},
+    json={
+        'recipe_id': 'rec_456',
+        'batch_number': 'BATCH-2024-001',
+        'planned_quantity': 5.0,
+        'production_date': '2024-01-15T08:00:00Z',
+        'assigned_chef': 'chef_123'
+    }
+)
+```
+</CodeGroup>
+
+### Request Body
+
+<ParamField body="recipe_id" type="string" required>
+  ID of the recipe to produce
+</ParamField>
+
+<ParamField body="batch_number" type="string" required>
+  Unique batch identifier (e.g., BATCH-2024-001)
+</ParamField>
+
+<ParamField body="planned_quantity" type="number" required>
+  Expected production quantity (in recipe's yield units)
+</ParamField>
+
+<ParamField body="production_date" type="string" required>
+  Scheduled production date/time (ISO 8601)
+</ParamField>
+
+<ParamField body="assigned_chef" type="string">
+  ID of chef or team member assigned to this batch
+</ParamField>
+
+<ParamField body="deduct_inventory" type="boolean" default="true">
+  Whether to automatically deduct ingredients from inventory
+</ParamField>
+
+<ParamField body="notes" type="string">
+  Optional production notes or special instructions
+</ParamField>
+
+### Response
+
+<ResponseField name="id" type="string">
+  Unique batch identifier (e.g., `batch_789`)
+</ResponseField>
+
+<ResponseField name="recipe_id" type="string">
+  ID of the recipe being produced
+</ResponseField>
+
+<ResponseField name="batch_number" type="string">
+  User-defined batch number
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Current status: `in_progress`, `completed`, `cancelled`, or `quality_hold`
+</ResponseField>
+
+<ResponseField name="planned_quantity" type="number">
+  Expected production quantity
+</ResponseField>
+
+<ResponseField name="started_at" type="string">
+  ISO 8601 timestamp when production began
+</ResponseField>
+
+<ResponseField name="assigned_chef" type="string">
+  ID of assigned chef
+</ResponseField>
+
+### Response Example
+
+```json
+{
+  "id": "batch_789",
+  "recipe_id": "rec_456",
+  "recipe_name": "House Salsa",
+  "batch_number": "BATCH-2024-001",
+  "status": "in_progress",
+  "planned_quantity": 5.0,
+  "yield_unit": "gallons",
+  "started_at": "2024-01-15T08:00:00Z",
+  "assigned_chef": "chef_123",
+  "inventory_deducted": true
+}
+```
+
+---
+
+## Complete Production Batch
+
+Mark a production batch as completed with final quality metrics and actual yield data.
+
+<CodeGroup>
+```http Request
+PUT /production/batches/{batch_id}/complete
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+```
+
+```bash cURL
+curl -X PUT "https://api.salsaasaservice.com/v2/production/batches/batch_789/complete" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "actual_quantity": 4.8,
+    "quality_score": 9.2,
+    "notes": "Excellent batch, perfect consistency",
+    "completed_at": "2024-01-15T09:30:00Z"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.salsaasaservice.com/v2/production/batches/batch_789/complete', {
+  method: 'PUT',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    actual_quantity: 4.8,
+    quality_score: 9.2,
+    notes: 'Excellent batch, perfect consistency',
+    completed_at: '2024-01-15T09:30:00Z'
+  })
+});
+```
+</CodeGroup>
+
+### Path Parameters
+
+<ParamField path="batch_id" type="string" required>
+  The unique identifier of the batch to complete
+</ParamField>
+
+### Request Body
+
+<ParamField body="actual_quantity" type="number" required>
+  Final produced quantity
+</ParamField>
+
+<ParamField body="quality_score" type="number" required>
+  Quality rating from 0-10 based on taste, consistency, appearance
+</ParamField>
+
+<ParamField body="completed_at" type="string" required>
+  Completion timestamp (ISO 8601)
+</ParamField>
+
+<ParamField body="notes" type="string">
+  Production notes, observations, or issues encountered
+</ParamField>
+
+<ParamField body="waste_quantity" type="number">
+  Amount of waste produced (in yield units)
+</ParamField>
+
+<ParamField body="quality_metrics" type="object">
+  Additional quality measurements
+  
+  <Expandable title="Quality Metrics">
+    <ParamField body="ph_level" type="number">
+      pH measurement
+    </ParamField>
+    
+    <ParamField body="consistency" type="string">
+      Texture rating: `smooth`, `chunky`, `medium`
+    </ParamField>
+    
+    <ParamField body="color_score" type="number">
+      Color consistency score (0-10)
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### Response
+
+```json
+{
+  "id": "batch_789",
+  "recipe_id": "rec_456",
+  "batch_number": "BATCH-2024-001",
+  "status": "completed",
+  "planned_quantity": 5.0,
+  "actual_quantity": 4.8,
+  "yield_efficiency": 96.0,
+  "quality_score": 9.2,
+  "started_at": "2024-01-15T08:00:00Z",
+  "completed_at": "2024-01-15T09:30:00Z",
+  "production_time_minutes": 90,
+  "notes": "Excellent batch, perfect consistency"
+}
+```
+
+---
+
+## Get Production History
+
+Retrieve production history with filtering and pagination options.
+
+<CodeGroup>
+```http Request
+GET /production/batches
+Authorization: Bearer YOUR_API_KEY
+```
+
+```bash cURL
+curl -X GET "https://api.salsaasaservice.com/v2/production/batches?start_date=2024-01-01&end_date=2024-01-31&recipe_id=rec_456" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const params = new URLSearchParams({
+  start_date: '2024-01-01',
+  end_date: '2024-01-31',
+  recipe_id: 'rec_456'
+});
+
+const response = await fetch(`https://api.salsaasaservice.com/v2/production/batches?${params}`, {
+  headers: {'Authorization': 'Bearer YOUR_API_KEY'}
+});
+```
+</CodeGroup>
+
+### Query Parameters
+
+<ParamField query="start_date" type="string">
+  Filter batches after this date (ISO 8601)
+</ParamField>
+
+<ParamField query="end_date" type="string">
+  Filter batches before this date (ISO 8601)
+</ParamField>
+
+<ParamField query="recipe_id" type="string">
+  Filter by specific recipe
+</ParamField>
+
+<ParamField query="status" type="string">
+  Filter by status: `in_progress`, `completed`, `cancelled`, `quality_hold`
+</ParamField>
+
+<ParamField query="assigned_chef" type="string">
+  Filter by assigned chef ID
+</ParamField>
+
+<ParamField query="page" type="integer" default="1">
+  Page number for pagination
+</ParamField>
+
+<ParamField query="per_page" type="integer" default="50">
+  Items per page (max: 100)
+</ParamField>
+
+### Response
+
+```json
+{
+  "data": [
+    {
+      "id": "batch_789",
+      "recipe_id": "rec_456",
+      "recipe_name": "House Salsa",
+      "batch_number": "BATCH-2024-001",
+      "status": "completed",
+      "planned_quantity": 5.0,
+      "actual_quantity": 4.8,
+      "quality_score": 9.2,
+      "started_at": "2024-01-15T08:00:00Z",
+      "completed_at": "2024-01-15T09:30:00Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "per_page": 50,
+    "total": 45,
+    "total_pages": 1
+  }
+}
+```
+
+---
+
+## Get Single Batch
+
+Retrieve detailed information about a specific production batch.
+
+```http
+GET /production/batches/{batch_id}
+Authorization: Bearer YOUR_API_KEY
+```
+
+### Path Parameters
+
+<ParamField path="batch_id" type="string" required>
+  The unique identifier of the batch
+</ParamField>
+
+### Response
+
+Returns complete batch details including ingredient usage, quality metrics, and timeline.
+
+---
+
+## Update Batch Status
+
+Update the status of a production batch (e.g., place on quality hold).
+
+```http
+PATCH /production/batches/{batch_id}/status
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+```
+
+### Request Body
+
+<ParamField body="status" type="string" required>
+  New status: `in_progress`, `completed`, `cancelled`, or `quality_hold`
+</ParamField>
+
+<ParamField body="reason" type="string">
+  Reason for status change
+</ParamField>
+
+### Response Example
+
+```json
+{
+  "id": "batch_789",
+  "status": "quality_hold",
+  "reason": "Color consistency below threshold",
+  "updated_at": "2024-01-15T10:00:00Z"
+}
+```
+
+---
+
+## Cancel Production Batch
+
+Cancel an in-progress production batch. Optionally restore inventory.
+
+```http
+DELETE /production/batches/{batch_id}
+Authorization: Bearer YOUR_API_KEY
+```
+
+<Warning>
+  Cancelling a batch will restore ingredients to inventory if `restore_inventory=true` is passed.
+</Warning>
+
+### Path Parameters
+
+<ParamField path="batch_id" type="string" required>
+  The unique identifier of the batch to cancel
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="restore_inventory" type="boolean" default="false">
+  Whether to restore deducted ingredients back to inventory
+</ParamField>
+
+<ParamField query="reason" type="string">
+  Reason for cancellation
+</ParamField>
+
+### Response
+
+```json
+{
+  "success": true,
+  "message": "Batch cancelled and inventory restored",
+  "batch_id": "batch_789",
+  "inventory_restored": true
+}
+```
+
+---
+
+## Get Batch Timeline
+
+Retrieve a detailed timeline of all events for a production batch.
+
+```http
+GET /production/batches/{batch_id}/timeline
+Authorization: Bearer YOUR_API_KEY
+```
+
+### Response
+
+```json
+{
+  "batch_id": "batch_789",
+  "events": [
+    {
+      "timestamp": "2024-01-15T08:00:00Z",
+      "event_type": "batch_started",
+      "description": "Production batch started",
+      "user_id": "chef_123"
+    },
+    {
+      "timestamp": "2024-01-15T09:30:00Z",
+      "event_type": "batch_completed",
+      "description": "Batch completed with quality score 9.2",
+      "user_id": "chef_123"
+    }
+  ]
+}
+```
+
+---
+
+## Error Responses
+
+### 400 Bad Request
+
+```json
+{
+  "error": {
+    "code": "INSUFFICIENT_INVENTORY",
+    "message": "Not enough ingredients to start production",
+    "details": {
+      "missing_ingredients": [
+        {
+          "ingredient_id": "ing_123",
+          "required": 10.0,
+          "available": 5.0
+        }
+      ]
+    }
+  }
+}
+```
+
+### 404 Not Found
+
+```json
+{
+  "error": {
+    "code": "BATCH_NOT_FOUND",
+    "message": "Production batch with ID 'batch_789' does not exist"
+  }
+}
+```
+
+### 422 Unprocessable Entity
+
+```json
+{
+  "error": {
+    "code": "INVALID_STATUS_TRANSITION",
+    "message": "Cannot complete a cancelled batch"
+  }
+}
+```

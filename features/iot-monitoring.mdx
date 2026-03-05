@@ -1,0 +1,872 @@
+---
+title: "IoT Sensor Monitoring"
+description: "Real-time monitoring with connected sensors, predictive maintenance, and automated quality control for optimal salsa production"
+---
+
+## Overview
+
+Salsa as a Service v2.0 integrates with IoT sensors throughout your production environment to provide real-time monitoring, predictive maintenance alerts, and automated quality testing. Monitor temperature, pH, viscosity, and more with continuous data collection and AI-powered analytics.
+
+<CardGroup cols={3}>
+  <Card title="Real-Time Monitoring" icon="gauge">
+    Live sensor data from all production areas with sub-second latency
+  </Card>
+  <Card title="Predictive Maintenance" icon="wrench">
+    Predict equipment failures 3-14 days in advance with 85% accuracy
+  </Card>
+  <Card title="Automated Testing" icon="flask">
+    Continuous quality testing with IoT devices eliminates manual sampling
+  </Card>
+</CardGroup>
+
+---
+
+## Supported Sensor Types
+
+### Environmental Sensors
+
+<Tabs>
+  <Tab title="Temperature Sensors">
+    **Temperature Monitoring**
+    
+    <Badge color="green" shape="rounded" size="md">Real-Time</Badge>
+    <Badge color="blue" shape="rounded" size="md">HACCP Compliant</Badge>
+    
+    **Use Cases:**
+    - Production area ambient temperature
+    - Ingredient storage temperature
+    - Cooking and processing temperatures
+    - Refrigeration and cooling monitoring
+    
+    **Supported Devices:**
+    - Wireless temperature probes
+    - Refrigerator/freezer sensors
+    - Ambient room sensors
+    - Infrared thermometers
+    
+    **Alert Thresholds:**
+    - Storage: 35-40°F (critical alerts under 32°F or over 45°F)
+    - Production: 60-75°F (optimal range)
+    - Cooking: Recipe-specific thresholds
+    
+```python
+# Example: Query temperature sensors
+from salsa_sdk import SalsaClient
+
+client = SalsaClient(api_key="your_api_key")
+
+# Get all temperature sensors
+temp_sensors = client.iot.get_sensors(
+    location="kitchen_1",
+    sensor_type="temperature"
+)
+
+for sensor in temp_sensors:
+    reading = sensor.get_latest_reading()
+    print(f"{sensor.name}: {reading.value}°F")
+    
+    if reading.is_anomaly():
+        print(f"⚠️  Alert: {reading.anomaly_details}")
+```
+  </Tab>
+  
+  <Tab title="Humidity Sensors">
+    **Humidity Monitoring**
+    
+    <Badge color="green" shape="rounded" size="md">Continuous</Badge>
+    
+    **Use Cases:**
+    - Storage area humidity control
+    - Ingredient quality preservation
+    - Mold and contamination prevention
+    - Production environment optimization
+    
+    **Optimal Ranges:**
+    - Storage areas: 50-60% RH
+    - Production areas: 40-60% RH
+    - Dry ingredient storage: under 40% RH
+    
+    **Supported Devices:**
+    - Wireless humidity sensors
+    - Combined temp/humidity units
+    - Industrial-grade hygrometers
+  </Tab>
+  
+  <Tab title="Air Quality Sensors">
+    **Air Quality Monitoring**
+    
+    <Badge color="green" shape="rounded" size="md">Real-Time</Badge>
+    <Badge color="blue" shape="rounded" size="md">Safety Critical</Badge>
+    
+    **Monitored Metrics:**
+    - CO2 levels
+    - Volatile organic compounds (VOCs)
+    - Particulate matter (PM2.5, PM10)
+    - Gas detection (CO, natural gas)
+    
+    **Safety Thresholds:**
+    - CO2: under 1000 ppm (alerts over 1500 ppm)
+    - VOCs: under 500 ppb
+    - PM2.5: under 35 μg/m³
+  </Tab>
+</Tabs>
+
+### Quality Testing Sensors
+
+<Tabs>
+  <Tab title="pH Meters">
+    **pH Level Monitoring**
+    
+    <Badge color="green" shape="rounded" size="md">Continuous</Badge>
+    <Badge color="blue" shape="rounded" size="md">HACCP Critical</Badge>
+    
+    Track pH levels throughout production to ensure optimal acidity, flavor consistency, and food safety compliance.
+    
+    **Features:**
+    - Automated pH testing every batch
+    - Continuous monitoring during production
+    - Historical pH trend analysis
+    - Recipe-specific pH target ranges
+    
+    **Supported Devices:**
+    - Wireless pH probes
+    - Inline pH sensors
+    - Handheld Bluetooth pH meters
+    
+```javascript
+// Example: Monitor pH during production
+const phData = await salsa.iot.sensors.query({
+  sensor_type: "ph_meter",
+  batch_id: "BATCH-2024-001",
+  realtime: true
+});
+
+phData.on('reading', (reading) => {
+  console.log(`pH: ${reading.value}`);
+  
+  if (reading.value < 3.8 || reading.value > 4.2) {
+    console.log('⚠️  pH out of optimal range');
+  }
+});
+```
+    
+    **Optimal pH Ranges by Recipe:**
+    - House Salsa: 3.9 - 4.1
+    - Verde Salsa: 3.8 - 4.0
+    - Mango Salsa: 4.0 - 4.3
+    - Habanero Salsa: 3.7 - 4.0
+  </Tab>
+  
+  <Tab title="Viscosity Sensors">
+    **Viscosity Measurement**
+    
+    <Badge color="green" shape="rounded" size="md">Real-Time</Badge>
+    
+    Measure salsa consistency and texture to maintain uniformity across every batch and ensure brand consistency.
+    
+    **Features:**
+    - Inline viscosity measurement
+    - Consistency scoring (1-10 scale)
+    - Batch-to-batch comparison
+    - Automatic alerts for texture variations
+    
+    **Applications:**
+    - Detect over/under-mixing
+    - Ensure brand consistency
+    - Quality control automation
+    - Process optimization
+    
+    **Supported Devices:**
+    - Inline viscometers
+    - Rotational viscosity sensors
+    - Flow-through consistency meters
+  </Tab>
+  
+  <Tab title="Color Sensors">
+    **Visual Color Analysis**
+    
+    <Badge color="green" shape="rounded" size="md">Visual Consistency</Badge>
+    
+    Detect color variations that indicate ingredient quality issues, production problems, or recipe deviations.
+    
+    **Features:**
+    - RGB color measurement
+    - L*a*b* color space analysis
+    - Batch color consistency scoring
+    - Ingredient quality correlation
+    
+    **Use Cases:**
+    - Detect ingredient quality issues (e.g., overripe tomatoes)
+    - Ensure visual brand consistency
+    - Identify oxidation or degradation
+    - Validate recipe adherence
+    
+    **Supported Devices:**
+    - Spectrocolorimeters
+    - Industrial color sensors
+    - Computer vision cameras
+  </Tab>
+</Tabs>
+
+### Equipment Monitoring
+
+<CardGroup cols={2}>
+  <Card title="Vibration Sensors" icon="wave-pulse">
+    **Predictive Maintenance**
+    
+    Monitor equipment vibration patterns to detect:
+    - Bearing wear
+    - Motor imbalance
+    - Loose components
+    - Impending failures
+    
+    **Alert Lead Time**: 7-14 days before failure
+  </Card>
+  
+  <Card title="Power Consumption" icon="bolt">
+    **Energy Monitoring**
+    
+    Track equipment power usage to identify:
+    - Efficiency degradation
+    - Abnormal operation
+    - Maintenance needs
+    - Cost optimization opportunities
+    
+    **Savings**: Average 15-20% energy reduction
+  </Card>
+  
+  <Card title="Flow Meters" icon="droplet">
+    **Ingredient Flow**
+    
+    Monitor ingredient dispensing and water usage:
+    - Precise portion control
+    - Recipe accuracy verification
+    - Leak detection
+    - Usage analytics
+  </Card>
+  
+  <Card title="RFID Tracking" icon="tag">
+    **Inventory Movement**
+    
+    Track ingredients and batches throughout your facility:
+    - Real-time location tracking
+    - Automated inventory updates
+    - Batch traceability
+    - Theft prevention
+  </Card>
+</CardGroup>
+
+---
+
+## Real-Time Monitoring Dashboard
+
+Access comprehensive sensor data in a unified dashboard:
+
+<Note>
+  **Dashboard Features**:
+  - Live sensor feeds with under 1 second latency
+  - Historical trend analysis with customizable timeframes
+  - Anomaly detection alerts with root cause analysis
+  - Predictive maintenance warnings 3-14 days in advance
+  - Automated compliance reports for HACCP and FDA
+</Note>
+
+### Querying Sensor Data
+
+<CodeGroup>
+```python Python SDK
+from salsa_sdk import SalsaClient
+
+client = SalsaClient(api_key="your_api_key")
+
+# Get real-time sensor readings
+sensors = client.iot.get_sensors(location="kitchen_1")
+
+for sensor in sensors:
+    reading = sensor.get_latest_reading()
+    print(f"{sensor.name}: {reading.value} {reading.unit}")
+    
+    if reading.is_anomaly():
+        print(f"⚠️  Alert: {reading.anomaly_details}")
+        print(f"   Severity: {reading.severity}")
+        print(f"   Recommended action: {reading.recommendation}")
+
+# Query historical data
+history = client.iot.query_history(
+    sensor_id="temp_sensor_001",
+    start_date="2024-01-01",
+    end_date="2024-01-31",
+    aggregation="hourly"
+)
+
+print(f"Average: {history.stats.mean}")
+print(f"Min: {history.stats.min}")
+print(f"Max: {history.stats.max}")
+print(f"Anomalies detected: {history.stats.anomaly_count}")
+```
+
+```javascript JavaScript SDK
+const SalsaClient = require('@salsa/sdk');
+const salsa = new SalsaClient({ apiKey: 'your_api_key' });
+
+// Real-time sensor monitoring
+const sensors = await salsa.iot.getSensors({
+  location: 'kitchen_1',
+  types: ['temperature', 'ph', 'viscosity']
+});
+
+sensors.forEach(async (sensor) => {
+  const reading = await sensor.getLatestReading();
+  console.log(`${sensor.name}: ${reading.value} ${reading.unit}`);
+  
+  if (reading.isAnomaly) {
+    console.log(`⚠️  ${reading.anomalyDetails}`);
+  }
+});
+
+// Subscribe to real-time updates
+const stream = salsa.iot.streamSensorData({
+  sensor_ids: ['temp_001', 'ph_002'],
+  interval: '1s'
+});
+
+stream.on('data', (reading) => {
+  console.log(`${reading.sensor_id}: ${reading.value}`);
+});
+```
+
+```graphql GraphQL Query
+query GetSensorData {
+  sensors(location: "kitchen_1") {
+    id
+    name
+    type
+    status
+    latestReading {
+      value
+      unit
+      timestamp
+      isAnomaly
+      anomalyDetails
+    }
+    health {
+      batteryLevel
+      signalStrength
+      lastSeen
+    }
+  }
+}
+
+subscription OnSensorReading {
+  sensorReading(sensorIds: ["temp_001", "ph_002"]) {
+    sensorId
+    value
+    unit
+    timestamp
+    isAnomaly
+  }
+}
+```
+</CodeGroup>
+
+---
+
+## Predictive Maintenance
+
+AI analyzes sensor patterns to predict equipment failures before they occur:
+
+<Steps>
+  <Step title="Equipment Profiling">
+    System learns normal operating parameters for each piece of equipment over 30-60 days:
+    
+    - Baseline vibration patterns
+    - Normal temperature ranges
+    - Expected power consumption
+    - Typical performance metrics
+  </Step>
+  
+  <Step title="Anomaly Detection">
+    ML models detect subtle changes that indicate potential issues:
+    
+    <CardGroup cols={2}>
+      <Card title="Temperature Anomalies" icon="temperature-high">
+        - Gradual temperature increases
+        - Fluctuation outside normal range
+        - Cooling system degradation
+      </Card>
+      <Card title="Vibration Patterns" icon="wave-pulse">
+        - Unusual vibration frequencies
+        - Amplitude changes
+        - Bearing wear indicators
+      </Card>
+      <Card title="Performance Issues" icon="gauge">
+        - Efficiency degradation
+        - Slower processing times
+        - Output quality decline
+      </Card>
+      <Card title="Power Changes" icon="bolt">
+        - Increased consumption
+        - Power fluctuations
+        - Motor strain indicators
+      </Card>
+    </CardGroup>
+  </Step>
+  
+  <Step title="Failure Prediction">
+    AI predicts equipment failures with industry-leading accuracy:
+    
+    - **3-7 days advance warning**: 85% accuracy
+    - **7-14 days advance warning**: 75% accuracy
+    - **14+ days advance warning**: 60% accuracy
+    
+    <Warning>
+      Critical equipment failures trigger immediate alerts via SMS, phone call, and dashboard notifications.
+    </Warning>
+  </Step>
+  
+  <Step title="Automated Alerts">
+    System notifies maintenance team with specific recommended actions:
+    
+    - Detailed failure probability and timeline
+    - Specific components likely to fail
+    - Recommended maintenance procedures
+    - Parts ordering links and specifications
+    - Estimated downtime and cost impact
+  </Step>
+</Steps>
+
+### Maintenance Alert Example
+
+```json
+{
+  "alert_id": "maint_789",
+  "equipment_id": "blender_003",
+  "equipment_name": "Industrial Blender #3",
+  "prediction": {
+    "failure_type": "bearing_wear",
+    "probability": 0.87,
+    "estimated_failure_date": "2024-02-15",
+    "days_until_failure": 8,
+    "confidence": 0.85
+  },
+  "indicators": {
+    "vibration_increase": "+35% over baseline",
+    "temperature_increase": "+12°F",
+    "power_consumption": "+8%",
+    "noise_level": "Increased"
+  },
+  "recommendations": {
+    "action": "Replace motor bearings",
+    "urgency": "high",
+    "estimated_downtime": "4-6 hours",
+    "estimated_cost": "$450-$600",
+    "parts_needed": [
+      {
+        "part_name": "Motor bearing set",
+        "part_number": "BRG-2024-XL",
+        "quantity": 2,
+        "supplier_link": "https://supplier.com/parts/BRG-2024-XL"
+      }
+    ]
+  },
+  "impact_if_ignored": {
+    "failure_probability": 0.95,
+    "downtime": "24-48 hours",
+    "repair_cost": "$2,000-$3,500",
+    "production_loss": "$5,000-$8,000"
+  }
+}
+```
+
+<Note>
+  **ROI**: Customers report 70-80% reduction in unplanned downtime and 40-50% lower maintenance costs after implementing predictive maintenance.
+</Note>
+
+---
+
+## Automated Quality Testing
+
+IoT sensors enable continuous quality monitoring without manual intervention:
+
+### Continuous Testing vs Manual Sampling
+
+<Tabs>
+  <Tab title="IoT Automated (v2.0)">
+    **Continuous Testing with IoT Sensors**
+    
+    - **Coverage**: 100% of production monitored
+    - **Frequency**: Real-time continuous monitoring
+    - **Labor**: Zero manual effort required
+    - **Detection Speed**: Issues caught within seconds
+    - **Data Volume**: Thousands of data points per batch
+    - **Consistency**: No human error or variability
+    
+    **Result**: 95% reduction in quality issues reaching customers
+  </Tab>
+  
+  <Tab title="Manual Sampling (v1.0)">
+    **Traditional Manual Sampling**
+    
+    - **Coverage**: 5-10% of production sampled
+    - **Frequency**: Periodic testing (every 2-4 hours)
+    - **Labor**: Significant staff time required
+    - **Detection Speed**: Issues caught hours later
+    - **Data Volume**: 5-10 data points per batch
+    - **Consistency**: Subject to human error
+    
+    **Limitation**: Many quality issues go undetected
+  </Tab>
+</Tabs>
+
+### Quality Metrics Tracked
+
+<CodeGroup>
+```javascript Record Quality Data
+// Example: Record quality with automated sensor data
+const qualityCheck = await salsa.ai.quality.recordScore({
+  batch_id: "BATCH-2024-001",
+  automated_scores: {
+    visual_ai: 9.2,          // Computer vision
+    ph_sensor: 8.8,          // pH meter
+    viscosity: 9.0,          // Viscosity sensor
+    temperature: 10.0,       // Temperature compliance
+    color_consistency: 9.5,  // Color sensor
+  },
+  manual_scores: {
+    taste: 9.5,              // Human taste test
+    aroma: 9.3,              // Human sensory evaluation
+  },
+  ai_analysis: true,
+  auto_approve: false        // Require human verification
+});
+
+console.log(`Overall Quality Score: ${qualityCheck.overall_score}/10`);
+console.log(`AI Confidence: ${qualityCheck.ai_confidence}%`);
+```
+
+```python Query Quality History
+from salsa_sdk import SalsaClient
+
+client = SalsaClient(api_key="your_api_key")
+
+# Get quality trends
+quality_history = client.quality.get_trends(
+    recipe_id="house_salsa",
+    start_date="2024-01-01",
+    end_date="2024-01-31",
+    include_sensor_data=True
+)
+
+print(f"Average quality score: {quality_history.avg_score}")
+print(f"Quality consistency: {quality_history.std_dev}")
+print(f"Batches above threshold: {quality_history.pass_rate}%")
+print(f"Sensor anomalies detected: {quality_history.anomaly_count}")
+```
+</CodeGroup>
+
+---
+
+## Sensor Installation & Setup
+
+<Steps>
+  <Step title="Plan Sensor Placement">
+    Identify critical monitoring points:
+    
+    **Required Sensors**:
+    - [ ] Refrigeration temperature sensors
+    - [ ] Production area ambient sensors
+    - [ ] At least one pH meter per production line
+    
+    **Recommended Sensors**:
+    - [ ] Viscosity sensors for consistency
+    - [ ] Color sensors for quality
+    - [ ] Humidity sensors in storage
+    - [ ] Equipment vibration monitors
+    
+    **Optional Sensors**:
+    - [ ] Air quality monitors
+    - [ ] RFID inventory tracking
+    - [ ] Flow meters for precise measurement
+  </Step>
+  
+  <Step title="Install Hardware">
+    Install sensors according to manufacturer specifications:
+    
+    - Mount temperature sensors away from doors/vents
+    - Install pH probes in easy-to-clean locations
+    - Position vibration sensors on equipment housings
+    - Ensure wireless sensors have strong signal strength
+    
+    <Note>
+      **Professional Installation**: Enterprise customers receive complimentary professional installation and calibration.
+    </Note>
+  </Step>
+  
+  <Step title="Connect to Platform">
+    Configure sensors in your Salsa dashboard:
+    
+```bash
+# Add sensor via CLI
+salsa iot add-sensor \
+  --type temperature \
+  --name "Walk-in Cooler" \
+  --location kitchen_1 \
+  --mac-address AA:BB:CC:DD:EE:FF \
+  --alert-min 35 \
+  --alert-max 40
+```
+    
+    Or use the web dashboard: **Settings > IoT Devices > Add Sensor**
+  </Step>
+  
+  <Step title="Calibrate & Test">
+    Run calibration routines for accuracy:
+    
+    - pH meters: Calibrate with 4.0 and 7.0 buffer solutions
+    - Temperature sensors: Verify against certified thermometer
+    - Viscosity sensors: Test with known reference fluids
+    - Color sensors: Calibrate with color reference cards
+  </Step>
+  
+  <Step title="Configure Alerts">
+    Set up alert thresholds and notification preferences:
+    
+    - Define critical, warning, and info alert levels
+    - Configure SMS, email, and push notifications
+    - Set escalation rules for unacknowledged alerts
+    - Test alert delivery to all recipients
+  </Step>
+</Steps>
+
+---
+
+## Certified Hardware Partners
+
+<Tabs>
+  <Tab title="Temperature & Environment">
+    **Recommended Devices**:
+    
+    - **Monnit Wireless Sensors** - Battery-powered, 3-year battery life
+    - **SensorPush** - Bluetooth temperature/humidity sensors
+    - **Govee WiFi Sensors** - Affordable cloud-connected monitoring
+    - **Temp-Tale** - HACCP-compliant temperature logging
+    
+    **Enterprise Grade**:
+    - **Comark Diligence WiFi** - NSF certified, HACCP compliant
+    - **Dickson** - Industrial temperature monitoring systems
+  </Tab>
+  
+  <Tab title="Quality Testing">
+    **pH Meters**:
+    - **Hanna Instruments HI5522** - Laboratory-grade accuracy
+    - **Mettler Toledo SevenGo Duo** - Field pH meter with Bluetooth
+    - **Apera Instruments AI311** - Waterproof portable pH meter
+    
+    **Viscosity Sensors**:
+    - **Brookfield DV2T** - Industry standard viscometer
+    - **Thermo Scientific** - Inline viscosity sensors
+    
+    **Color Sensors**:
+    - **Konica Minolta CR-400** - Handheld colorimeter
+    - **X-Rite Ci64** - Portable spectrophotometer
+  </Tab>
+  
+  <Tab title="Equipment Monitoring">
+    **Vibration Sensors**:
+    - **SKF QuickCollect** - Wireless vibration sensors
+    - **Fluke 3561 FC** - Vibration testing equipment
+    
+    **Power Monitoring**:
+    - **Sense Energy Monitor** - Real-time power tracking
+    - **Emporia Vue** - Circuit-level monitoring
+    - **IoTaWatt** - Open-source power monitor
+    
+    **Flow Meters**:
+    - **GPI Electronic Meters** - Precision flow measurement
+    - **Omega FTB Series** - Industrial turbine flow meters
+  </Tab>
+</Tabs>
+
+<Note>
+  **Integration Support**: All certified devices include pre-built integrations and technical support. Contact sales for volume discounts on hardware bundles.
+</Note>
+
+---
+
+## Advanced Analytics
+
+### Sensor Data Insights
+
+AI analyzes sensor data to provide actionable insights:
+
+<CardGroup cols={2}>
+  <Card title="Correlation Analysis" icon="link">
+    Identifies relationships between sensor readings and quality outcomes:
+    
+    - Which temperature ranges produce best quality
+    - pH correlation with customer satisfaction
+    - Humidity impact on ingredient shelf life
+    - Equipment performance vs production speed
+  </Card>
+  
+  <Card title="Optimization Recommendations" icon="lightbulb">
+    AI suggests process improvements:
+    
+    - Optimal production temperatures
+    - Equipment replacement timing
+    - Sensor placement improvements
+    - Alert threshold adjustments
+  </Card>
+</CardGroup>
+
+### Custom Dashboards
+
+Create custom visualization dashboards:
+
+- **Production Floor View**: Real-time sensor status for all areas
+- **Quality Dashboard**: All quality metrics in one place
+- **Maintenance Dashboard**: Equipment health and predictions
+- **Compliance Dashboard**: HACCP and regulatory monitoring
+
+---
+
+## Compliance & Reporting
+
+### HACCP Compliance
+
+<Note>
+  **Automated HACCP Logs**:
+  
+  IoT sensor data automatically populates HACCP logs with timestamped temperature records, pH monitoring logs, and corrective action documentation. All data is tamper-proof and audit-ready.
+</Note>
+
+### FDA Regulatory Support
+
+- Automated temperature logging for food safety
+- Digital record keeping with 7-year retention
+- Instant audit report generation
+- Corrective action tracking and documentation
+
+### Export & Reporting
+
+```python
+# Generate compliance report
+report = client.iot.generate_compliance_report(
+    location_id="loc_123",
+    start_date="2024-01-01",
+    end_date="2024-01-31",
+    report_type="haccp",
+    format="pdf"
+)
+
+report.download("haccp_report_jan_2024.pdf")
+```
+
+---
+
+## Troubleshooting
+
+<Accordion title="Sensor Offline or Not Reporting">
+  **Check**:
+  1. Battery level (wireless sensors)
+  2. WiFi/Bluetooth signal strength
+  3. Network connectivity
+  4. Sensor placement (interference from metal/concrete)
+  
+  **Resolution**:
+  - Replace batteries if < 20%
+  - Move closer to gateway/router
+  - Restart sensor by power cycling
+  - Check gateway status in dashboard
+</Accordion>
+
+<Accordion title="Inaccurate Readings">
+  **Common Causes**:
+  - Sensor needs recalibration
+  - Contamination on sensor probe
+  - Sensor drift over time
+  - Environmental interference
+  
+  **Resolution**:
+  - Run calibration routine
+  - Clean sensor probe per manufacturer specs
+  - Replace sensor if > 2 years old
+  - Check for nearby heat/cold sources
+</Accordion>
+
+<Accordion title="Too Many False Alerts">
+  **Adjust Alert Thresholds**:
+  
+  Navigate to **Settings > IoT Devices > [Sensor Name] > Alert Settings**
+  
+  - Increase tolerance ranges slightly
+  - Enable alert delay (e.g., alert only if out of range for 5+ minutes)
+  - Use AI-recommended thresholds based on historical data
+  - Set "quiet hours" for non-critical alerts
+</Accordion>
+
+---
+
+## API Reference
+
+Key IoT endpoints:
+
+<CodeGroup>
+```bash GET /v2/iot/sensors
+curl -X GET https://api.salsaasaservice.com/v2/iot/sensors \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"location_id": "kitchen_1", "types": ["temperature", "ph"]}'
+```
+
+```bash GET /v2/iot/sensors/{id}/history
+curl -X GET https://api.salsaasaservice.com/v2/iot/sensors/temp_001/history \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "start_date": "2024-01-01",
+    "end_date": "2024-01-31",
+    "aggregation": "hourly"
+  }'
+```
+
+```bash POST /v2/iot/sensors/add
+curl -X POST https://api.salsaasaservice.com/v2/iot/sensors/add \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "temperature",
+    "name": "Walk-in Cooler",
+    "location_id": "kitchen_1",
+    "mac_address": "AA:BB:CC:DD:EE:FF",
+    "alert_min": 35,
+    "alert_max": 40
+  }'
+```
+</CodeGroup>
+
+---
+
+## Support & Resources
+
+<CardGroup cols={2}>
+  <Card title="Installation Guides" icon="book">
+    Step-by-step installation guides for all supported sensors.
+  </Card>
+  
+  <Card title="Video Tutorials" icon="video">
+    Watch calibration and setup tutorials for each sensor type.
+  </Card>
+  
+  <Card title="Hardware Store" icon="cart-shopping">
+    Purchase certified sensors with pre-configured integration.
+  </Card>
+  
+  <Card title="Technical Support" icon="headset">
+    24/7 support for Enterprise customers, business hours for Pro tier.
+  </Card>
+</CardGroup>
+
+<Note>
+  **Need Help?** Contact IoT support at iot-support@salsaasaservice.com or chat with our specialists through the dashboard.
+</Note>

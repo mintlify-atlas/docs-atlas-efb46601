@@ -1,80 +1,868 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: "Quickstart Guide"
+description: "Get up and running with Salsa as a Service v2.0 in 15 minutes - from account creation to your first AI-powered production run"
 ---
 
-## Get started in three steps
+## Welcome to Salsa as a Service v2.0
 
-Get your documentation site running locally and make your first customization.
+This quickstart guide will take you from zero to production in 15 minutes. You'll create an account, configure AI-powered forecasting, connect your POS system, and run your first smart production batch with real-time quality monitoring.
 
-### Step 1: Set up your local environment
+<Note>
+  **What You'll Accomplish**: By the end of this guide, you'll have a fully configured account with AI forecasting enabled, your POS system integrated, and your first production batch tracked with quality metrics.
+</Note>
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
+---
+
+## What You'll Need
+
+Before getting started, gather these items:
+
+- **Business email address** for account creation
+- **POS system credentials** (Square, Toast, Clover, etc.) for integration
+- **Historical sales data** (optional but recommended - 90+ days for better AI accuracy)
+- **15 minutes** of your time
+
+<Tip>
+  **Pro Tip**: Having 90+ days of historical sales data will help the AI achieve 70-80% forecast accuracy from day one. Without historical data, the AI will still work but will need a few weeks to learn your patterns.
+</Tip>
+
+---
+
+## Step 1: Create Your Account
+
+<Steps>
+  <Step title="Sign Up">
+    Visit [app.salsaasaservice.com/signup](https://app.salsaasaservice.com/signup) and choose your authentication method:
+
+    <Tabs>
+      <Tab title="Email & Password">
+        - Enter your business email
+        - Create a strong password (min 12 characters)
+        - Enable two-factor authentication (recommended)
+      </Tab>
+      <Tab title="Single Sign-On">
+        - Click "Sign in with Google" or "Sign in with Microsoft"
+        - Authorize with your business account
+        - Two-factor auth handled by your SSO provider
+      </Tab>
+      <Tab title="Enterprise SAML">
+        Available for Enterprise customers. Contact your IT administrator to configure SAML 2.0 integration with your identity provider (Okta, Azure AD, etc.).
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Verify Email">
+    Check your inbox for a verification email and click the confirmation link. If using SSO, this step is automatic.
+  </Step>
+
+  <Step title="Complete Business Profile">
+    The AI-powered setup wizard will guide you through profile creation:
+
+    **Basic Information**
+    - Restaurant name: "Taco Express Downtown"
+    - Cuisine type: Mexican, Fast-Casual
+    - Number of locations: Start with 1 (can add more later)
+    - Operating hours: Mon-Sun, 11:00 AM - 10:00 PM
+
+    **Kitchen Infrastructure**
+    - Average daily customers: 200-300
+    - Number of prep stations: 2
+    - Storage capacity: Standard refrigeration
+    - Production capacity: 10-15 gallons per day
+
+    <Note>
+      The AI uses this information to recommend optimal configuration settings and forecast parameters tailored to your operation size.
+    </Note>
+  </Step>
+</Steps>
+
+---
+
+## Step 2: Configure AI Demand Forecasting
+
+Enable AI-powered forecasting to predict salsa demand and optimize production:
+
+<Steps>
+  <Step title="Enable Forecasting">
+    Navigate to **AI Features > Demand Forecasting** in your dashboard and toggle the feature on.
+
+    Choose your forecast horizon:
+    - **7 days** - Daily production planning (recommended for getting started)
+    - **14 days** - Ingredient ordering and staffing
+    - **30 days** - Strategic planning and seasonal preparation
+  </Step>
+
+  <Step title="Connect Data Sources">
+    Link your systems to improve forecast accuracy:
+
+    <CodeGroup>
+      ```javascript JavaScript SDK
+      import { SalsaClient } from '@salsaasaservice/sdk';
+
+      const client = new SalsaClient({ 
+        apiKey: 'your_api_key' 
+      });
+
+      // Configure forecast data sources
+      await client.ai.configureForecast({
+        dataSources: {
+          posSales: true,              // Primary sales data
+          weatherApi: 'openweathermap', // Weather impact
+          events: ['eventbrite'],       // Local events
+          reservations: true            // If applicable
+        },
+        modelParameters: {
+          confidenceLevel: 0.95,
+          seasonality: 'auto_detect',
+          anomalyDetection: true
+        }
+      });
+      ```
+
+      ```python Python SDK
+      from salsa_sdk import SalsaClient
+
+      client = SalsaClient(api_key='your_api_key')
+
+      # Configure forecast data sources
+      forecast_config = client.ai.configure_forecast(
+          data_sources={
+              'pos_sales': True,
+              'weather_api': 'openweathermap',
+              'events': ['eventbrite'],
+              'reservations': True
+          },
+          model_parameters={
+              'confidence_level': 0.95,
+              'seasonality': 'auto_detect',
+              'anomaly_detection': True
+          }
+      )
+
+      print(f"Forecast configured: {forecast_config.status}")
+      ```
+
+      ```bash cURL
+      curl -X POST https://api.salsaasaservice.com/v2/ai/forecast/config \
+        -H "Authorization: Bearer YOUR_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "data_sources": {
+            "pos_sales": true,
+            "weather_api": "openweathermap",
+            "events": ["eventbrite"],
+            "reservations": true
+          },
+          "model_parameters": {
+            "confidence_level": 0.95,
+            "seasonality": "auto_detect",
+            "anomaly_detection": true
+          }
+        }'
+      ```
+    </CodeGroup>
+  </Step>
+
+  <Step title="Import Historical Data (Optional)">
+    For immediate accuracy, import historical sales data:
+
+    **Via Dashboard**
+    - Go to **Settings > Data Import**
+    - Upload CSV file with columns: `date`, `product`, `quantity_sold`
+    - Map columns to system fields
+    - Click "Import and Train"
+
+    **Via API**
+    ```javascript
+    // Batch import historical sales
+    await client.data.importSales({
+      startDate: '2023-10-01',
+      endDate: '2024-01-01',
+      data: [
+        { date: '2023-10-01', recipe: 'house_salsa', quantity: 8.5, unit: 'gallons' },
+        { date: '2023-10-02', recipe: 'house_salsa', quantity: 9.2, unit: 'gallons' },
+        // ... more data
+      ]
+    });
+    ```
+
+    <Note>
+      **Training Time**: The AI processes historical data and generates your first forecast within 24 hours. You can start using the system immediately; forecasts will improve as they're generated.
+    </Note>
+  </Step>
+
+  <Step title="Review Initial Forecast">
+    Once generated, view your forecast in **Dashboard > Forecast**:
+
+    ```json
+    {
+      "forecast_date": "2024-01-20",
+      "predicted_demand": {
+        "house_salsa": {
+          "quantity": 12.5,
+          "unit": "gallons",
+          "confidence_interval": [11.2, 13.8],
+          "confidence_level": 0.95
+        },
+        "spicy_chipotle": {
+          "quantity": 4.2,
+          "unit": "gallons",
+          "confidence_interval": [3.8, 4.6]
+        }
+      },
+      "factors": {
+        "day_of_week": "Friday (+20%)",
+        "weather": "Sunny, 72°F (+5%)",
+        "local_events": ["Concert at venue 0.5mi away (+10%)"]
+      },
+      "recommendation": {
+        "action": "increase_production",
+        "suggested_batches": 3,
+        "timing": "Start production by 9:00 AM"
+      }
+    }
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Step 3: Connect Your POS System
+
+Integrate with your POS for real-time sales tracking and automated inventory sync:
+
+<Tabs>
+  <Tab title="Square">
+    **One-Click OAuth Setup** (Recommended)
+
+    <Steps>
+      <Step title="Navigate to Integrations">
+        Go to **Integrations > POS Systems** and click **Connect Square**
+      </Step>
+      <Step title="Authorize Access">
+        You'll be redirected to Square. Log in and click "Allow" to authorize Salsa as a Service to access:
+        - Sales data
+        - Inventory levels
+        - Menu items
+        - Location information
+      </Step>
+      <Step title="AI Menu Mapping">
+        The AI automatically maps Square menu items to salsa inventory with 98% accuracy:
+        
+        **Detected Mappings:**
+        - "House Salsa (Side)" → House Salsa Recipe → -4 oz per sale
+        - "Burrito with Salsa" → House Salsa Recipe → -2 oz per sale
+        - "Chips & Salsa" → House Salsa Recipe → -8 oz per sale
+
+        Review and confirm mappings. Edit if needed.
+      </Step>
+      <Step title="Enable Real-Time Sync">
+        Toggle on "Real-Time Inventory Updates"
+        
+        Sales data syncs within 5 seconds. Every sale automatically:
+        - Updates salsa inventory levels
+        - Feeds into AI forecast model
+        - Triggers reorder alerts if stock is low
+      </Step>
+    </Steps>
+
+    <Note>
+      **Multi-Location**: If you have multiple Square locations, you can connect them all and manage them separately or as a group.
+    </Note>
+  </Tab>
+
+  <Tab title="Toast">
+    **API Key Connection**
+
+    <Steps>
+      <Step title="Get Toast API Credentials">
+        From your Toast dashboard:
+        1. Go to **Admin > Integration Setup**
+        2. Generate a new API key for "Salsa as a Service"
+        3. Copy your Client ID, Client Secret, and Restaurant GUID
+      </Step>
+      <Step title="Connect in Salsa Dashboard">
+        In Salsa as a Service:
+        1. **Integrations > POS Systems > Toast**
+        2. Enter your Toast credentials
+        3. Click "Test Connection"
+        4. Click "Enable Integration"
+      </Step>
+      <Step title="Configure Sync Settings">
+        ```javascript
+        // Advanced configuration via SDK
+        await client.integrations.connect({
+          provider: 'toast',
+          credentials: {
+            clientId: process.env.TOAST_CLIENT_ID,
+            clientSecret: process.env.TOAST_CLIENT_SECRET,
+            restaurantGuid: process.env.TOAST_RESTAURANT_GUID
+          },
+          options: {
+            syncInterval: '5m',        // Sync every 5 minutes
+            includeLabor: true,        // Import labor data
+            menuMapping: 'auto',       // AI-powered mapping
+            multiLocation: true        // For restaurant groups
+          }
+        });
+        ```
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="Clover">
+    **App Installation**
+
+    <Steps>
+      <Step title="Install from Clover App Market">
+        1. Open your Clover dashboard
+        2. Navigate to **App Market**
+        3. Search for "Salsa as a Service v2.0"
+        4. Click "Install"
+      </Step>
+      <Step title="Grant Permissions">
+        Approve permissions for:
+        - Read inventory
+        - Read orders and payments
+        - Write inventory (for automatic updates)
+        - Read merchant information
+      </Step>
+      <Step title="Configure in Salsa Dashboard">
+        The integration appears automatically in your Salsa dashboard once installed. Configure sync frequency and data scope.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="Other POS Systems">
+    **Supported Systems**: Lightspeed, TouchBistro, Revel, Upserve, and 15+ more
+
+    **Generic Setup Process**:
+    1. Select your POS from **Integrations > POS Systems**
+    2. Follow provider-specific authentication
+    3. Configure menu mapping
+    4. Set sync preferences
+    5. Test and enable
+
+    <Warning>
+      **Need Help?** If your POS isn't listed or you need custom integration, contact our integration team at integrations@salsaasaservice.com. Enterprise customers receive dedicated integration support.
+    </Warning>
+  </Tab>
+</Tabs>
+
+---
+
+## Step 4: Set Up IoT Quality Monitoring (Optional)
+
+For real-time quality tracking, connect IoT sensors to monitor temperature, freshness, and consistency:
+
+<Steps>
+  <Step title="Choose Your Sensors">
+    **Quick Start Options:**
+
+    <CardGroup cols={2}>
+      <Card title="Starter Sensor Kit" icon="box">
+        **Includes:**
+        - 2× Temperature sensors
+        - 1× IoT gateway hub
+        - Mounting hardware
+        
+        **Price**: $299 (one-time)
+        
+        **Perfect for**: Single location getting started
+      </Card>
+      <Card title="Professional Kit" icon="boxes-stacked">
+        **Includes:**
+        - 4× Temperature sensors
+        - 2× Freshness sensors (RFID)
+        - 1× Quality meter (pH/viscosity)
+        - IoT gateway hub
+        
+        **Price**: $799 (one-time)
+        
+        **Perfect for**: Serious quality tracking
+      </Card>
+    </CardGroup>
+
+    **Order**: Available at [salsaasaservice.com/hardware](https://salsaasaservice.com/hardware)
+
+    <Note>
+      **Bring Your Own Sensors**: v2.0 is compatible with most commercial IoT sensors. Check our [compatibility list](/features/integrations#iot-hardware) or contact support.
+    </Note>
+  </Step>
+
+  <Step title="Install Sensors">
+    **Physical Installation:**
+
+    Use the mobile app's AR visualization to see optimal sensor placement:
+    1. Download the Salsa mobile app (iOS/Android)
+    2. Go to **Setup > Sensor Placement**
+    3. Enable AR mode and point camera at your kitchen
+    4. Follow on-screen placement recommendations
+
+    **Recommended Locations:**
+    - **Temperature sensors**: Inside refrigeration units, near prep stations
+    - **Freshness sensors**: On ingredient storage containers (RFID tags)
+    - **Quality meters**: At batch completion station
+  </Step>
+
+  <Step title="Connect to Network">
+    **WiFi Setup:**
+    1. Power on the IoT gateway hub
+    2. Connect to "SalsaHub-XXXX" WiFi network from your phone
+    3. Enter your kitchen WiFi credentials
+    4. Hub connects and shows solid green light
+
+    **Sensor Pairing:**
+    - Sensors auto-pair with the hub within 30 seconds
+    - Green LED blink confirms successful pairing
+  </Step>
+
+  <Step title="Register Sensors">
+    In the mobile app:
+    1. Go to **Setup > Add Sensors**
+    2. Scan the QR code on each sensor
+    3. Assign location (e.g., "Walk-in Cooler #1")
+    4. Assign monitoring type (temperature, freshness, quality)
+    5. Set alert thresholds
+
+    **Example Configuration:**
+    ```javascript
+    // Or configure via API
+    await client.iot.registerSensor({
+      sensorId: 'TEMP-001',
+      type: 'temperature',
+      location: 'walk_in_cooler_1',
+      thresholds: {
+        min: 35,
+        max: 40,
+        unit: 'F'
+      },
+      alertChannels: ['email', 'sms', 'push']
+    });
+    ```
+  </Step>
+
+  <Step title="Calibrate Sensors">
+    Run the automated calibration routine:
+    1. Place sensors in controlled environment
+    2. Tap **Calibrate** in the app
+    3. Wait 5 minutes for calibration to complete
+    4. Sensors are ready to use
+
+    <Tip>
+      **Calibration Schedule**: Recalibrate sensors monthly for optimal accuracy. The system will remind you automatically.
+    </Tip>
+  </Step>
+</Steps>
+
+---
+
+## Step 5: Create Your First Recipe
+
+Add your signature salsa recipe to the system:
+
+<Steps>
+  <Step title="Navigate to Recipes">
+    Go to **Recipes > Create New Recipe** in your dashboard
+  </Step>
+
+  <Step title="Enter Recipe Details">
+    **Basic Information:**
+    - Name: "House Salsa"
+    - Description: "Our signature medium-spice salsa"
+    - Spice Level: Medium (5/10)
+    - Batch Size: 5 gallons
+    - Prep Time: 30 minutes
+
+    **Ingredients:**
+
+    <CodeGroup>
+      ```json Recipe Configuration
+      {
+        "name": "House Salsa",
+        "description": "Our signature medium-spice salsa",
+        "spice_level": "medium",
+        "batch_size": 5.0,
+        "yield_unit": "gallons",
+        "prep_time_minutes": 30,
+        "ingredients": [
+          {
+            "name": "Roma Tomatoes",
+            "quantity": 10,
+            "unit": "lbs",
+            "preparation": "diced"
+          },
+          {
+            "name": "White Onion",
+            "quantity": 2,
+            "unit": "lbs",
+            "preparation": "finely chopped"
+          },
+          {
+            "name": "Jalapeño Peppers",
+            "quantity": 0.5,
+            "unit": "lbs",
+            "preparation": "seeded and minced"
+          },
+          {
+            "name": "Fresh Cilantro",
+            "quantity": 1,
+            "unit": "bunch",
+            "preparation": "chopped"
+          },
+          {
+            "name": "Lime Juice",
+            "quantity": 0.5,
+            "unit": "cups",
+            "preparation": "freshly squeezed"
+          },
+          {
+            "name": "Salt",
+            "quantity": 2,
+            "unit": "tbsp"
+          },
+          {
+            "name": "Garlic",
+            "quantity": 6,
+            "unit": "cloves",
+            "preparation": "minced"
+          }
+        ],
+        "instructions": [
+          "Combine diced tomatoes and chopped onions in large bowl",
+          "Add minced jalapeños and garlic",
+          "Stir in fresh cilantro",
+          "Add lime juice and salt",
+          "Mix thoroughly and let rest 15 minutes",
+          "Adjust seasoning to taste",
+          "Refrigerate until service"
+        ]
+      }
+      ```
+
+      ```python Via Python SDK
+      from salsa_sdk import SalsaClient
+
+      client = SalsaClient(api_key='your_api_key')
+
+      # Create recipe
+      recipe = client.recipes.create(
+          name='House Salsa',
+          description='Our signature medium-spice salsa',
+          spice_level='medium',
+          batch_size=5.0,
+          yield_unit='gallons',
+          prep_time=30,
+          ingredients=[
+              {'name': 'Roma Tomatoes', 'quantity': 10, 'unit': 'lbs'},
+              {'name': 'White Onion', 'quantity': 2, 'unit': 'lbs'},
+              {'name': 'Jalapeño Peppers', 'quantity': 0.5, 'unit': 'lbs'},
+              {'name': 'Fresh Cilantro', 'quantity': 1, 'unit': 'bunch'},
+              {'name': 'Lime Juice', 'quantity': 0.5, 'unit': 'cups'},
+              {'name': 'Salt', 'quantity': 2, 'unit': 'tbsp'},
+              {'name': 'Garlic', 'quantity': 6, 'unit': 'cloves'}
+          ]
+      )
+
+      print(f"Recipe created: {recipe.id}")
+      ```
+    </CodeGroup>
+  </Step>
+
+  <Step title="AI Recipe Optimization">
+    The AI analyzes your recipe and provides optimization suggestions:
+
+    **AI Recommendations:**
+    - **Seasonal Ingredient Substitution**: "Roma tomatoes are expensive in winter. Consider using canned San Marzano tomatoes (November-March) to reduce cost by 30% with minimal quality impact."
+    - **Yield Optimization**: "Based on your 5-gallon batch, expected waste is 3%. Consider increasing batch size to 5.2 gallons to account for normal prep loss."
+    - **Cost Analysis**: "Current recipe cost: $12.50 per batch ($2.50/gallon). Market average: $3.20/gallon. Your recipe is 22% below market cost."
+
+    Review and apply suggestions that make sense for your operation.
+  </Step>
+</Steps>
+
+---
+
+## Step 6: Run Your First AI-Powered Production Batch
+
+Let's create your first production run with AI assistance and real-time monitoring:
+
+<Steps>
+  <Step title="Review AI Forecast">
+    Check **Dashboard > Today's Forecast** to see predicted demand:
+
+    ```
+    📊 Today's Forecast - Friday, January 19, 2024
     
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
+    House Salsa:
+    • Predicted demand: 12.5 gallons (confidence: 95%)
+    • Range: 11.2 - 13.8 gallons
+    • Factors: Friday peak (+20%), Sunny weather (+5%), Local concert (+10%)
     
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+    Recommendation: Prepare 3 batches (5 gallons each = 15 gallons total)
+    Start production by 9:00 AM for optimal freshness
+    ```
+  </Step>
 
-### Step 2: Deploy your changes
+  <Step title="Start Smart Production">
+    Navigate to **Production > Smart Batch** and click **New Batch**:
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
+    **AI-Suggested Configuration:**
+    - Recipe: House Salsa
+    - Quantity: 3 batches (15 gallons)
+    - Start Time: 9:00 AM
+    - Completion Target: 10:30 AM
+    - Assigned Chef: [Auto-assign based on schedule]
+
+    Click **Start Production** to begin tracking.
+  </Step>
+
+  <Step title="Real-Time Quality Monitoring">
+    As you prepare the batch, IoT sensors track quality in real-time:
+
+    **Live Dashboard View:**
+    ```
+    🔴 LIVE - Batch #001 - House Salsa - In Progress
     
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+    Temperature Monitoring:
+    ├─ Prep Station: 68°F ✓ (Target: 65-70°F)
+    ├─ Ingredient Storage: 38°F ✓ (Target: 35-40°F)
+    └─ Completed Batch: 39°F ✓ (Target: 35-40°F)
+    
+    Freshness Tracking:
+    ├─ Roma Tomatoes: 9.2/10 ✓ (Received 2 days ago)
+    ├─ Cilantro: 8.8/10 ✓ (Received today)
+    └─ Jalapeños: 9.5/10 ✓ (Received yesterday)
+    
+    Quality Predictions:
+    ├─ Consistency Score: 9.1/10 (Excellent)
+    ├─ Flavor Profile Match: 94% (Target recipe)
+    └─ Expected Shelf Life: 5-7 days
+    
+    Production Progress:
+    ████████████░░░░░░░░ 60% complete (18 min remaining)
+    ```
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+    <Note>
+      **Auto-Alerts**: If any sensor detects an issue (temperature spike, ingredient quality drop), you'll receive instant alerts via SMS, email, or push notification.
+    </Note>
+  </Step>
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+  <Step title="Complete Batch with Quality Score">
+    When production is finished, complete the batch:
 
-### Step 3: Go live
+    1. Click **Complete Batch**
+    2. AI auto-generates quality score based on sensor data
+    3. Enter actual yield (e.g., 4.8 gallons if different from target 5.0)
+    4. Add optional notes
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+    **Automatic Quality Assessment:**
+    ```json
+    {
+      "batch_id": "batch_001",
+      "recipe": "House Salsa",
+      "status": "completed",
+      "quality_score": 9.2,
+      "quality_breakdown": {
+        "temperature_compliance": 10.0,
+        "ingredient_freshness": 9.1,
+        "consistency": 9.0,
+        "yield_accuracy": 8.8
+      },
+      "actual_yield": 4.8,
+      "target_yield": 5.0,
+      "variance": -4.0,
+      "completion_time": "2024-01-19T10:25:00Z",
+      "total_duration": "85 minutes",
+      "cost_per_gallon": 2.48,
+      "notes": "Excellent batch, perfect consistency"
+    }
+    ```
+  </Step>
 
-## Next steps
+  <Step title="AI Learning & Improvement">
+    The AI automatically learns from this production run:
 
-Now that you have your docs running, explore these key features:
+    **What the AI Learned:**
+    - Your actual production time (85 min vs. estimated 90 min)
+    - Actual yield variance (-4% is normal for your process)
+    - Quality correlation with ingredient freshness
+    - Temperature patterns during production
+
+    **Forecast Improvements:**
+    - Future forecasts adjust for your 4% yield loss
+    - Production time estimates refined to 85 minutes
+    - Quality predictions improved based on actual sensor data
+
+    <Tip>
+      **Continuous Learning**: Every batch you complete makes the AI smarter. After 10-20 batches, forecast accuracy typically exceeds 90%.
+    </Tip>
+  </Step>
+</Steps>
+
+---
+
+## Next Steps: Optimize Your Operation
+
+Congratulations! You've completed your first AI-powered production run. Here's how to take it further:
 
 <CardGroup cols={2}>
+  <Card title="Automate Ingredient Ordering" icon="truck" href="/features/ai-forecasting#automated-reordering">
+    Set up automatic ingredient ordering based on AI forecasts. Connect suppliers like Sysco or US Foods for seamless restocking.
+  </Card>
+  <Card title="Add More Recipes" icon="book" href="/api/recipes">
+    Create your complete recipe library. Track multiple salsa varieties, seasonal specials, and custom orders.
+  </Card>
+  <Card title="Multi-Location Setup" icon="building" href="/features/ai-forecasting#multi-location">
+    Expand to multiple locations with centralized management, shared recipes, and location-specific forecasts.
+  </Card>
+  <Card title="Advanced Analytics" icon="chart-line" href="/features/analytics">
+    Dive deeper into production analytics, cost optimization, quality trends, and custom reporting.
+  </Card>
+  <Card title="API Integration" icon="code" href="/api/overview">
+    Build custom integrations with our GraphQL and REST APIs. Access all features programmatically.
+  </Card>
+  <Card title="Team Collaboration" icon="users" href="/quickstart#team-permissions">
+    Invite team members, set up role-based access control, and configure approval workflows.
+  </Card>
+</CardGroup>
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+---
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+## Troubleshooting Common Issues
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+<AccordionGroup>
+  <Accordion title="AI Forecast seems inaccurate in first week">
+    **Why**: The AI needs time to learn your specific patterns. Initial forecasts use industry averages.
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+    **Solution**: 
+    - Import 90+ days of historical data for immediate accuracy
+    - Continue normal operations; AI improves weekly
+    - Typical timeline: 70% accuracy week 1 → 85% by week 4 → 95% by month 3
+  </Accordion>
 
+  <Accordion title="POS integration not syncing sales data">
+    **Check these items:**
+    1. POS credentials are correct and not expired
+    2. API permissions include "read orders" and "read inventory"
+    3. Menu mapping is complete (unmapped items won't sync)
+    4. Network firewall allows outbound HTTPS to api.salsaasaservice.com
+
+    **Test connection**: Go to **Integrations > POS > Test Connection**
+
+    **Still not working?** Contact support with your integration logs from **Settings > Logs**
+  </Accordion>
+
+  <Accordion title="IoT sensors showing offline status">
+    **Quick fixes:**
+    1. Check sensor battery level (red LED = low battery)
+    2. Verify IoT gateway is powered on (solid green light)
+    3. Ensure gateway has WiFi connection
+    4. Move sensors closer to gateway (max range: 100 feet)
+
+    **Reset sensor**: Press and hold reset button for 5 seconds, then re-pair
+
+    **Replace battery**: Use CR2032 batteries, available at any hardware store
+  </Accordion>
+
+  <Accordion title="Quality score lower than expected">
+    **Common causes:**
+    - **Temperature violations**: Check that ingredients stayed in range during prep
+    - **Ingredient freshness**: Older ingredients reduce quality score
+    - **Yield variance**: Large deviation from target affects consistency score
+
+    **Review details**: Click on the batch to see quality breakdown and specific issues
+
+    **Improve scores**: 
+    - Maintain strict temperature control
+    - Use ingredients within 2-3 days of receipt
+    - Follow recipe quantities precisely
+  </Accordion>
+
+  <Accordion title="Can't access dashboard or API returns 401 errors">
+    **Authentication issues:**
+    1. Check that API key hasn't expired (**Settings > Developer > API Keys**)
+    2. Verify you're using correct base URL: `https://api.salsaasaservice.com/v2`
+    3. Ensure API key is in Authorization header: `Bearer YOUR_API_KEY`
+    4. For dashboard access, clear browser cache and cookies, then log in again
+
+    **Rate limits**: If you see 429 errors, you've hit rate limits. Upgrade plan or wait for reset.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Getting Help
+
+<CardGroup cols={2}>
+  <Card title="24/7 AI Assistant" icon="robot">
+    In-app AI assistant answers questions instantly. Click the chat icon in bottom-right corner.
+  </Card>
+  <Card title="Email Support" icon="envelope">
+    support@salsaasaservice.com
+    
+    Response time: 2-4 hours (24 hours on weekends)
+  </Card>
+  <Card title="Live Chat" icon="comments">
+    Available in your dashboard during business hours (8 AM - 8 PM EST)
+  </Card>
+  <Card title="Phone Support" icon="phone">
+    1-800-SALSA-V2 (1-800-725-7282)
+    
+    Available 9 AM - 6 PM EST, Monday-Friday
+  </Card>
+  <Card title="Documentation" icon="book">
+    Comprehensive guides:
+    - [Getting Started Guide](/quickstart)
+    - [Advanced Features](/features/ai-forecasting)
+    - [API Reference](/api/overview)
+  </Card>
+  <Card title="Video Tutorials" icon="video">
+    Step-by-step video guides for all features. Access from **Help > Video Library** in dashboard.
+  </Card>
 </CardGroup>
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  **Free Onboarding**: All new v2.0 customers receive a complimentary 30-minute onboarding call with our customer success team. Schedule yours at [calendly.com/salsaasaservice/onboarding](https://calendly.com/salsaasaservice/onboarding)
 </Note>
+
+---
+
+## What's Next?
+
+You've successfully completed the quickstart guide! Here are recommended next steps based on your business needs:
+
+<Steps>
+  <Step title="Week 1: Master the Basics">
+    - Complete 5-10 production batches to train the AI
+    - Verify POS integration is syncing correctly
+    - Review and adjust forecast parameters
+    - Invite team members and set permissions
+  </Step>
+  <Step title="Week 2-3: Enable Automation">
+    - Set up automated ingredient ordering
+    - Configure alert thresholds for quality monitoring
+    - Create custom production workflows
+    - Explore mobile app for on-the-go management
+  </Step>
+  <Step title="Month 2: Optimize & Scale">
+    - Review 30-day analytics for insights
+    - Implement AI recommendations for cost savings
+    - Add seasonal recipes
+    - Consider expanding to additional locations
+  </Step>
+  <Step title="Month 3+: Advanced Features">
+    - Build custom integrations via API
+    - Set up advanced reporting and BI dashboards
+    - Implement predictive maintenance for equipment
+    - Explore white-label options (Enterprise only)
+  </Step>
+</Steps>
+
+<Warning>
+  **Upgrade Reminder**: This quickstart uses features from the Professional plan. If you're on the Free trial, some advanced features like IoT monitoring and automated ordering require an upgrade. View [pricing plans](/support/pricing) for details.
+</Warning>
+
+---
+
+Ready to dive deeper? Continue to the [Getting Started Guide](/quickstart) for comprehensive configuration options, or jump to [Advanced Usage](/features/ai-forecasting) to master AI forecasting and automation features.

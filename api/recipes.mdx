@@ -1,0 +1,552 @@
+---
+title: "Recipe Management"
+description: "Create, update, and manage salsa recipes and production workflows"
+---
+
+# Recipe Management API
+
+The Recipe Management API allows you to create and manage salsa recipes, define ingredient lists, set batch sizes, and configure production workflows.
+
+## Base URL
+
+```
+https://api.salsaasaservice.com/v2/recipes
+```
+
+---
+
+## Get All Recipes
+
+Retrieve a list of all salsa recipes in your account with complete ingredient information.
+
+<CodeGroup>
+```http Request
+GET /recipes
+Authorization: Bearer YOUR_API_KEY
+```
+
+```bash cURL
+curl -X GET "https://api.salsaasaservice.com/v2/recipes" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.salsaasaservice.com/v2/recipes', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY'
+  }
+});
+
+const recipes = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://api.salsaasaservice.com/v2/recipes',
+    headers={'Authorization': 'Bearer YOUR_API_KEY'}
+)
+
+recipes = response.json()
+```
+</CodeGroup>
+
+### Query Parameters
+
+<ParamField query="spice_level" type="string">
+  Filter by spice level: `mild`, `medium`, `hot`, `extra_hot`
+</ParamField>
+
+<ParamField query="search" type="string">
+  Search recipes by name or description
+</ParamField>
+
+<ParamField query="sort" type="string" default="created_at">
+  Sort field: `name`, `created_at`, `updated_at`, `prep_time`
+</ParamField>
+
+<ParamField query="order" type="string" default="desc">
+  Sort order: `asc` or `desc`
+</ParamField>
+
+### Response
+
+<ResponseField name="data" type="array">
+  Array of recipe objects
+  
+  <Expandable title="Recipe Object">
+    <ResponseField name="id" type="string">
+      Unique recipe identifier (e.g., `rec_456`)
+    </ResponseField>
+    
+    <ResponseField name="name" type="string">
+      Recipe name
+    </ResponseField>
+    
+    <ResponseField name="description" type="string">
+      Recipe description and tasting notes
+    </ResponseField>
+    
+    <ResponseField name="spice_level" type="string">
+      Heat level: `mild`, `medium`, `hot`, or `extra_hot`
+    </ResponseField>
+    
+    <ResponseField name="batch_size" type="number">
+      Standard batch size quantity
+    </ResponseField>
+    
+    <ResponseField name="yield" type="string">
+      Unit of yield (gallons, liters, jars, etc.)
+    </ResponseField>
+    
+    <ResponseField name="prep_time" type="integer">
+      Preparation time in minutes
+    </ResponseField>
+    
+    <ResponseField name="ingredients" type="array">
+      Array of ingredient objects with quantities
+      
+      <Expandable title="Ingredient Item">
+        <ResponseField name="ingredient_id" type="string">
+          Reference to inventory ingredient
+        </ResponseField>
+        
+        <ResponseField name="name" type="string">
+          Ingredient name (cached from inventory)
+        </ResponseField>
+        
+        <ResponseField name="quantity" type="number">
+          Required quantity for this recipe
+        </ResponseField>
+        
+        <ResponseField name="unit" type="string">
+          Unit of measurement
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+    
+    <ResponseField name="created_at" type="string">
+      ISO 8601 timestamp of creation
+    </ResponseField>
+    
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 timestamp of last update
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Response Example
+
+```json
+{
+  "data": [
+    {
+      "id": "rec_456",
+      "name": "House Salsa",
+      "description": "Our signature medium-spice salsa",
+      "spice_level": "medium",
+      "batch_size": 5.0,
+      "yield": "gallons",
+      "prep_time": 30,
+      "ingredients": [
+        {
+          "ingredient_id": "ing_123",
+          "name": "Roma Tomatoes",
+          "quantity": 2.0,
+          "unit": "lbs"
+        }
+      ],
+      "created_at": "2024-01-10T09:00:00Z",
+      "updated_at": "2024-01-15T14:30:00Z"
+    }
+  ]
+}
+```
+
+---
+
+## Create New Recipe
+
+Create a new salsa recipe with ingredient list and production specifications.
+
+<CodeGroup>
+```http Request
+POST /recipes
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+```
+
+```bash cURL
+curl -X POST "https://api.salsaasaservice.com/v2/recipes" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Spicy Chipotle Salsa",
+    "description": "Smoky and spicy chipotle-based salsa",
+    "spice_level": "hot",
+    "batch_size": 3.0,
+    "yield": "gallons",
+    "prep_time": 45,
+    "ingredients": [
+      {
+        "ingredient_id": "ing_789",
+        "quantity": 1.5,
+        "unit": "lbs"
+      }
+    ]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.salsaasaservice.com/v2/recipes', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'Spicy Chipotle Salsa',
+    description: 'Smoky and spicy chipotle-based salsa',
+    spice_level: 'hot',
+    batch_size: 3.0,
+    yield: 'gallons',
+    prep_time: 45,
+    ingredients: [
+      {
+        ingredient_id: 'ing_789',
+        quantity: 1.5,
+        unit: 'lbs'
+      }
+    ]
+  })
+});
+```
+</CodeGroup>
+
+### Request Body
+
+<ParamField body="name" type="string" required>
+  Recipe name (must be unique)
+</ParamField>
+
+<ParamField body="description" type="string">
+  Detailed description, tasting notes, or usage instructions
+</ParamField>
+
+<ParamField body="spice_level" type="string" required>
+  Heat level: `mild`, `medium`, `hot`, or `extra_hot`
+</ParamField>
+
+<ParamField body="batch_size" type="number" required>
+  Standard batch size quantity
+</ParamField>
+
+<ParamField body="yield" type="string" required>
+  Unit of yield: `gallons`, `liters`, `jars`, `servings`
+</ParamField>
+
+<ParamField body="prep_time" type="integer" required>
+  Preparation time in minutes
+</ParamField>
+
+<ParamField body="ingredients" type="array" required>
+  Array of ingredient objects
+  
+  <Expandable title="Ingredient Object">
+    <ParamField body="ingredient_id" type="string" required>
+      ID of ingredient from inventory
+    </ParamField>
+    
+    <ParamField body="quantity" type="number" required>
+      Quantity needed for one batch
+    </ParamField>
+    
+    <ParamField body="unit" type="string" required>
+      Unit of measurement (must match ingredient's unit)
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="instructions" type="array">
+  Step-by-step preparation instructions (array of strings)
+</ParamField>
+
+### Response
+
+Returns the created recipe object with generated ID.
+
+```json
+{
+  "id": "rec_789",
+  "name": "Spicy Chipotle Salsa",
+  "description": "Smoky and spicy chipotle-based salsa",
+  "spice_level": "hot",
+  "batch_size": 3.0,
+  "yield": "gallons",
+  "prep_time": 45,
+  "ingredients": [
+    {
+      "ingredient_id": "ing_789",
+      "name": "Chipotle Peppers",
+      "quantity": 1.5,
+      "unit": "lbs"
+    }
+  ],
+  "created_at": "2024-01-15T13:00:00Z",
+  "updated_at": "2024-01-15T13:00:00Z"
+}
+```
+
+---
+
+## Update Recipe
+
+Update an existing recipe's details, ingredients, or specifications.
+
+<CodeGroup>
+```http Request
+PUT /recipes/{recipe_id}
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+```
+
+```bash cURL
+curl -X PUT "https://api.salsaasaservice.com/v2/recipes/rec_456" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "description": "Updated signature medium-spice salsa",
+    "prep_time": 35
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.salsaasaservice.com/v2/recipes/rec_456', {
+  method: 'PUT',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    description: 'Updated signature medium-spice salsa',
+    prep_time: 35
+  })
+});
+```
+</CodeGroup>
+
+### Path Parameters
+
+<ParamField path="recipe_id" type="string" required>
+  The unique identifier of the recipe to update
+</ParamField>
+
+### Request Body
+
+All fields are optional. Only include fields you want to update.
+
+<ParamField body="name" type="string">
+  Recipe name
+</ParamField>
+
+<ParamField body="description" type="string">
+  Recipe description
+</ParamField>
+
+<ParamField body="spice_level" type="string">
+  Heat level
+</ParamField>
+
+<ParamField body="batch_size" type="number">
+  Batch size quantity
+</ParamField>
+
+<ParamField body="prep_time" type="integer">
+  Preparation time in minutes
+</ParamField>
+
+<ParamField body="ingredients" type="array">
+  Complete ingredient list (replaces existing)
+</ParamField>
+
+### Response
+
+Returns the updated recipe object.
+
+---
+
+## Get Single Recipe
+
+Retrieve detailed information about a specific recipe.
+
+```http
+GET /recipes/{recipe_id}
+Authorization: Bearer YOUR_API_KEY
+```
+
+### Path Parameters
+
+<ParamField path="recipe_id" type="string" required>
+  The unique identifier of the recipe
+</ParamField>
+
+### Response
+
+Returns a complete recipe object with all details.
+
+---
+
+## Calculate Recipe Cost
+
+Calculate the total cost to produce one batch of a recipe based on current ingredient prices.
+
+```http
+GET /recipes/{recipe_id}/cost
+Authorization: Bearer YOUR_API_KEY
+```
+
+### Path Parameters
+
+<ParamField path="recipe_id" type="string" required>
+  The unique identifier of the recipe
+</ParamField>
+
+### Response
+
+```json
+{
+  "recipe_id": "rec_456",
+  "recipe_name": "House Salsa",
+  "batch_size": 5.0,
+  "yield": "gallons",
+  "total_cost": 28.50,
+  "cost_per_unit": 5.70,
+  "ingredient_costs": [
+    {
+      "ingredient_id": "ing_123",
+      "name": "Roma Tomatoes",
+      "quantity": 2.0,
+      "unit": "lbs",
+      "unit_price": 3.50,
+      "total_cost": 7.00
+    }
+  ],
+  "calculated_at": "2024-01-15T14:00:00Z"
+}
+```
+
+---
+
+## Check Recipe Availability
+
+Check if there is sufficient inventory to produce a specified number of batches.
+
+```http
+GET /recipes/{recipe_id}/availability?batches=5
+Authorization: Bearer YOUR_API_KEY
+```
+
+### Path Parameters
+
+<ParamField path="recipe_id" type="string" required>
+  The unique identifier of the recipe
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="batches" type="integer" default="1">
+  Number of batches to check
+</ParamField>
+
+### Response
+
+```json
+{
+  "recipe_id": "rec_456",
+  "batches_requested": 5,
+  "can_produce": true,
+  "max_batches_possible": 12,
+  "ingredient_availability": [
+    {
+      "ingredient_id": "ing_123",
+      "name": "Roma Tomatoes",
+      "required": 10.0,
+      "available": 25.5,
+      "sufficient": true
+    }
+  ]
+}
+```
+
+---
+
+## Delete Recipe
+
+Remove a recipe from your account. This does not delete historical production data.
+
+```http
+DELETE /recipes/{recipe_id}
+Authorization: Bearer YOUR_API_KEY
+```
+
+<Warning>
+  Deleting a recipe does not affect existing production batches, but you will not be able to start new batches with this recipe.
+</Warning>
+
+### Path Parameters
+
+<ParamField path="recipe_id" type="string" required>
+  The unique identifier of the recipe to delete
+</ParamField>
+
+### Response
+
+```json
+{
+  "success": true,
+  "message": "Recipe successfully deleted",
+  "deleted_id": "rec_456"
+}
+```
+
+---
+
+## Error Responses
+
+### 400 Bad Request
+
+```json
+{
+  "error": {
+    "code": "INVALID_RECIPE",
+    "message": "Recipe must contain at least one ingredient"
+  }
+}
+```
+
+### 404 Not Found
+
+```json
+{
+  "error": {
+    "code": "RECIPE_NOT_FOUND",
+    "message": "Recipe with ID 'rec_456' does not exist"
+  }
+}
+```
+
+### 422 Unprocessable Entity
+
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid ingredient reference",
+    "details": {
+      "ingredient_id": "Ingredient 'ing_999' does not exist in inventory"
+    }
+  }
+}
+```

@@ -1,0 +1,618 @@
+---
+title: "Analytics & Reporting"
+description: "Access detailed analytics and generate custom reports"
+---
+
+# Analytics & Reporting API
+
+The Analytics & Reporting API provides comprehensive insights into production performance, inventory usage, quality trends, and operational efficiency.
+
+## Base URL
+
+```
+https://api.salsaasaservice.com/v2/analytics
+```
+
+---
+
+## Get Production Analytics
+
+Retrieve aggregated production analytics for a specified time period.
+
+<CodeGroup>
+```http Request
+GET /analytics/production
+Authorization: Bearer YOUR_API_KEY
+```
+
+```bash cURL
+curl -X GET "https://api.salsaasaservice.com/v2/analytics/production?period=30d&recipe_id=rec_456" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const params = new URLSearchParams({
+  period: '30d',
+  recipe_id: 'rec_456'
+});
+
+const response = await fetch(`https://api.salsaasaservice.com/v2/analytics/production?${params}`, {
+  headers: {'Authorization': 'Bearer YOUR_API_KEY'}
+});
+
+const analytics = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://api.salsaasaservice.com/v2/analytics/production',
+    params={'period': '30d', 'recipe_id': 'rec_456'},
+    headers={'Authorization': 'Bearer YOUR_API_KEY'}
+)
+
+analytics = response.json()
+```
+</CodeGroup>
+
+### Query Parameters
+
+<ParamField query="period" type="string" default="30d">
+  Time period: `7d`, `30d`, `90d`, `1y`, or custom date range
+</ParamField>
+
+<ParamField query="start_date" type="string">
+  Custom start date (ISO 8601) - overrides period parameter
+</ParamField>
+
+<ParamField query="end_date" type="string">
+  Custom end date (ISO 8601) - used with start_date
+</ParamField>
+
+<ParamField query="recipe_id" type="string">
+  Filter analytics by specific recipe
+</ParamField>
+
+<ParamField query="assigned_chef" type="string">
+  Filter by assigned chef ID
+</ParamField>
+
+<ParamField query="granularity" type="string" default="day">
+  Data aggregation level: `hour`, `day`, `week`, `month`
+</ParamField>
+
+### Response
+
+<ResponseField name="period" type="string">
+  The analyzed time period
+</ResponseField>
+
+<ResponseField name="start_date" type="string">
+  Start date of analysis period (ISO 8601)
+</ResponseField>
+
+<ResponseField name="end_date" type="string">
+  End date of analysis period (ISO 8601)
+</ResponseField>
+
+<ResponseField name="total_batches" type="integer">
+  Total number of production batches
+</ResponseField>
+
+<ResponseField name="total_quantity" type="number">
+  Total quantity produced (sum of all batches)
+</ResponseField>
+
+<ResponseField name="average_quality_score" type="number">
+  Mean quality score across all batches (0-10)
+</ResponseField>
+
+<ResponseField name="waste_percentage" type="number">
+  Percentage of planned quantity lost to waste
+</ResponseField>
+
+<ResponseField name="average_yield_efficiency" type="number">
+  Average actual quantity vs planned quantity percentage
+</ResponseField>
+
+<ResponseField name="top_performing_recipes" type="array">
+  Array of top recipes by production volume or quality
+  
+  <Expandable title="Recipe Performance Object">
+    <ResponseField name="recipe_id" type="string">
+      Recipe identifier
+    </ResponseField>
+    
+    <ResponseField name="name" type="string">
+      Recipe name
+    </ResponseField>
+    
+    <ResponseField name="batches" type="integer">
+      Number of batches produced
+    </ResponseField>
+    
+    <ResponseField name="avg_quality" type="number">
+      Average quality score for this recipe
+    </ResponseField>
+    
+    <ResponseField name="total_quantity" type="number">
+      Total quantity produced
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="trends" type="object">
+  Time-series data for visualizations
+  
+  <Expandable title="Trends Object">
+    <ResponseField name="production_volume" type="array">
+      Daily/weekly production volumes with timestamps
+    </ResponseField>
+    
+    <ResponseField name="quality_scores" type="array">
+      Quality score trends over time
+    </ResponseField>
+    
+    <ResponseField name="efficiency" type="array">
+      Yield efficiency trends
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Response Example
+
+```json
+{
+  "period": "30d",
+  "start_date": "2024-01-01T00:00:00Z",
+  "end_date": "2024-01-31T23:59:59Z",
+  "total_batches": 45,
+  "total_quantity": 225.0,
+  "average_quality_score": 8.7,
+  "waste_percentage": 2.3,
+  "average_yield_efficiency": 96.5,
+  "top_performing_recipes": [
+    {
+      "recipe_id": "rec_456",
+      "name": "House Salsa",
+      "batches": 30,
+      "avg_quality": 9.1,
+      "total_quantity": 150.0
+    }
+  ],
+  "trends": {
+    "production_volume": [
+      {
+        "date": "2024-01-01",
+        "quantity": 10.0,
+        "batches": 2
+      }
+    ],
+    "quality_scores": [
+      {
+        "date": "2024-01-01",
+        "avg_score": 8.5
+      }
+    ]
+  }
+}
+```
+
+---
+
+## Get Inventory Analytics
+
+Retrieve insights into inventory usage, turnover rates, and optimization opportunities.
+
+<CodeGroup>
+```http Request
+GET /analytics/inventory
+Authorization: Bearer YOUR_API_KEY
+```
+
+```bash cURL
+curl -X GET "https://api.salsaasaservice.com/v2/analytics/inventory?period=7d" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.salsaasaservice.com/v2/analytics/inventory?period=7d', {
+  headers: {'Authorization': 'Bearer YOUR_API_KEY'}
+});
+
+const inventoryAnalytics = await response.json();
+```
+</CodeGroup>
+
+### Query Parameters
+
+<ParamField query="period" type="string" default="30d">
+  Time period for analysis: `7d`, `30d`, `90d`, `1y`
+</ParamField>
+
+<ParamField query="category" type="string">
+  Filter by ingredient category
+</ParamField>
+
+<ParamField query="supplier" type="string">
+  Filter by supplier
+</ParamField>
+
+### Response
+
+<ResponseField name="period" type="string">
+  Analyzed time period
+</ResponseField>
+
+<ResponseField name="total_ingredients" type="integer">
+  Number of unique ingredients tracked
+</ResponseField>
+
+<ResponseField name="low_stock_items" type="integer">
+  Count of ingredients below minimum threshold
+</ResponseField>
+
+<ResponseField name="expiring_soon" type="integer">
+  Count of ingredients expiring within 7 days
+</ResponseField>
+
+<ResponseField name="total_value" type="number">
+  Total inventory value based on current stock and prices
+</ResponseField>
+
+<ResponseField name="usage_by_category" type="array">
+  Inventory usage breakdown by category
+  
+  <Expandable title="Category Usage Object">
+    <ResponseField name="category" type="string">
+      Ingredient category
+    </ResponseField>
+    
+    <ResponseField name="total_used" type="number">
+      Total quantity consumed
+    </ResponseField>
+    
+    <ResponseField name="total_cost" type="number">
+      Total cost of ingredients used
+    </ResponseField>
+    
+    <ResponseField name="percentage_of_total" type="number">
+      Percentage of total inventory usage
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="top_used_ingredients" type="array">
+  Most frequently used ingredients
+  
+  <Expandable title="Ingredient Usage Object">
+    <ResponseField name="ingredient_id" type="string">
+      Ingredient identifier
+    </ResponseField>
+    
+    <ResponseField name="name" type="string">
+      Ingredient name
+    </ResponseField>
+    
+    <ResponseField name="quantity_used" type="number">
+      Total quantity consumed
+    </ResponseField>
+    
+    <ResponseField name="unit" type="string">
+      Unit of measurement
+    </ResponseField>
+    
+    <ResponseField name="turnover_rate" type="number">
+      Days of supply based on current usage rate
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="waste_analysis" type="object">
+  Inventory waste and expiration data
+  
+  <Expandable title="Waste Analysis">
+    <ResponseField name="expired_items" type="integer">
+      Count of expired ingredients
+    </ResponseField>
+    
+    <ResponseField name="waste_value" type="number">
+      Total value of wasted/expired inventory
+    </ResponseField>
+    
+    <ResponseField name="waste_percentage" type="number">
+      Percentage of inventory lost to waste
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Response Example
+
+```json
+{
+  "period": "7d",
+  "start_date": "2024-01-15T00:00:00Z",
+  "end_date": "2024-01-22T23:59:59Z",
+  "total_ingredients": 24,
+  "low_stock_items": 3,
+  "expiring_soon": 2,
+  "total_value": 1250.00,
+  "usage_by_category": [
+    {
+      "category": "vegetables",
+      "total_used": 45.5,
+      "total_cost": 156.75,
+      "percentage_of_total": 42.3
+    }
+  ],
+  "top_used_ingredients": [
+    {
+      "ingredient_id": "ing_123",
+      "name": "Roma Tomatoes",
+      "quantity_used": 25.0,
+      "unit": "lbs",
+      "turnover_rate": 3.5
+    }
+  ],
+  "waste_analysis": {
+    "expired_items": 1,
+    "waste_value": 15.00,
+    "waste_percentage": 1.2
+  }
+}
+```
+
+---
+
+## Get Quality Trends
+
+Analyze quality score trends and identify patterns in production quality.
+
+```http
+GET /analytics/quality?period=30d
+Authorization: Bearer YOUR_API_KEY
+```
+
+### Query Parameters
+
+<ParamField query="period" type="string" default="30d">
+  Time period for analysis
+</ParamField>
+
+<ParamField query="recipe_id" type="string">
+  Filter by specific recipe
+</ParamField>
+
+<ParamField query="min_score" type="number">
+  Filter batches with quality score above this threshold
+</ParamField>
+
+### Response
+
+```json
+{
+  "period": "30d",
+  "average_quality_score": 8.7,
+  "highest_score": 9.8,
+  "lowest_score": 6.5,
+  "batches_below_threshold": 3,
+  "quality_distribution": [
+    {
+      "score_range": "9-10",
+      "count": 20,
+      "percentage": 44.4
+    },
+    {
+      "score_range": "8-9",
+      "count": 18,
+      "percentage": 40.0
+    }
+  ],
+  "trends": [
+    {
+      "date": "2024-01-01",
+      "avg_score": 8.5,
+      "batch_count": 2
+    }
+  ],
+  "factors_analysis": {
+    "best_performing_chef": "chef_123",
+    "best_performing_recipe": "rec_456",
+    "common_issues": [
+      "consistency variations in hot recipes"
+    ]
+  }
+}
+```
+
+---
+
+## Get Cost Analysis
+
+Analyze production costs, ingredient spending, and profit margins.
+
+```http
+GET /analytics/costs?period=30d
+Authorization: Bearer YOUR_API_KEY
+```
+
+### Query Parameters
+
+<ParamField query="period" type="string" default="30d">
+  Time period for cost analysis
+</ParamField>
+
+<ParamField query="recipe_id" type="string">
+  Filter by specific recipe
+</ParamField>
+
+<ParamField query="breakdown" type="string" default="category">
+  Cost breakdown view: `category`, `supplier`, `recipe`, `ingredient`
+</ParamField>
+
+### Response
+
+```json
+{
+  "period": "30d",
+  "total_cost": 1285.50,
+  "total_batches": 45,
+  "average_cost_per_batch": 28.57,
+  "cost_trends": [
+    {
+      "date": "2024-01-01",
+      "total_cost": 57.00,
+      "batches": 2
+    }
+  ],
+  "cost_by_category": [
+    {
+      "category": "vegetables",
+      "total_cost": 545.25,
+      "percentage": 42.4
+    },
+    {
+      "category": "spices",
+      "total_cost": 325.50,
+      "percentage": 25.3
+    }
+  ],
+  "most_expensive_ingredients": [
+    {
+      "ingredient_id": "ing_456",
+      "name": "Chipotle Peppers",
+      "total_cost": 185.00,
+      "quantity_used": 37.0,
+      "unit": "lbs"
+    }
+  ],
+  "cost_optimization_suggestions": [
+    {
+      "type": "bulk_purchase",
+      "ingredient": "Roma Tomatoes",
+      "potential_savings": 45.00
+    }
+  ]
+}
+```
+
+---
+
+## Export Analytics Report
+
+Generate and download a comprehensive analytics report in various formats.
+
+```http
+POST /analytics/export
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+```
+
+### Request Body
+
+<ParamField body="report_type" type="string" required>
+  Type of report: `production`, `inventory`, `quality`, `cost`, or `comprehensive`
+</ParamField>
+
+<ParamField body="format" type="string" required>
+  Export format: `pdf`, `csv`, `xlsx`, or `json`
+</ParamField>
+
+<ParamField body="period" type="string" required>
+  Time period for the report
+</ParamField>
+
+<ParamField body="filters" type="object">
+  Additional filters (recipe_id, chef_id, etc.)
+</ParamField>
+
+<ParamField body="email" type="string">
+  Email address to send the report to (optional, returns download link if omitted)
+</ParamField>
+
+### Response
+
+```json
+{
+  "report_id": "rpt_123",
+  "status": "generating",
+  "format": "pdf",
+  "download_url": "https://api.salsaasaservice.com/v2/reports/rpt_123/download",
+  "expires_at": "2024-01-16T12:00:00Z",
+  "estimated_completion": "2024-01-15T12:05:00Z"
+}
+```
+
+---
+
+## Get Dashboard Summary
+
+Retrieve a high-level summary of all key metrics for dashboard display.
+
+```http
+GET /analytics/dashboard
+Authorization: Bearer YOUR_API_KEY
+```
+
+### Response
+
+```json
+{
+  "summary": {
+    "production": {
+      "today_batches": 3,
+      "week_batches": 12,
+      "month_batches": 45,
+      "avg_quality_score": 8.7
+    },
+    "inventory": {
+      "total_ingredients": 24,
+      "low_stock_alerts": 3,
+      "expiring_soon": 2,
+      "total_value": 1250.00
+    },
+    "alerts": [
+      {
+        "type": "low_stock",
+        "severity": "warning",
+        "message": "Roma Tomatoes below minimum threshold",
+        "ingredient_id": "ing_123"
+      }
+    ],
+    "recent_activity": [
+      {
+        "timestamp": "2024-01-15T11:30:00Z",
+        "type": "batch_completed",
+        "description": "Batch BATCH-2024-001 completed"
+      }
+    ]
+  }
+}
+```
+
+---
+
+## Error Responses
+
+### 400 Bad Request
+
+```json
+{
+  "error": {
+    "code": "INVALID_DATE_RANGE",
+    "message": "End date must be after start date"
+  }
+}
+```
+
+### 422 Unprocessable Entity
+
+```json
+{
+  "error": {
+    "code": "INVALID_PERIOD",
+    "message": "Period must be one of: 7d, 30d, 90d, 1y"
+  }
+}
+```

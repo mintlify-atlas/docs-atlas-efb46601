@@ -1,0 +1,731 @@
+---
+title: "Troubleshooting"
+description: "Common issues and solutions for Salsa as a Service"
+---
+
+## Quick Diagnostics
+
+Before diving into specific issues, run these quick checks to identify common problems:
+
+<Steps>
+  <Step title="Check System Status">
+    Visit our [status page](https://status.salsaasaservice.com) to see if there are any ongoing service issues or maintenance windows.
+  </Step>
+  <Step title="Verify Internet Connection">
+    Ensure you have a stable internet connection. Try accessing other websites or services to confirm connectivity.
+  </Step>
+  <Step title="Clear Browser Cache">
+    Clear your browser cache and cookies, then refresh the page and try logging in again.
+  </Step>
+  <Step title="Check Browser Compatibility">
+    Ensure you're using a supported browser: Chrome (latest), Firefox (latest), Safari (latest), or Edge (latest).
+  </Step>
+</Steps>
+
+---
+
+## Common Issues
+
+<CardGroup cols={3}>
+  <Card title="Login & Authentication" icon="lock" href="#login-and-authentication">
+    Troubleshoot login issues, password problems, and 2FA setup.
+  </Card>
+  <Card title="Data Synchronization" icon="arrows-rotate" href="#data-synchronization">
+    Resolve POS integration and inventory sync problems.
+  </Card>
+  <Card title="Production Issues" icon="industry" href="#production-issues">
+    Fix quality control and batch tracking problems.
+  </Card>
+  <Card title="Mobile App Issues" icon="mobile" href="#mobile-app-issues">
+    Resolve app crashes, freezes, and offline mode problems.
+  </Card>
+  <Card title="Performance" icon="gauge" href="#performance-issues">
+    Fix slow loading times and browser performance problems.
+  </Card>
+  <Card title="API & Integration" icon="code" href="#api-integration-issues">
+    Resolve API authentication and webhook delivery issues.
+  </Card>
+</CardGroup>
+
+---
+
+## Login and Authentication
+
+### Cannot Log Into Account
+
+<AccordionGroup>
+  <Accordion title="Verify Your Credentials">
+    - Double-check your email address and password
+    - Ensure Caps Lock is off
+    - Try copying and pasting credentials to avoid typos
+    - Check for extra spaces before or after your email
+  </Accordion>
+  
+  <Accordion title="Reset Your Password">
+    <Steps>
+      <Step title="Click Forgot Password">
+        On the login page, click the "Forgot Password" link below the login form.
+      </Step>
+      <Step title="Check Your Email">
+        Look for the password reset email (check spam/junk folders).
+      </Step>
+      <Step title="Create New Password">
+        Follow the link and create a new secure password (minimum 12 characters, including uppercase, lowercase, numbers, and symbols).
+      </Step>
+      <Step title="Try Logging In">
+        Return to the login page and use your new password.
+      </Step>
+    </Steps>
+  </Accordion>
+  
+  <Accordion title="Account Verification Issues">
+    - Check your spam folder for verification emails
+    - Request a new verification email from the login page
+    - Ensure your email provider isn't blocking emails from @salsaasaservice.com
+    - Contact support if you haven't received verification emails after 15 minutes
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+  **Security Note**: Never share your password with anyone. Our support team will never ask for your password via email, chat, or phone.
+</Warning>
+
+### Two-Factor Authentication (2FA) Issues
+
+<Tabs>
+  <Tab title="Code Not Working">
+    **Problem**: Authentication code is rejected
+    
+    **Solutions**:
+    - Ensure your device's time is synchronized correctly
+    - Try generating a new code (codes expire after 30 seconds)
+    - Verify you're entering the code from the correct account
+    - Check that you're using the authenticator app associated with your account
+  </Tab>
+  
+  <Tab title="Lost Device">
+    **Problem**: Lost access to your authenticator device
+    
+    **Solutions**:
+    - Use one of your backup codes (saved during 2FA setup)
+    - Contact support with account verification details
+    - Provide proof of identity (account email, recent activity)
+    - Support will help you reset 2FA after verification
+  </Tab>
+  
+  <Tab title="Setup Problems">
+    **Problem**: Trouble setting up 2FA
+    
+    **Solutions**:
+    - Use Google Authenticator, Authy, or Microsoft Authenticator
+    - Ensure you're scanning the QR code with the authenticator app
+    - If QR scan fails, manually enter the setup key
+    - Save your backup codes in a secure location
+    - Test the setup before completing to ensure it works
+  </Tab>
+</Tabs>
+
+---
+
+## Data Synchronization
+
+### POS Integration Not Syncing
+
+<Tabs>
+  <Tab title="Square">
+    <Steps>
+      <Step title="Check Connection Status">
+        Navigate to **Settings > Integrations > Square** and verify the connection status shows "Connected".
+      </Step>
+      <Step title="Reauthorize Integration">
+        Click "Disconnect" then "Reconnect" to refresh the OAuth connection with Square.
+      </Step>
+      <Step title="Verify API Permissions">
+        In your Square dashboard, ensure the Salsa as a Service app has permissions for:
+        - Inventory management
+        - Sales data access
+        - Menu item access
+      </Step>
+      <Step title="Check Menu Mapping">
+        Review that salsa items in Square are properly mapped to inventory items in Salsa as a Service.
+      </Step>
+      <Step title="Trigger Manual Sync">
+        Use the "Sync Now" button to test the integration manually.
+      </Step>
+    </Steps>
+    
+    <Note>
+      **Square Rate Limits**: If you're making frequent updates, Square may temporarily throttle requests. Wait 5-10 minutes and try again.
+    </Note>
+  </Tab>
+  
+  <Tab title="Toast">
+    <Steps>
+      <Step title="Verify API Credentials">
+        Check that your Toast API key and secret are still valid and haven't expired.
+      </Step>
+      <Step title="Update API Key">
+        If expired, generate a new API key in Toast and update it in Salsa as a Service under **Settings > Integrations > Toast**.
+      </Step>
+      <Step title="Check Menu Mapping">
+        Ensure salsa menu items in Toast are mapped to the correct inventory items.
+      </Step>
+      <Step title="Review Sync Logs">
+        Check integration logs for specific error messages that indicate the failure point.
+      </Step>
+    </Steps>
+  </Tab>
+  
+  <Tab title="Clover">
+    <Steps>
+      <Step title="Update Clover App">
+        Ensure the Salsa as a Service app is installed and updated in your Clover App Market dashboard.
+      </Step>
+      <Step title="Verify Permissions">
+        Check that the app has necessary permissions:
+        - Read inventory
+        - Write inventory
+        - Read orders
+      </Step>
+      <Step title="Reinstall if Needed">
+        If issues persist, uninstall and reinstall the app from Clover App Market.
+      </Step>
+    </Steps>
+  </Tab>
+  
+  <Tab title="General Troubleshooting">
+    **Common Causes**:
+    - Network connectivity issues between systems
+    - API rate limiting or quota exceeded
+    - Incorrect unit conversions (lbs vs kg, etc.)
+    - Data validation errors (invalid characters, missing required fields)
+    - POS system maintenance or downtime
+    
+    **Solutions**:
+    1. Check sync status in **Settings > Integrations**
+    2. Review error logs for specific failure messages
+    3. Try manual sync to test connection
+    4. Verify network connectivity and firewall rules
+    5. Contact support with sync log details
+  </Tab>
+</Tabs>
+
+### Inventory Levels Not Updating
+
+<AccordionGroup>
+  <Accordion title="Real-Time Sync Issues">
+    **Problem**: Inventory changes in POS not reflecting in real-time
+    
+    **Check**:
+    - Sync interval settings (Settings > Integrations > Sync Frequency)
+    - Network connectivity between systems
+    - Whether you're on a plan that supports real-time sync
+    - Integration webhook status
+    
+    **Solution**:
+    - Enable real-time sync if available on your plan
+    - Check that webhooks are properly configured
+    - Verify firewall isn't blocking webhook notifications
+    - Test with manual sync to confirm data flow
+  </Accordion>
+  
+  <Accordion title="Data Discrepancies">
+    **Problem**: Inventory counts don't match between systems
+    
+    **Causes**:
+    - Pending transactions not yet synced
+    - Different unit measurements (conversion errors)
+    - Manual adjustments in one system but not the other
+    - Time zone differences in timestamps
+    
+    **Solution**:
+    - Force full sync from Settings > Integrations
+    - Verify unit conversion settings
+    - Check audit logs for manual adjustments
+    - Ensure both systems use same timezone
+  </Accordion>
+  
+  <Accordion title="IoT Sensor Data Not Syncing">
+    **Problem**: Smart sensors not updating inventory or quality data
+    
+    **Check**:
+    - Sensor connectivity (WiFi/Bluetooth signal strength)
+    - Sensor battery levels
+    - Gateway device status
+    - Sensor registration in system
+    
+    **Solution**:
+    - Restart sensor device
+    - Recalibrate sensors from mobile app
+    - Check IoT gateway connectivity
+    - Re-register sensor if needed
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Production Issues
+
+### Quality Control Problems
+
+<AccordionGroup>
+  <Accordion title="Quality Scores Not Recording">
+    **Possible Causes**:
+    - Quality testing device not calibrated
+    - Mobile app not updated to latest version
+    - Staff member lacks quality testing permissions
+    - Network connectivity during testing
+    
+    **Solutions**:
+    <Steps>
+      <Step title="Calibrate Devices">
+        Ensure all quality testing devices are properly calibrated. Run calibration from **Equipment > Calibration**.
+      </Step>
+      <Step title="Update Mobile App">
+        Check that kitchen staff are using the latest version of the mobile app.
+      </Step>
+      <Step title="Verify Permissions">
+        Confirm staff have "Quality Testing" permission in **Team > Roles & Permissions**.
+      </Step>
+      <Step title="Test Offline Mode">
+        If network is unreliable, enable offline mode to record scores locally and sync later.
+      </Step>
+    </Steps>
+  </Accordion>
+  
+  <Accordion title="AI Quality Predictions Inaccurate">
+    **Problem**: AI quality predictions don't match actual results
+    
+    **Why This Happens**:
+    - Insufficient historical data (needs 30+ batches for accuracy)
+    - Recipe or process changes not reflected in system
+    - Sensor calibration drift
+    - Seasonal ingredient variations
+    
+    **Improve Accuracy**:
+    - Continue recording accurate quality scores for all batches
+    - Update recipe details when you change ingredients or process
+    - Recalibrate sensors monthly
+    - Add notes about ingredient quality variations
+    - AI improves over time with more data
+  </Accordion>
+</AccordionGroup>
+
+### Batch Tracking Issues
+
+**Problem**: Production batches not tracking properly or data missing
+
+<Note>
+  **Batch Requirements**: Each batch must have:
+  - Unique batch number
+  - Valid recipe assignment
+  - Production date/time
+  - Assigned staff member
+  - At least one ingredient
+</Note>
+
+<Steps>
+  <Step title="Verify Batch Information">
+    Check that all required fields are completed:
+    - Batch number (must be unique)
+    - Recipe selection
+    - Planned quantity
+    - Production date
+  </Step>
+  
+  <Step title="Check Recipe Assignment">
+    Ensure the batch is assigned to an active, valid recipe (not archived or deleted).
+  </Step>
+  
+  <Step title="Review Staff Permissions">
+    Verify the assigned chef/staff member has proper permissions:
+    - "Create Production Batches"
+    - "Edit Production Data"
+    - Access to the specific recipe
+  </Step>
+  
+  <Step title="Validate Ingredients">
+    Ensure all recipe ingredients are in inventory and have sufficient stock.
+  </Step>
+</Steps>
+
+---
+
+## Mobile App Issues
+
+### App Crashes or Freezes
+
+<Tabs>
+  <Tab title="iOS">
+    <Steps>
+      <Step title="Update App">
+        Open App Store and check for Salsa as a Service updates. Install if available.
+      </Step>
+      <Step title="Restart App">
+        Double-tap home button (or swipe up), swipe away the app, then reopen it.
+      </Step>
+      <Step title="Restart Device">
+        Power off your iPhone/iPad completely, wait 30 seconds, then power back on.
+      </Step>
+      <Step title="Clear App Cache">
+        Go to app Settings > Clear Cache. You'll remain logged in.
+      </Step>
+      <Step title="Reinstall App">
+        Delete the app, restart device, then reinstall from App Store.
+      </Step>
+      <Step title="Check iOS Version">
+        Ensure iOS is updated (Settings > General > Software Update). App requires iOS 14.0+.
+      </Step>
+    </Steps>
+  </Tab>
+  
+  <Tab title="Android">
+    <Steps>
+      <Step title="Update App">
+        Open Google Play Store and check for updates to Salsa as a Service.
+      </Step>
+      <Step title="Force Stop">
+        Settings > Apps > Salsa as a Service > Force Stop, then reopen.
+      </Step>
+      <Step title="Clear Cache">
+        Settings > Apps > Salsa as a Service > Storage > Clear Cache (not Clear Data).
+      </Step>
+      <Step title="Restart Device">
+        Power off your device, wait 30 seconds, then power back on.
+      </Step>
+      <Step title="Reinstall App">
+        Uninstall app, restart device, then reinstall from Google Play Store.
+      </Step>
+      <Step title="Check Android Version">
+        App requires Android 8.0+. Check Settings > About Phone > Android Version.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+### Offline Mode Not Working
+
+<AccordionGroup>
+  <Accordion title="Data Not Available Offline">
+    **Problem**: App shows "No data available" when offline
+    
+    **Solution**:
+    - Before going offline, open the app and navigate through key sections (Dashboard, Inventory, Recipes) to cache data
+    - Enable "Offline Mode" in Settings > App Settings
+    - Ensure "Auto-Download" is enabled for critical data
+    - Check device storage - offline data requires at least 500MB free space
+  </Accordion>
+  
+  <Accordion title="Offline Changes Not Syncing">
+    **Problem**: Data entered offline isn't syncing when back online
+    
+    **Solution**:
+    - Check that sync icon shows connection restored
+    - Manually trigger sync: Pull down to refresh on main screens
+    - Verify no conflicts with server data (app will prompt to resolve)
+    - Ensure app stayed logged in during offline period
+  </Accordion>
+  
+  <Accordion title="Offline Features Limited">
+    **Available Offline**:
+    - View recipes and production schedules
+    - Record quality scores
+    - Start/complete production batches
+    - View recent inventory levels
+    
+    **Requires Internet**:
+    - AI forecasting and predictions
+    - Real-time IoT sensor data
+    - Integration sync (POS, suppliers)
+    - Team collaboration features
+    - Report generation
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Performance Issues
+
+### Dashboard Loading Slowly
+
+<CardGroup cols={2}>
+  <Card title="Browser Optimization" icon="browser">
+    - Clear browser cache and cookies
+    - Disable unnecessary browser extensions
+    - Close other tabs using lots of memory
+    - Try incognito/private mode
+    - Update browser to latest version
+  </Card>
+  
+  <Card title="Network Optimization" icon="wifi">
+    - Test internet speed (minimum 5 Mbps recommended)
+    - Connect to more reliable network if available
+    - Disable VPN temporarily to test
+    - Check for network congestion during peak hours
+    - Contact IT about QoS settings for cloud apps
+  </Card>
+</CardGroup>
+
+### Large Dataset Performance
+
+**Problem**: Slowness when viewing reports with large amounts of data
+
+<Accordion title="Optimize Your Queries">
+  **Best Practices**:
+  - Reduce date range filters (use 30 days instead of "All Time")
+  - Filter by specific locations rather than "All Locations"
+  - Limit recipes in multi-recipe reports
+  - Use summary views instead of detailed transaction logs
+  - Export large datasets to CSV for offline analysis
+  - Schedule automated reports to run overnight
+</Accordion>
+
+<Warning>
+  **Enterprise Customers**: Contact your account manager about dedicated infrastructure if you regularly work with very large datasets (10,000+ batches, 100+ locations).
+</Warning>
+
+---
+
+## API Integration Issues
+
+### Authentication Errors
+
+<AccordionGroup>
+  <Accordion title="401 Unauthorized">
+    **Problem**: API requests return 401 error
+    
+    **Common Causes**:
+    - API key is incorrect or has typos
+    - API key has expired (keys expire after 1 year)
+    - API key was revoked or regenerated
+    - Missing or malformed Authorization header
+    
+    **Solution**:
+    ```bash
+    # Correct format
+    curl -H "Authorization: Bearer YOUR_API_KEY" \
+      https://api.salsaasaservice.com/v2/recipes
+    ```
+    
+    - Verify API key in Settings > Developer > API Keys
+    - Generate new API key if expired
+    - Check for whitespace or special characters in key
+    - Test with a simple GET request first
+  </Accordion>
+  
+  <Accordion title="403 Forbidden">
+    **Problem**: API key works but request is forbidden
+    
+    **Causes**:
+    - API key lacks permissions for this endpoint
+    - Plan doesn't include API access (Starter plan has limited API)
+    - IP address not whitelisted (Enterprise security)
+    - Rate limit exceeded
+    
+    **Solution**:
+    - Check API key permissions in Settings > Developer
+    - Upgrade plan for full API access
+    - Add your server IP to whitelist (Enterprise)
+    - Review rate limit headers in response
+  </Accordion>
+  
+  <Accordion title="429 Too Many Requests">
+    **Problem**: Rate limit exceeded
+    
+    **Rate Limits**:
+    - Starter: 1,000 requests/hour
+    - Professional: 10,000 requests/hour
+    - Enterprise: 100,000 requests/hour
+    
+    **Solution**:
+    - Implement exponential backoff retry logic
+    - Cache responses where possible
+    - Use webhooks instead of polling
+    - Upgrade plan for higher limits
+    - Check `X-RateLimit-Reset` header for reset time
+  </Accordion>
+</AccordionGroup>
+
+### Webhook Delivery Failures
+
+**Problem**: Webhooks not being received at your endpoint
+
+<Steps>
+  <Step title="Verify Endpoint URL">
+    - Ensure URL is publicly accessible (not localhost)
+    - Check HTTPS is configured correctly
+    - Verify SSL certificate is valid
+    - Test endpoint with curl or Postman
+  </Step>
+  
+  <Step title="Check Webhook Logs">
+    Go to **Settings > Webhooks > Logs** to see delivery attempts and error messages.
+  </Step>
+  
+  <Step title="Verify Webhook Signature">
+    Ensure your endpoint is validating the webhook signature correctly:
+    ```javascript
+    const crypto = require('crypto');
+    
+    function verifyWebhook(payload, signature, secret) {
+      const hmac = crypto.createHmac('sha256', secret);
+      const digest = hmac.update(payload).digest('hex');
+      return signature === digest;
+    }
+    ```
+  </Step>
+  
+  <Step title="Return 200 OK">
+    Your endpoint must return HTTP 200 within 10 seconds or delivery will be marked as failed.
+  </Step>
+  
+  <Step title="Review Firewall Rules">
+    Ensure your firewall allows incoming requests from our webhook IPs (listed in Settings > Webhooks > IP Addresses).
+  </Step>
+</Steps>
+
+<Note>
+  **Retry Logic**: Failed webhooks are retried up to 5 times with exponential backoff (1m, 5m, 15m, 1h, 6h).
+</Note>
+
+---
+
+## Getting Help
+
+### Self-Service Resources
+
+<CardGroup cols={3}>
+  <Card title="Knowledge Base" icon="book" href="https://help.salsaasaservice.com">
+    Search our comprehensive knowledge base with 500+ articles covering common issues and how-to guides.
+  </Card>
+  
+  <Card title="Video Tutorials" icon="video" href="https://salsaasaservice.com/tutorials">
+    Watch step-by-step video tutorials for setup, integrations, and advanced features.
+  </Card>
+  
+  <Card title="Community Forum" icon="users" href="https://community.salsaasaservice.com">
+    Get help from other users, share solutions, and request features. Active community of 5,000+ restaurant operators.
+  </Card>
+  
+  <Card title="API Documentation" icon="code" href="/api/overview">
+    Complete API reference with examples, SDKs, and integration guides.
+  </Card>
+  
+  <Card title="Developer Changelog" icon="timeline" href="/quickstart">
+    Stay updated on new features, bug fixes, and API changes.
+  </Card>
+  
+  <Card title="Status Page" icon="signal" href="https://status.salsaasaservice.com">
+    Real-time system status and incident reports. Subscribe to status updates.
+  </Card>
+</CardGroup>
+
+### Contact Support
+
+When contacting support, please include the following information for faster resolution:
+
+<Steps>
+  <Step title="Account Information">
+    - Your account email address
+    - Restaurant or business name
+    - Account plan (Starter, Professional, Enterprise)
+  </Step>
+  
+  <Step title="Detailed Description">
+    - What you were trying to do
+    - What happened instead
+    - When the issue first occurred
+    - Whether it's consistent or intermittent
+  </Step>
+  
+  <Step title="Troubleshooting Steps">
+    List what you've already tried from this guide so we don't duplicate efforts.
+  </Step>
+  
+  <Step title="Error Messages">
+    - Copy exact error messages or codes
+    - Include API error responses if relevant
+    - Check browser console for JavaScript errors (F12 > Console)
+  </Step>
+  
+  <Step title="Screenshots">
+    Include screenshots showing:
+    - Error messages
+    - Current settings
+    - Integration configuration
+    - Unexpected behavior
+  </Step>
+  
+  <Step title="Environment Details">
+    - Browser and version (e.g., Chrome 120)
+    - Operating system (Windows 11, macOS 14, etc.)
+    - Mobile device model and OS version if applicable
+    - Integration system versions (POS software version, etc.)
+  </Step>
+</Steps>
+
+### Support Channels
+
+<CardGroup cols={2}>
+  <Card title="Email Support" icon="envelope" href="mailto:support@salsaasaservice.com">
+    **support@salsaasaservice.com**
+    
+    Response time:
+    - Starter: 24-48 hours
+    - Professional: 4-8 hours
+    - Enterprise: 1-2 hours
+  </Card>
+  
+  <Card title="Live Chat" icon="message">
+    Available in your dashboard (bottom right corner)
+    
+    Hours:
+    - Starter: Mon-Fri, 9 AM - 5 PM EST
+    - Professional: Mon-Fri, 8 AM - 8 PM EST
+    - Enterprise: 24/7
+  </Card>
+  
+  <Card title="Phone Support" icon="phone" href="tel:1-800-SALSA-HELP">
+    **1-800-SALSA-HELP**
+    **(1-800-725-7243)**
+    
+    Available:
+    - Professional: Mon-Fri, 9 AM - 6 PM EST
+    - Enterprise: 24/7 priority line
+  </Card>
+  
+  <Card title="Support Portal" icon="ticket">
+    Create and track support tickets in your dashboard under **Help > Support Tickets**
+    
+    Includes:
+    - Ticket history
+    - Priority levels
+    - File attachments
+  </Card>
+</CardGroup>
+
+### Emergency Support
+
+For critical issues affecting your restaurant operations (system down, data loss, security incident):
+
+<Warning>
+  **Emergency Hotline**: 1-800-SALSA-911 (1-800-725-7291)
+  
+  Available 24/7 for Enterprise customers. Professional customers can access emergency support during business hours.
+</Warning>
+
+**When to Use Emergency Support**:
+- Complete system outage preventing operations
+- Data integrity issues (missing or corrupted data)
+- Security incidents or suspected breaches
+- Critical integration failures during peak hours
+- IoT sensor failures affecting food safety
+
+**Alternative Emergency Contact**:
+- Text "URGENT" to SALSA-911 with your account email
+- Priority chat for Enterprise customers (in dashboard)
+- Escalation to on-call engineer for critical infrastructure issues
+
+<Note>
+  **Response Times**: Emergency issues receive immediate attention with target response time of 15 minutes for Enterprise, 1 hour for Professional during business hours.
+</Note>

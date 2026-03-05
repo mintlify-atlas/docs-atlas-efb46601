@@ -1,0 +1,884 @@
+---
+title: "Analytics & Reporting"
+description: "AI-powered insights with predictive analytics and real-time IoT data visualization for data-driven decision making"
+icon: "chart-line"
+---
+
+## Overview
+
+Transform your salsa production data into actionable insights with AI-driven predictions, real-time IoT sensor data visualization, and advanced machine learning analytics. Make data-driven decisions that optimize costs, improve quality, and maximize profitability.
+
+<CardGroup cols={3}>
+  <Card title="Predictive Analytics" icon="brain">
+    AI forecasts demand, costs, quality scores, and equipment maintenance needs with industry-leading accuracy.
+  </Card>
+  <Card title="Real-Time Dashboards" icon="gauge">
+    Live IoT sensor data, production metrics, and quality indicators update every 30 seconds.
+  </Card>
+  <Card title="Custom Reports" icon="file-chart-column">
+    AI-powered report builder generates insights automatically or create custom reports with natural language.
+  </Card>
+</CardGroup>
+
+---
+
+## AI Dashboard
+
+Your central hub for AI-powered insights and predictive analytics.
+
+### Predictive Metrics
+
+Real-time metrics enhanced with AI predictions:
+
+<Tabs>
+  <Tab title="Demand Forecasting">
+    **7-30 Day Demand Predictions**
+    
+    AI analyzes historical sales, seasonal patterns, weather, local events, and social media trends to forecast demand with 98% accuracy.
+    
+    ```javascript
+    // Example: Get demand forecast
+    const forecast = await salsa.ai.analytics.getDemandForecast({
+      location: "kitchen_1",
+      horizon_days: 14,
+      recipes: ["house_salsa", "spicy_chipotle"],
+      confidence_level: 0.95
+    });
+    
+    forecast.predictions.forEach(day => {
+      console.log(`${day.date}: ${day.predicted_demand} gallons`);
+      console.log(`  Confidence: ${day.confidence_interval[0]} - ${day.confidence_interval[1]}`);
+      console.log(`  Key factors: ${day.primary_factors.join(", ")}`);
+    });
+    ```
+    
+    **What influences demand:**
+    - Historical sales patterns (40%)
+    - Day of week and seasonality (25%)
+    - Weather conditions (15%)
+    - Local events and holidays (10%)
+    - Social media and reviews (10%)
+    
+    <Info>
+      Demand forecasts update daily at 3 AM and are available in the dashboard by 6 AM.
+    </Info>
+  </Tab>
+  
+  <Tab title="Quality Predictions">
+    **Predicted Quality Scores**
+    
+    For in-progress batches, see predicted final quality scores based on current production parameters.
+    
+    - **Real-time predictions** updated every 5 minutes during production
+    - **95% accuracy** in predicting final scores
+    - **Early warning alerts** when predictions fall below targets
+    - **Intervention recommendations** to improve predicted outcomes
+    
+    ```javascript
+    // Example: Monitor quality predictions
+    const qualityForecast = await salsa.ai.analytics.getQualityPredictions({
+      location: "kitchen_1",
+      status: "in_progress"
+    });
+    
+    qualityForecast.batches.forEach(batch => {
+      if (batch.predicted_score < 8.0) {
+        console.log(`⚠️  Batch ${batch.id}: Predicted score ${batch.predicted_score}`);
+        console.log(`   Recommendation: ${batch.recommended_action}`);
+      }
+    });
+    ```
+  </Tab>
+  
+  <Tab title="Cost Forecasting">
+    **Predicted Costs**
+    
+    AI analyzes ingredient price trends, supplier data, and seasonal availability to forecast costs.
+    
+    - **Ingredient price predictions** (7-30 days)
+    - **Supplier cost comparisons**
+    - **Seasonal price variation analysis**
+    - **Budget variance predictions**
+    
+    <Tip>
+      Use cost forecasts to time bulk purchases and lock in pricing before anticipated increases.
+    </Tip>
+  </Tab>
+  
+  <Tab title="Waste Predictions">
+    **Waste Reduction Opportunities**
+    
+    AI identifies where waste occurs and how to prevent it:
+    
+    - **Over-production detection**
+    - **Ingredient spoilage predictions**
+    - **Optimal order quantity recommendations**
+    - **Recipe adjustments for near-expiry ingredients**
+    
+    Average waste reduction: **40-60%** within first 3 months
+  </Tab>
+  
+  <Tab title="Equipment Health">
+    **Predictive Maintenance**
+    
+    AI monitors equipment performance and predicts maintenance needs:
+    
+    - **Failure predictions** 3-14 days in advance
+    - **Optimal maintenance scheduling**
+    - **Component replacement forecasts**
+    - **Downtime reduction** up to 75%
+    
+    ```javascript
+    // Example: Check equipment health
+    const equipment = await salsa.ai.analytics.getEquipmentHealth({
+      location: "kitchen_1"
+    });
+    
+    equipment.forEach(item => {
+      console.log(`${item.name}: Health Score ${item.health_score}/100`);
+      if (item.maintenance_predicted) {
+        console.log(`  ⚠️  Maintenance needed in ${item.days_until_maintenance} days`);
+      }
+    });
+    ```
+  </Tab>
+</Tabs>
+
+### Smart Alerts
+
+AI-powered intelligent alerting system that learns what's important to you.
+
+```javascript
+// Example: Configure AI-powered alerts
+const alert = await salsa.ai.analytics.createSmartAlert({
+  type: "anomaly_detection",
+  metric: "production_efficiency",
+  sensitivity: "medium",  // low, medium, high
+  actions: ["notify_manager", "create_ticket"],
+  recipients: ["manager@restaurant.com"],
+  schedule: {
+    active_hours: "6am-11pm",
+    days: ["monday", "tuesday", "wednesday", "thursday", "friday"]
+  }
+});
+```
+
+**Alert Types:**
+- **Anomaly Detection**: Automatically detects unusual patterns
+- **Threshold Alerts**: Trigger when metrics cross defined thresholds
+- **Predictive Alerts**: Warn before issues occur
+- **Trend Alerts**: Notify about significant trend changes
+
+<Note>
+  **Smart Alert Learning**: The system learns which alerts you act on and automatically adjusts sensitivity to reduce false positives.
+</Note>
+
+---
+
+## Advanced Analytics
+
+### Machine Learning Insights
+
+AI uncovers hidden patterns in your data that traditional analytics miss.
+
+<CardGroup cols={2}>
+  <Card title="Correlation Analysis" icon="link">
+    AI identifies relationships between variables:
+    
+    - Ingredient quality vs. final product scores
+    - Weather impact on demand
+    - Production timing vs. efficiency
+    - Supplier performance vs. costs
+    
+    Discover which factors have the biggest impact on your KPIs.
+  </Card>
+  <Card title="Trend Prediction" icon="arrow-trend-up">
+    Forecast future performance based on historical trends:
+    
+    - Revenue projections
+    - Market share predictions
+    - Quality improvement trajectories
+    - Cost optimization forecasts
+  </Card>
+  <Card title="Optimization Recommendations" icon="lightbulb">
+    AI suggests specific improvements:
+    
+    - Recipe profitability enhancements
+    - Production schedule optimization
+    - Staffing level recommendations
+    - Equipment utilization improvements
+  </Card>
+  <Card title="What-If Analysis" icon="flask">
+    Simulate different scenarios:
+    
+    - Price change impacts
+    - New recipe introductions
+    - Capacity expansions
+    - Supplier switches
+  </Card>
+</CardGroup>
+
+```javascript
+// Example: Run what-if analysis
+const simulation = await salsa.ai.analytics.whatIf({
+  scenario: "price_increase",
+  changes: {
+    house_salsa_price: 8.99,  // Up from 7.99
+    spicy_chipotle_price: 9.99  // Up from 8.99
+  },
+  horizon_days: 90,
+  include_elasticity: true
+});
+
+console.log(`Predicted revenue change: ${simulation.revenue_change}%`);
+console.log(`Predicted demand change: ${simulation.demand_change}%`);
+console.log(`Net profit impact: $${simulation.profit_impact}`);
+console.log(`Recommendation: ${simulation.recommended_action}`);
+```
+
+### Real-Time IoT Analytics
+
+Live sensor data visualization provides unprecedented operational visibility.
+
+<Tabs>
+  <Tab title="Temperature Trends">
+    Monitor temperature across all sensors with real-time trending:
+    
+    - **Walk-in coolers**: Track temperature stability
+    - **Production areas**: Monitor ambient conditions
+    - **Equipment**: Watch for overheating
+    - **Storage**: Ensure food safety compliance
+    
+    **Features:**
+    - Live temperature graphs (30-second updates)
+    - Historical trend analysis
+    - Predictive temperature alerts
+    - Energy usage correlation
+    
+    <Info>
+      Temperature data is retained for 2 years for compliance auditing.
+    </Info>
+  </Tab>
+  
+  <Tab title="Inventory Movement">
+    RFID-based tracking shows ingredient movement in real-time:
+    
+    - **Delivery to storage**: Automatic check-in
+    - **Storage to prep**: Movement tracking
+    - **Prep to production**: Usage monitoring
+    - **Waste tracking**: Spoilage documentation
+    
+    Visualize ingredient flow through your operation with Sankey diagrams.
+  </Tab>
+  
+  <Tab title="Equipment Performance">
+    Monitor equipment efficiency and utilization:
+    
+    - **Uptime percentages**
+    - **Production output rates**
+    - **Energy consumption**
+    - **Maintenance history**
+    
+    Identify underutilized equipment and optimization opportunities.
+  </Tab>
+  
+  <Tab title="Environmental Monitoring">
+    Track environmental conditions that affect production:
+    
+    - **Humidity levels**
+    - **Air quality**
+    - **Ambient temperature**
+    - **Light levels**
+    
+    Correlate environmental factors with quality outcomes.
+  </Tab>
+</Tabs>
+
+---
+
+## Predictive Analytics
+
+### Demand Forecasting
+
+Our AI-powered demand forecasting uses multiple machine learning models for industry-leading accuracy.
+
+**Forecasting Models:**
+- **ARIMA**: Time series analysis for baseline predictions
+- **Prophet**: Seasonal decomposition and trend analysis
+- **Neural Networks**: Deep learning for complex patterns
+- **Ensemble**: Combined predictions for optimal accuracy
+
+```graphql
+# Example: GraphQL query for AI forecast
+query GetAIForecast {
+  forecast(location: "loc_123", days: 14) {
+    predictions {
+      date
+      recipes {
+        name
+        predictedDemand
+        confidenceInterval {
+          lower
+          upper
+        }
+        confidence
+      }
+      factors {
+        weather {
+          condition
+          temperature
+          impact_percentage
+        }
+        events {
+          name
+          distance_miles
+          expected_attendance
+          impact_percentage
+        }
+        seasonality {
+          day_of_week_factor
+          seasonal_factor
+          holiday_factor
+        }
+      }
+    }
+    accuracy_metrics {
+      mape
+      rmse
+      bias
+    }
+  }
+}
+```
+
+**Forecast Accuracy:**
+- **7-day forecast**: 98% accuracy (MAPE < 2%)
+- **14-day forecast**: 95% accuracy (MAPE < 5%)
+- **30-day forecast**: 90% accuracy (MAPE < 10%)
+
+<Tip>
+  Forecast accuracy improves over time as AI learns your specific patterns. Most customers see 5-10% accuracy improvement within 60 days.
+</Tip>
+
+### Cost Optimization
+
+AI identifies cost-saving opportunities across your operation.
+
+<CardGroup cols={2}>
+  <Card title="Ingredient Substitutions" icon="repeat">
+    AI recommends ingredient substitutions that maintain quality while reducing costs:
+    
+    - Quality-equivalent alternatives
+    - Seasonal availability optimization
+    - Bulk purchase opportunities
+    - Supplier negotiations leverage
+  </Card>
+  <Card title="Supplier Optimization" icon="handshake">
+    Compare suppliers across multiple dimensions:
+    
+    - Price competitiveness
+    - Quality consistency
+    - Delivery reliability
+    - Payment terms
+  </Card>
+  <Card title="Production Scheduling" icon="calendar">
+    Optimize when you produce to minimize costs:
+    
+    - Energy cost timing (off-peak production)
+    - Staff scheduling efficiency
+    - Equipment utilization
+    - Batch size optimization
+  </Card>
+  <Card title="Waste Reduction" icon="trash">
+    Identify and eliminate waste sources:
+    
+    - Over-production reduction
+    - Spoilage prevention
+    - Recipe yield optimization
+    - Portion control improvement
+  </Card>
+</CardGroup>
+
+```javascript
+// Example: Get cost optimization recommendations
+const recommendations = await salsa.ai.analytics.getCostOptimizations({
+  location: "kitchen_1",
+  period: "30d",
+  min_impact: 1000  // Only show opportunities >$1,000/month
+});
+
+recommendations.forEach(rec => {
+  console.log(`${rec.category}: ${rec.description}`);
+  console.log(`  Estimated savings: $${rec.monthly_savings}/month`);
+  console.log(`  Implementation difficulty: ${rec.difficulty}`);
+  console.log(`  ROI: ${rec.roi}x in ${rec.payback_months} months`);
+});
+```
+
+---
+
+## Financial Analytics
+
+<CardGroup cols={2}>
+  <Card title="AI-Enhanced Cost Analysis" icon="chart-line">
+    Predictive cost trends, anomaly detection in expenses, supplier price
+    optimization, and automated budget alerts.
+    
+    **Features:**
+    - Cost per recipe analysis
+    - Ingredient price trending
+    - Waste cost tracking
+    - Labor cost optimization
+  </Card>
+  <Card title="Profitability Optimization" icon="arrow-trend-up">
+    Recipe profitability predictions, price optimization recommendations, cost
+    reduction opportunities, and margin improvement strategies.
+    
+    **Features:**
+    - Recipe margin analysis
+    - Menu engineering insights
+    - Price elasticity modeling
+    - Competitive pricing intelligence
+  </Card>
+</CardGroup>
+
+### Profitability Dashboard
+
+```javascript
+// Example: Get profitability analysis
+const profitability = await salsa.analytics.getProfitability({
+  location: "kitchen_1",
+  period: "30d",
+  group_by: "recipe"
+});
+
+profitability.recipes.forEach(recipe => {
+  console.log(`${recipe.name}:`);
+  console.log(`  Revenue: $${recipe.revenue}`);
+  console.log(`  COGS: $${recipe.cogs}`);
+  console.log(`  Gross Margin: ${recipe.margin}%`);
+  console.log(`  Contribution: ${recipe.contribution_to_profit}%`);
+});
+```
+
+---
+
+## Operational Intelligence
+
+### Efficiency Optimization
+
+AI analyzes operational efficiency and identifies improvement opportunities.
+
+<CardGroup cols={2}>
+  <Card title="Bottleneck Identification" icon="triangle-exclamation">
+    AI pinpoints production bottlenecks:
+    
+    - Equipment capacity constraints
+    - Staff allocation inefficiencies
+    - Process flow issues
+    - Supply chain delays
+  </Card>
+  <Card title="Staff Optimization" icon="users">
+    Optimize staffing levels and schedules:
+    
+    - Demand-based scheduling
+    - Skill mix optimization
+    - Labor cost reduction
+    - Productivity tracking
+  </Card>
+  <Card title="Equipment Utilization" icon="gauge">
+    Maximize equipment ROI:
+    
+    - Utilization rate tracking
+    - Capacity planning
+    - Replacement timing
+    - Lease vs. buy analysis
+  </Card>
+  <Card title="Downtime Reduction" icon="wrench">
+    Minimize production interruptions:
+    
+    - Predictive maintenance
+    - Rapid issue resolution
+    - Backup equipment planning
+    - Process redundancy
+  </Card>
+</CardGroup>
+
+### IoT Performance Analytics
+
+Real-time operational monitoring powered by IoT sensors.
+
+<Accordion title="Sensor Health Monitoring">
+  Track the health of your IoT sensor network:
+  
+  - **Connectivity status**: 99.9% uptime SLA
+  - **Battery levels**: Proactive replacement alerts
+  - **Calibration status**: Automatic drift detection
+  - **Data quality**: Anomaly flagging
+  
+  Dashboard shows sensor network health at a glance with color-coded status indicators.
+</Accordion>
+
+<Accordion title="Equipment Performance Tracking">
+  Monitor all connected equipment:
+  
+  - **Operating hours**: Track total runtime
+  - **Efficiency metrics**: Output per hour
+  - **Energy consumption**: Cost analysis
+  - **Maintenance history**: Complete records
+</Accordion>
+
+<Accordion title="Environmental Analysis">
+  Understand how environmental conditions affect your operation:
+  
+  - **Temperature impact** on quality
+  - **Humidity effects** on ingredient storage
+  - **Seasonal patterns** in production efficiency
+  - **Energy usage** optimization opportunities
+</Accordion>
+
+---
+
+## Custom Reports
+
+### AI Report Builder
+
+Create custom reports using natural language - no SQL or technical skills required.
+
+<Steps>
+  <Step title="Ask in Natural Language">
+    Describe the report you want in plain English.
+    
+    Examples:
+    - "Show me cost per gallon for each salsa recipe last month"
+    - "Compare quality scores across all locations in Q4"
+    - "What were my top 5 most profitable days last quarter?"
+    
+    <Info>
+      The AI understands complex queries including comparisons, time ranges, and multiple metrics.
+    </Info>
+  </Step>
+  <Step title="AI Generates Report">
+    AI selects optimal metrics, visualizations, and filters automatically.
+    
+    The system chooses:
+    - Best chart types for your data
+    - Appropriate time granularity
+    - Relevant comparison metrics
+    - Statistical significance indicators
+  </Step>
+  <Step title="Review & Refine">
+    Adjust the AI-generated report to match your preferences.
+    
+    You can:
+    - Change visualization types
+    - Add or remove metrics
+    - Adjust filters
+    - Customize formatting
+  </Step>
+  <Step title="Automate & Share">
+    Schedule delivery with AI-generated insights included.
+    
+    Options:
+    - Email to stakeholders
+    - Slack/Teams integration
+    - Automated dashboard updates
+    - PDF generation
+  </Step>
+</Steps>
+
+### AI-Generated Insights
+
+Every report includes AI-generated insights:
+
+<Tabs>
+  <Tab title="Key Findings">
+    AI highlights the most important findings:
+    
+    - Significant changes from previous periods
+    - Unexpected patterns or anomalies
+    - Record highs or lows
+    - Notable trends
+    
+    Example:
+    > "Quality scores improved 12% this month, primarily driven by better supplier performance from Fresh Farms Co. (+18%) and optimized mixing times."
+  </Tab>
+  
+  <Tab title="Trend Analysis">
+    AI identifies and explains trends:
+    
+    - Direction (increasing, decreasing, stable)
+    - Rate of change
+    - Contributing factors
+    - Future predictions
+    
+    Example:
+    > "Production costs are trending downward (-3.2% per month). At this rate, you'll achieve your cost reduction target 6 weeks early."
+  </Tab>
+  
+  <Tab title="Recommendations">
+    Actionable recommendations based on your data:
+    
+    - Specific action items
+    - Expected impact
+    - Implementation difficulty
+    - Priority ranking
+    
+    Example:
+    > "Consider increasing production of Spicy Chipotle by 15% - it has the highest margin (47%) and demand is growing 8% month-over-month."
+  </Tab>
+  
+  <Tab title="Comparisons">
+    AI provides context through comparisons:
+    
+    - vs. previous period
+    - vs. same period last year
+    - vs. other locations
+    - vs. industry benchmarks
+    
+    Example:
+    > "Your quality scores (9.1/10) are 8% above the industry average (8.4/10) and 12% better than this time last year."
+  </Tab>
+</Tabs>
+
+---
+
+## Advanced Visualizations
+
+### Real-Time Dashboards
+
+Interactive, live-updating dashboards provide instant visibility into your operation.
+
+<CardGroup cols={2}>
+  <Card title="IoT Sensor Visualization" icon="sensor">
+    Live sensor data with 30-second updates:
+    - Temperature heat maps
+    - RFID movement flows
+    - Equipment status indicators
+    - Environmental conditions
+  </Card>
+  <Card title="Production Floor Heat Maps" icon="map">
+    Visual representation of production activity:
+    - Busy vs. idle areas
+    - Equipment utilization
+    - Staff location tracking
+    - Bottleneck identification
+  </Card>
+  <Card title="AI Prediction Confidence" icon="brain">
+    Visualize prediction confidence levels:
+    - Confidence interval bands
+    - Model accuracy metrics
+    - Prediction vs. actual overlays
+    - Scenario comparisons
+  </Card>
+  <Card title="Comparative Performance" icon="chart-column">
+    Side-by-side comparisons:
+    - Multi-location dashboards
+    - Recipe performance
+    - Time period comparisons
+    - Benchmark overlays
+  </Card>
+</CardGroup>
+
+### Predictive Charts
+
+Visualize future predictions alongside historical data.
+
+```javascript
+// Example: Create predictive chart
+const chartData = await salsa.analytics.getPredictiveChart({
+  metric: "demand",
+  recipe: "house_salsa",
+  historical_days: 90,
+  forecast_days: 30,
+  include_confidence_bands: true
+});
+
+// Chart includes:
+// - Historical actual demand (line)
+// - Predicted demand (line)
+// - 95% confidence interval (shaded area)
+// - Key events (markers)
+// - Trend line (dotted)
+```
+
+---
+
+## Data Export
+
+Flexible export options for all your reporting needs.
+
+<CardGroup cols={2}>
+  <Card title="CSV / Excel" icon="file-excel">
+    Export your data with AI insights and annotations included for offline
+    analysis.
+    
+    **Features:**
+    - Multiple sheets for complex reports
+    - Formatted headers and styling
+    - Embedded charts and graphs
+    - AI insights as comments
+  </Card>
+  <Card title="PDF Reports" icon="file-pdf">
+    Polished reports with AI-generated summaries ready to share with
+    stakeholders.
+    
+    **Features:**
+    - Professional formatting
+    - Company branding
+    - Executive summaries
+    - Appendices with details
+  </Card>
+  <Card title="JSON / GraphQL" icon="code">
+    Raw data access for custom integrations and third-party applications.
+    
+    **Features:**
+    - Real-time API access
+    - Webhook notifications
+    - Batch exports
+    - Custom queries
+  </Card>
+  <Card title="Power BI / Tableau" icon="chart-bar">
+    Native connector integration for seamless business intelligence workflows.
+    
+    **Features:**
+    - Direct database connection
+    - Automatic schema updates
+    - Live data refresh
+    - Pre-built templates
+  </Card>
+</CardGroup>
+
+```javascript
+// Example: Export data to Excel
+const exportJob = await salsa.analytics.export({
+  format: "excel",
+  report_type: "profitability",
+  period: "30d",
+  include_ai_insights: true,
+  email_to: "manager@restaurant.com"
+});
+
+console.log(`Export job started: ${exportJob.id}`);
+console.log(`Estimated completion: ${exportJob.eta}`);
+```
+
+---
+
+## AI Recommendations
+
+### Daily AI Briefing
+
+Receive daily AI-generated insights delivered to your inbox every morning.
+
+<Note>
+  **New in v2.0**: AI analyzes all your data overnight and delivers a
+  personalized daily briefing with the most important insights and recommended
+  actions.
+</Note>
+
+**Daily Briefing Includes:**
+
+<Accordion title="Top 3 Opportunities">
+  AI identifies your biggest improvement opportunities:
+  
+  - Cost reduction possibilities
+  - Revenue growth opportunities
+  - Quality improvement areas
+  - Efficiency gains
+  
+  Each opportunity includes estimated impact and implementation steps.
+</Accordion>
+
+<Accordion title="Critical Alerts">
+  Important issues requiring attention:
+  
+  - Quality problems
+  - Cost overruns
+  - Equipment issues
+  - Inventory shortages
+  
+  Prioritized by urgency and impact.
+</Accordion>
+
+<Accordion title="Performance Highlights">
+  Notable achievements and positive trends:
+  
+  - Record production days
+  - Quality improvements
+  - Cost savings achieved
+  - Customer feedback wins
+  
+  Celebrate successes and understand what drove them.
+</Accordion>
+
+<Accordion title="Actionable Recommendations">
+  Specific actions to take today:
+  
+  - Production adjustments
+  - Inventory orders
+  - Quality interventions
+  - Staff scheduling
+  
+  One-click execution for many recommendations.
+</Accordion>
+
+### Continuous Learning
+
+The AI system improves over time as it learns from your operation.
+
+**How AI Learns:**
+
+1. **Outcome Tracking**: Monitors results of its recommendations
+2. **Accuracy Measurement**: Compares predictions to actual results
+3. **Pattern Recognition**: Identifies new trends and correlations
+4. **Model Refinement**: Automatically adjusts algorithms
+5. **Personalization**: Adapts to your specific operation
+
+<Tip>
+  Provide feedback on AI recommendations to help the system learn faster. Use the thumbs up/down buttons in the dashboard.
+</Tip>
+
+---
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Review Daily Briefings" icon="envelope">
+    Check your AI briefing every morning - it highlights issues and opportunities you might miss.
+  </Card>
+  <Card title="Act on Predictions" icon="bolt">
+    Use demand forecasts to adjust production schedules proactively, not reactively.
+  </Card>
+  <Card title="Export Reports Regularly" icon="download">
+    Share insights with your team. Reports with AI insights drive better decision-making.
+  </Card>
+  <Card title="Monitor IoT Sensors" icon="sensor">
+    Check sensor health weekly to ensure data quality for accurate analytics.
+  </Card>
+  <Card title="Customize Dashboards" icon="dashboard">
+    Create role-specific dashboards so everyone sees the metrics that matter to them.
+  </Card>
+  <Card title="Track Recommendation ROI" icon="chart-pie">
+    Measure the impact of AI recommendations to build confidence in the system.
+  </Card>
+</CardGroup>
+
+---
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="Inventory Management" icon="warehouse" href="/features/inventory">
+    See how inventory data powers analytics and forecasting
+  </Card>
+  <Card title="Quality Control" icon="flask" href="/features/quality">
+    Learn about quality analytics and improvement tracking
+  </Card>
+  <Card title="API Reference" icon="code" href="/api/overview">
+    Complete API documentation for analytics endpoints
+  </Card>
+  <Card title="Advanced Usage" icon="rocket" href="/features/ai-forecasting">
+    Deep dive into AI forecasting and custom integrations
+  </Card>
+</CardGroup>

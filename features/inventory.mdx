@@ -1,0 +1,525 @@
+---
+title: "Inventory Management"
+description: "AI-powered inventory tracking with IoT sensors and predictive analytics for intelligent stock management"
+icon: "warehouse"
+---
+
+## Overview
+
+Salsa as a Service v2.0 transforms inventory management with artificial intelligence and IoT sensor integration. Our system provides intelligent tracking, predictive ordering, and automated waste prevention to help you optimize your ingredient inventory and reduce costs by up to 60%.
+
+<CardGroup cols={3}>
+  <Card title="AI-Powered Tracking" icon="brain">
+    Predictive stock levels, automated reordering, usage predictions, and anomaly
+    detection powered by machine learning.
+  </Card>
+  <Card title="IoT Sensor Integration" icon="signal">
+    RFID tracking, temperature sensors, weight sensors, and freshness detection
+    for real-time monitoring.
+  </Card>
+  <Card title="Smart Waste Prevention" icon="leaf">
+    Predicts optimal order quantities, suggests recipes for near-expiry ingredients,
+    and reduces waste by up to 60%.
+  </Card>
+</CardGroup>
+
+---
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect IoT Sensors">
+    Install RFID tags and temperature sensors in your storage areas. Our hardware partners provide easy-to-install sensor kits that integrate seamlessly with the platform.
+    
+    <Info>
+      IoT sensors automatically sync with the cloud every 30 seconds, providing real-time visibility into your inventory.
+    </Info>
+  </Step>
+  <Step title="Enable AI Features">
+    Activate AI predictions and import 90 days of historical data. The AI engine requires at least 60 days of data to generate accurate predictions.
+    
+    ```javascript
+    // Example: Enable AI predictions
+    const aiConfig = await salsa.ai.inventory.enable({
+      location: "kitchen_1",
+      historical_data_days: 90,
+      prediction_horizon: 14
+    });
+    ```
+  </Step>
+  <Step title="Configure Auto-Ordering">
+    Set up automated ordering rules and supplier preferences. Define approval workflows for orders above certain thresholds.
+  </Step>
+  <Step title="Monitor & Optimize">
+    Let AI learn from your patterns and optimize over time. Review weekly insights to understand how the system is improving your operations.
+  </Step>
+</Steps>
+
+---
+
+## AI-Powered Features
+
+### Predictive Stock Levels
+
+Our machine learning models analyze historical usage patterns, seasonal trends, and upcoming events to predict when you'll run out of ingredients.
+
+```javascript
+// Example: Get AI inventory predictions
+const predictions = await salsa.ai.inventory.predict({
+  location: "kitchen_1",
+  horizon_days: 7,
+  include_confidence_intervals: true
+});
+
+console.log(`Predicted reorder date: ${predictions.reorder_date}`);
+console.log(`Confidence: ${predictions.confidence}%`);
+
+// Example response
+{
+  "ingredient_id": "ing_123",
+  "name": "Roma Tomatoes",
+  "current_stock": 25.5,
+  "predicted_depletion_date": "2024-01-18",
+  "reorder_date": "2024-01-15",
+  "recommended_quantity": 50.0,
+  "confidence": 94.5,
+  "factors": {
+    "seasonal_trend": "+12%",
+    "upcoming_events": "Weekend rush expected",
+    "weather_impact": "Sunny weather (+5%)"
+  }
+}
+```
+
+<Note>
+  **New in v2.0**: AI learns your usage patterns and automatically adjusts alert
+  thresholds based on historical data and upcoming events.
+</Note>
+
+### Usage Pattern Analysis
+
+The AI identifies trends and patterns in your ingredient usage:
+
+<Accordion title="Peak Usage Times">
+  AI identifies high-demand periods by:
+  - Day of week analysis
+  - Seasonal variations
+  - Event-driven spikes
+  - Weather correlations
+  
+  Use these insights to optimize ordering schedules and reduce carrying costs.
+</Accordion>
+
+<Accordion title="Recipe Popularity Trends">
+  Track which recipes are driving ingredient consumption:
+  - Most popular salsa varieties
+  - Seasonal recipe preferences
+  - Regional taste variations
+  - Trending flavor profiles
+</Accordion>
+
+<Accordion title="Waste Hotspots">
+  Identify where waste occurs and why:
+  - Over-ordering patterns
+  - Expired ingredient tracking
+  - Spoilage rate analysis
+  - Quality degradation monitoring
+</Accordion>
+
+<Accordion title="Cost Optimization Opportunities">
+  AI suggests ways to reduce costs:
+  - Bulk purchase recommendations
+  - Supplier price comparisons
+  - Ingredient substitution options
+  - Order timing optimization
+</Accordion>
+
+---
+
+## Stock Management
+
+### Intelligent Low Stock Alerts
+
+Traditional inventory systems use static thresholds. Our AI-powered alerts adapt to your business:
+
+<CardGroup cols={2}>
+  <Card title="Predictive Thresholds" icon="bell">
+    Alert thresholds adjust automatically based on predicted demand, not just current stock levels.
+  </Card>
+  <Card title="Seasonal Adjustments" icon="calendar">
+    The system learns seasonal patterns and adjusts alerts accordingly. Higher thresholds during peak seasons.
+  </Card>
+  <Card title="Event-Based Predictions" icon="users">
+    Integrates with local event calendars to predict demand spikes from concerts, festivals, and sporting events.
+  </Card>
+  <Card title="Supplier Lead Time Optimization" icon="truck">
+    Considers each supplier's delivery time to ensure you never run out before the next delivery.
+  </Card>
+</CardGroup>
+
+```javascript
+// Example: Configure intelligent alerts
+const alertConfig = await salsa.inventory.alerts.configure({
+  ingredient_id: "ing_123",
+  alert_type: "ai_predictive",
+  lead_time_days: 2,
+  safety_stock_multiplier: 1.5,
+  notify: ["manager@restaurant.com", "chef@restaurant.com"]
+});
+```
+
+### Automated Supplier Integration
+
+Seamlessly connect with your suppliers for automatic ordering:
+
+<CardGroup cols={2}>
+  <Card title="Automatic PO Generation" icon="file-invoice">
+    Purchase orders are automatically generated based on predicted needs and sent to suppliers via email or EDI.
+  </Card>
+  <Card title="Price Comparison" icon="dollar-sign">
+    Compare prices across multiple suppliers in real-time and select the best option automatically.
+  </Card>
+  <Card title="Quality-Based Recommendations" icon="star">
+    AI considers supplier quality scores, not just price. Tracks quality issues and adjusts supplier rankings.
+  </Card>
+  <Card title="Delivery Schedule Optimization" icon="clock">
+    Coordinate deliveries to minimize disruption and ensure fresh ingredients arrive when needed.
+  </Card>
+</CardGroup>
+
+```javascript
+// Example: Enable AI auto-ordering
+const autoOrder = await salsa.ai.inventory.enableAutoOrder({
+  location: "kitchen_1",
+  max_order_value: 5000,
+  approval_required_over: 1000,
+  preferred_suppliers: ["sysco", "us_foods"],
+  quality_weight: 0.6,  // 60% quality, 40% price
+  delivery_window: "morning"
+});
+
+console.log(`Auto-ordering enabled: ${autoOrder.status}`);
+```
+
+<Warning>
+  **Approval Workflows**: Always configure approval requirements for large orders. We recommend requiring approval for orders over $1,000.
+</Warning>
+
+---
+
+## IoT Dashboard
+
+Real-time monitoring of all your connected sensors provides unprecedented visibility into your inventory.
+
+### Live Sensor Monitoring
+
+<Tabs>
+  <Tab title="Temperature Monitoring">
+    Monitor temperature across all storage areas:
+    
+    - **Walk-in Coolers**: Ensure 34-38°F range
+    - **Freezers**: Maintain 0°F or below
+    - **Dry Storage**: Track ambient temperature
+    - **Prep Areas**: Monitor food safety zones
+    
+    <Info>
+      Automatic alerts trigger when temperatures deviate from safe ranges for more than 5 minutes.
+    </Info>
+    
+    ```javascript
+    // Example: Query temperature sensors
+    const temps = await salsa.iot.sensors.temperature.getAll({
+      location: "kitchen_1",
+      status: "active"
+    });
+    
+    temps.forEach(sensor => {
+      console.log(`${sensor.name}: ${sensor.current_temp}°F`);
+      if (sensor.is_out_of_range) {
+        console.log(`⚠️  Alert: ${sensor.alert_message}`);
+      }
+    });
+    ```
+  </Tab>
+  
+  <Tab title="RFID Tracking">
+    Track ingredient movement with RFID technology:
+    
+    - **Automatic check-in** when deliveries arrive
+    - **Location tracking** within your facility
+    - **First-in-first-out (FIFO)** enforcement
+    - **Expiry date tracking** with automatic alerts
+    
+    RFID tags provide 99.9% accuracy compared to manual tracking.
+    
+    ```javascript
+    // Example: Track ingredient with RFID
+    const rfidReading = await salsa.iot.rfid.scan({
+      tag_id: "RFID-TOM-001",
+      action: "move",
+      from_location: "storage_cooler_1",
+      to_location: "prep_station_2"
+    });
+    
+    console.log(`Tracked: ${rfidReading.ingredient_name}`);
+    console.log(`Days until expiry: ${rfidReading.days_to_expiry}`);
+    ```
+  </Tab>
+  
+  <Tab title="Weight Sensors">
+    Continuously monitor ingredient quantities:
+    
+    - **Real-time weight readings** updated every 30 seconds
+    - **Automatic stock updates** when ingredients are used
+    - **Theft detection** for unusual weight changes
+    - **Yield tracking** for better cost analysis
+    
+    <Tip>
+      Place weight sensors under your most expensive ingredients to track usage and prevent waste.
+    </Tip>
+  </Tab>
+  
+  <Tab title="Freshness Detection">
+    Advanced sensors detect ingredient freshness:
+    
+    - **Gas sensors** detect ethylene and spoilage compounds
+    - **Color analysis** identifies visual degradation
+    - **Texture sensors** for produce firmness
+    - **pH monitoring** for acidic ingredients
+    
+    AI combines all sensor data to predict optimal usage dates, often more accurate than printed expiration dates.
+  </Tab>
+</Tabs>
+
+---
+
+## API Reference
+
+### Core Inventory Endpoints
+
+#### Get All Ingredients
+
+```http
+GET /v2/ingredients
+```
+
+Retrieve a list of all ingredients in your inventory with current stock levels, IoT sensor data, and AI predictions.
+
+**Query Parameters:**
+- `location` (string): Filter by location ID
+- `category` (string): Filter by ingredient category
+- `low_stock` (boolean): Only show low stock items
+- `include_predictions` (boolean): Include AI predictions in response
+
+**Response:**
+```json
+{
+  "data": [
+    {
+      "id": "ing_123",
+      "name": "Roma Tomatoes",
+      "category": "vegetables",
+      "current_stock": 25.5,
+      "unit": "lbs",
+      "supplier": "Fresh Farms Co.",
+      "last_updated": "2024-01-15T10:30:00Z",
+      "expiry_date": "2024-01-20T00:00:00Z",
+      "quality_score": 8.5,
+      "iot_data": {
+        "temperature": 36.5,
+        "rfid_last_scan": "2024-01-15T10:25:00Z",
+        "weight_sensor_reading": 25.4
+      },
+      "ai_predictions": {
+        "predicted_depletion_date": "2024-01-18",
+        "recommended_reorder_quantity": 50.0,
+        "confidence": 94.5
+      }
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "per_page": 50,
+    "total": 127
+  }
+}
+```
+
+#### Update Ingredient Stock
+
+```http
+PUT /v2/ingredients/{ingredient_id}/stock
+```
+
+**Request Body:**
+```json
+{
+  "quantity": 30.0,
+  "unit": "lbs",
+  "transaction_type": "purchase",
+  "notes": "New shipment received",
+  "supplier_id": "sup_456",
+  "cost_per_unit": 2.50
+}
+```
+
+#### Enable AI Auto-Ordering
+
+```http
+POST /v2/ai/inventory/auto-order
+```
+
+**Request Body:**
+```json
+{
+  "location": "kitchen_1",
+  "enabled": true,
+  "max_order_value": 5000,
+  "approval_required_over": 1000,
+  "preferred_suppliers": ["sysco", "us_foods"],
+  "reorder_trigger": "forecast_based",
+  "lead_time_buffer_days": 2,
+  "safety_stock_multiplier": 1.5
+}
+```
+
+<Tip>
+  For complete API documentation, see our [API Reference](/api-reference) section.
+</Tip>
+
+---
+
+## Advanced Workflows
+
+### Automated Reordering Workflow
+
+<Steps>
+  <Step title="AI Detects Low Stock">
+    The system continuously monitors stock levels and predicts when you'll run out based on usage patterns and upcoming demand.
+  </Step>
+  <Step title="Generate Purchase Order">
+    When predicted stock falls below the reorder point, AI automatically generates a purchase order with optimal quantities.
+  </Step>
+  <Step title="Supplier Selection">
+    AI selects the best supplier based on price, quality scores, delivery time, and current availability.
+  </Step>
+  <Step title="Approval (if required)">
+    If the order exceeds your approval threshold, it's sent to managers for review. Orders below the threshold are sent automatically.
+  </Step>
+  <Step title="Order Tracking">
+    Track delivery status in real-time. Receive notifications when orders are confirmed, shipped, and delivered.
+  </Step>
+  <Step title="Automatic Stock Update">
+    When RFID tags detect the delivery, inventory is automatically updated. No manual data entry required.
+  </Step>
+</Steps>
+
+### Waste Prevention Workflow
+
+<Steps>
+  <Step title="Freshness Monitoring">
+    IoT sensors continuously monitor ingredient freshness and predict optimal usage dates.
+  </Step>
+  <Step title="Smart Alerts">
+    When ingredients approach their expiry date, the system alerts kitchen staff with specific recipe recommendations.
+  </Step>
+  <Step title="Recipe Suggestions">
+    AI suggests recipes that use near-expiry ingredients, prioritizing high-margin items.
+  </Step>
+  <Step title="Production Scheduling">
+    Automatically adjust production schedules to use older ingredients first, following FIFO principles.
+  </Step>
+  <Step title="Waste Tracking">
+    Log any waste with categorization (spoilage, over-production, damaged) to identify improvement opportunities.
+  </Step>
+</Steps>
+
+---
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Import Historical Data" icon="clock-rotate-left">
+    Import at least 90 days of historical usage data for accurate AI predictions. More data leads to better forecasts.
+  </Card>
+  <Card title="Regular IoT Calibration" icon="sliders">
+    Calibrate weight sensors monthly and temperature sensors quarterly to maintain accuracy.
+  </Card>
+  <Card title="Review AI Insights Weekly" icon="chart-line">
+    Check the AI insights dashboard weekly to understand trends and optimization opportunities.
+  </Card>
+  <Card title="Set Realistic Approval Thresholds" icon="shield-check">
+    Configure approval workflows that balance automation with oversight. We recommend $1,000 as a starting threshold.
+  </Card>
+  <Card title="Track Supplier Quality" icon="star">
+    Rate suppliers after each delivery. AI uses quality scores to make better ordering decisions.
+  </Card>
+  <Card title="Monitor Waste Metrics" icon="chart-pie">
+    Review waste reports monthly. Our customers reduce waste by 40-60% within the first 3 months.
+  </Card>
+</CardGroup>
+
+---
+
+## Troubleshooting
+
+<Accordion title="IoT sensors showing offline status">
+  **Common causes:**
+  - WiFi connectivity issues in storage areas
+  - Sensor batteries need replacement (lasts 6-12 months)
+  - Sensor firmware needs updating
+  
+  **Solutions:**
+  - Check WiFi signal strength in sensor locations
+  - Replace batteries (LED indicator will flash red when low)
+  - Update firmware via the mobile app
+  
+  <Info>
+    Sensors automatically reconnect when connectivity is restored. Historical data is preserved.
+  </Info>
+</Accordion>
+
+<Accordion title="AI predictions seem inaccurate">
+  **Common causes:**
+  - Insufficient historical data (need at least 60 days)
+  - Recent business changes not reflected in data
+  - Unusual events affecting normal patterns
+  
+  **Solutions:**
+  - Wait for more data collection (predictions improve over time)
+  - Mark unusual periods as "anomalies" so AI learns to ignore them
+  - Adjust seasonal settings in AI configuration
+  
+  <Tip>
+    AI prediction accuracy improves by 5-10% each month as it learns your patterns.
+  </Tip>
+</Accordion>
+
+<Accordion title="Auto-ordering not triggering">
+  **Checklist:**
+  - [ ] Auto-ordering is enabled in settings
+  - [ ] Supplier integrations are configured
+  - [ ] Stock levels are being updated (manually or via IoT)
+  - [ ] Reorder points are set correctly
+  
+  Check the auto-order logs in Settings > Inventory > Auto-Order > Logs to see detailed status.
+</Accordion>
+
+---
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="Quality Control" icon="flask" href="/features/quality">
+    Learn how inventory quality affects production outcomes
+  </Card>
+  <Card title="Analytics" icon="chart-line" href="/features/analytics">
+    View inventory analytics and cost optimization reports
+  </Card>
+  <Card title="API Reference" icon="code" href="/api/overview">
+    Complete API documentation for inventory endpoints
+  </Card>
+  <Card title="Integrations" icon="plug" href="/features/integrations">
+    Connect your inventory system with suppliers and accounting software
+  </Card>
+</CardGroup>

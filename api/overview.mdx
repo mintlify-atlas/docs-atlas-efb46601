@@ -1,0 +1,396 @@
+---
+title: 'API Overview'
+description: 'Complete overview of the Salsa as a Service API v2.0 with base URLs, versioning, rate limits, and SDKs'
+---
+
+# API Overview
+
+Welcome to the Salsa as a Service API v2.0. Our REST API enables you to manage inventory, track production, create recipes, and analyze your salsa operations programmatically.
+
+## Base URL
+
+All API requests should be made to:
+
+```
+https://api.salsaasaservice.com/v2
+```
+
+<Note>
+  **New in v2.0**: GraphQL endpoint available at `https://api.salsaasaservice.com/graphql`
+</Note>
+
+## API Versions
+
+We maintain multiple API versions to ensure backward compatibility:
+
+<Tabs>
+  <Tab title="v2.0 (Current)">
+    **Base URL**: `https://api.salsaasaservice.com/v2`
+    
+    **Released**: January 2024
+    
+    **New Features**:
+    - GraphQL support for flexible queries
+    - Enhanced webhook events
+    - AI-powered forecasting endpoints
+    - Improved batch production tracking
+    - Advanced analytics and reporting
+  </Tab>
+  <Tab title="v1.0 (Legacy)">
+    **Base URL**: `https://api.salsaasaservice.com/v1`
+    
+    **Status**: Supported until December 2026
+    
+    **Note**: Consider migrating to v2.0 for access to new features and improved performance.
+  </Tab>
+</Tabs>
+
+## Core Endpoints
+
+The API is organized around four main resource categories:
+
+<CardGroup cols={2}>
+  <Card title="Inventory Management" icon="box" href="#">
+    Manage salsa ingredients, track stock levels, and monitor freshness with real-time updates.
+  </Card>
+  <Card title="Recipe Management" icon="book" href="#">
+    Create, update, and manage salsa recipes and production workflows with detailed ingredient tracking.
+  </Card>
+  <Card title="Production Tracking" icon="factory" href="#">
+    Track salsa production batches, quality metrics, and yield data across your operations.
+  </Card>
+  <Card title="Analytics & Reporting" icon="chart-line" href="#">
+    Access detailed analytics and generate custom reports for data-driven decision making.
+  </Card>
+</CardGroup>
+
+## Rate Limits
+
+API rate limits are enforced based on your subscription plan:
+
+| Plan | Requests Per Hour | Burst Limit |
+|------|------------------|-------------|
+| Free | 1,000 | 100/min |
+| Professional | 10,000 | 500/min |
+| Enterprise | 100,000 | 2,000/min |
+
+### Rate Limit Headers
+
+Every API response includes rate limit information in the headers:
+
+```http
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200
+```
+
+<CodeGroup>
+```javascript JavaScript
+// Check rate limit status
+const response = await fetch('https://api.salsaasaservice.com/v2/ingredients', {
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY'
+  }
+});
+
+const limit = response.headers.get('X-RateLimit-Limit');
+const remaining = response.headers.get('X-RateLimit-Remaining');
+const reset = response.headers.get('X-RateLimit-Reset');
+
+console.log(`${remaining}/${limit} requests remaining`);
+```
+
+```python Python
+import requests
+from datetime import datetime
+
+response = requests.get(
+    'https://api.salsaasaservice.com/v2/ingredients',
+    headers={'Authorization': 'Bearer YOUR_API_KEY'}
+)
+
+limit = response.headers.get('X-RateLimit-Limit')
+remaining = response.headers.get('X-RateLimit-Remaining')
+reset_timestamp = int(response.headers.get('X-RateLimit-Reset'))
+reset_time = datetime.fromtimestamp(reset_timestamp)
+
+print(f"{remaining}/{limit} requests remaining")
+print(f"Rate limit resets at: {reset_time}")
+```
+
+```php PHP
+<?php
+$ch = curl_init('https://api.salsaasaservice.com/v2/ingredients');
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Authorization: Bearer YOUR_API_KEY'
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HEADER, true);
+
+$response = curl_exec($ch);
+$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+$headers = substr($response, 0, $header_size);
+
+preg_match('/X-RateLimit-Limit: (\d+)/', $headers, $limit);
+preg_match('/X-RateLimit-Remaining: (\d+)/', $headers, $remaining);
+
+echo "{$remaining[1]}/{$limit[1]} requests remaining\n";
+?>
+```
+</CodeGroup>
+
+<Warning>
+  **Rate Limit Exceeded**: When you exceed your rate limit, the API returns a `429 Too Many Requests` status code. Implement exponential backoff in your applications to handle rate limiting gracefully.
+</Warning>
+
+## Official SDKs
+
+We provide officially supported SDKs for popular programming languages:
+
+<CardGroup cols={3}>
+  <Card 
+    title="JavaScript / Node.js" 
+    icon="js"
+    href="https://github.com/salsaasaservice/salsa-js"
+  >
+    Official SDK for JavaScript and Node.js applications with TypeScript support.
+  </Card>
+  <Card 
+    title="Python" 
+    icon="python"
+    href="https://github.com/salsaasaservice/salsa-python"
+  >
+    Python SDK for data analysis and automation workflows.
+  </Card>
+  <Card 
+    title="PHP" 
+    icon="php"
+    href="https://github.com/salsaasaservice/salsa-php"
+  >
+    PHP SDK for web applications and WordPress plugins.
+  </Card>
+</CardGroup>
+
+### SDK Installation
+
+<Tabs>
+  <Tab title="JavaScript">
+    ```bash
+    npm install @salsaasaservice/sdk
+    # or
+    yarn add @salsaasaservice/sdk
+    ```
+
+    ```javascript
+    import SalsaClient from '@salsaasaservice/sdk';
+
+    const client = new SalsaClient({
+      apiKey: 'YOUR_API_KEY',
+      version: 'v2'
+    });
+
+    // Get all ingredients
+    const ingredients = await client.ingredients.list();
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```bash
+    pip install salsa-sdk
+    ```
+
+    ```python
+    from salsa_sdk import SalsaClient
+
+    client = SalsaClient(
+        api_key='YOUR_API_KEY',
+        version='v2'
+    )
+
+    # Get all ingredients
+    ingredients = client.ingredients.list()
+    ```
+  </Tab>
+  <Tab title="PHP">
+    ```bash
+    composer require salsaasaservice/sdk
+    ```
+
+    ```php
+    <?php
+    require 'vendor/autoload.php';
+
+    use SalsaAsAService\SalsaClient;
+
+    $client = new SalsaClient([
+        'api_key' => 'YOUR_API_KEY',
+        'version' => 'v2'
+    ]);
+
+    // Get all ingredients
+    $ingredients = $client->ingredients->list();
+    ?>
+    ```
+  </Tab>
+</Tabs>
+
+## Webhooks
+
+Configure webhooks to receive real-time notifications about critical events in your salsa operations.
+
+### Supported Events
+
+| Event | Description | Payload |
+|-------|-------------|----------|
+| `ingredient.low_stock` | Triggered when ingredient stock falls below threshold | Ingredient ID, current stock, threshold |
+| `production.batch_completed` | Fired when a production batch is marked complete | Batch ID, recipe ID, quality score |
+| `quality.alert` | Sent when quality scores fall below acceptable levels | Batch ID, quality score, threshold |
+| `inventory.expiry_warning` | Alert for ingredients approaching expiry date | Ingredient ID, expiry date, days remaining |
+
+### Setting Up Webhooks
+
+<CodeGroup>
+```javascript JavaScript
+const response = await fetch('https://api.salsaasaservice.com/v2/webhooks', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    url: 'https://your-app.com/webhooks/salsa',
+    events: ['ingredient.low_stock', 'production.batch_completed'],
+    secret: 'your_webhook_secret'
+  })
+});
+
+const webhook = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://api.salsaasaservice.com/v2/webhooks',
+    headers={'Authorization': 'Bearer YOUR_API_KEY'},
+    json={
+        'url': 'https://your-app.com/webhooks/salsa',
+        'events': ['ingredient.low_stock', 'production.batch_completed'],
+        'secret': 'your_webhook_secret'
+    }
+)
+
+webhook = response.json()
+```
+
+```php PHP
+<?php
+$data = [
+    'url' => 'https://your-app.com/webhooks/salsa',
+    'events' => ['ingredient.low_stock', 'production.batch_completed'],
+    'secret' => 'your_webhook_secret'
+];
+
+$ch = curl_init('https://api.salsaasaservice.com/v2/webhooks');
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Authorization: Bearer YOUR_API_KEY',
+    'Content-Type: application/json'
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+$webhook = json_decode($response);
+?>
+```
+</CodeGroup>
+
+<Note>
+  **Webhook Security**: Always use the `secret` parameter to verify webhook authenticity. Each webhook request includes an `X-Salsa-Signature` header for verification.
+</Note>
+
+## Testing Environment
+
+Use our sandbox environment to test integrations without affecting production data:
+
+**Sandbox Base URL**:
+```
+https://api-sandbox.salsaasaservice.com/v2
+```
+
+**GraphQL Sandbox**:
+```
+https://api-sandbox.salsaasaservice.com/graphql
+```
+
+<Warning>
+  **Sandbox Data**: The sandbox environment uses test data only. No changes made in sandbox affect your production account.
+</Warning>
+
+### Sandbox API Key
+
+Get your sandbox API key from [Developer Settings](https://app.salsaasaservice.com/settings/api) in the dashboard. Sandbox keys are prefixed with `sandbox_`.
+
+## Error Handling
+
+The API uses standard HTTP status codes and returns detailed error information:
+
+### Error Response Format
+
+```json
+{
+  "error": {
+    "code": "INVALID_REQUEST",
+    "message": "The request body is missing required fields",
+    "details": {
+      "missing_fields": ["name", "category"]
+    }
+  }
+}
+```
+
+### HTTP Status Codes
+
+| Code | Status | Description |
+|------|--------|-------------|
+| 200 | OK | Request succeeded |
+| 201 | Created | Resource successfully created |
+| 400 | Bad Request | Invalid request data |
+| 401 | Unauthorized | Missing or invalid API key |
+| 403 | Forbidden | Insufficient permissions |
+| 404 | Not Found | Resource not found |
+| 422 | Unprocessable Entity | Validation errors |
+| 429 | Too Many Requests | Rate limit exceeded |
+| 500 | Internal Server Error | Server error |
+| 502 | Bad Gateway | Upstream service error |
+| 503 | Service Unavailable | Service temporarily unavailable |
+
+## Support Resources
+
+Need help with the API? We're here to assist:
+
+<CardGroup cols={2}>
+  <Card title="Email Support" icon="envelope">
+    Contact our API team at api-support@salsaasaservice.com
+  </Card>
+  <Card title="Developer Community" icon="discord">
+    Join our Discord server for real-time help
+  </Card>
+  <Card title="Documentation" icon="book">
+    Browse comprehensive guides and tutorials
+  </Card>
+  <Card title="Video Tutorials" icon="video">
+    Watch integration tutorials and walkthroughs
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/api/authentication">
+    Learn how to authenticate your API requests
+  </Card>
+  <Card title="Quickstart Guide" icon="rocket" href="#">
+    Build your first integration in 5 minutes
+  </Card>
+</CardGroup>

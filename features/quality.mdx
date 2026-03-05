@@ -1,0 +1,618 @@
+---
+title: "Quality Control"
+description: "AI-powered quality prediction with automated IoT testing systems for consistent, superior salsa production"
+icon: "flask"
+---
+
+## Overview
+
+Salsa as a Service v2.0 revolutionizes quality control with AI-powered predictive quality scoring, automated IoT testing equipment, and computer vision for visual inspection. Catch quality issues before they happen and maintain consistent excellence across every batch.
+
+<CardGroup cols={3}>
+  <Card title="Predictive Quality Scoring" icon="brain">
+    AI predicts final quality scores with 95% accuracy before batch completion, giving you time to intervene.
+  </Card>
+  <Card title="Automated IoT Testing" icon="flask">
+    pH meters, viscosity sensors, color sensors, and temperature probes test 100% of production automatically.
+  </Card>
+  <Card title="Computer Vision Inspection" icon="eye">
+    AI-powered cameras detect defects, contamination, and inconsistencies across every batch.
+  </Card>
+</CardGroup>
+
+<Note>
+  **New in v2.0**: Computer vision systems inspect 100% of production, compared to manual sampling in v1.0. This catches quality issues that random sampling might miss.
+</Note>
+
+---
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect IoT Testing Equipment">
+    Install pH meters, viscosity sensors, color sensors, and temperature probes in your production areas.
+    
+    Our hardware partners offer complete testing kits designed specifically for salsa production. Each sensor connects wirelessly and automatically syncs data to the cloud.
+    
+    <Info>
+      **Recommended Setup**: Install sensors at 3 key checkpoints - ingredient prep, mixing, and final packaging.
+    </Info>
+  </Step>
+  <Step title="Enable AI Quality Prediction">
+    Activate AI predictions in **Quality Control > AI Features** and import at least 90 days of historical quality data.
+    
+    ```javascript
+    // Example: Enable AI quality prediction
+    const aiQuality = await salsa.ai.quality.enable({
+      location: "kitchen_1",
+      historical_batches: 200,
+      prediction_model: "advanced"
+    });
+    ```
+    
+    The AI requires historical data to learn what makes a high-quality batch in your operation.
+  </Step>
+  <Step title="Configure Quality Thresholds">
+    Set your minimum quality scores and alert thresholds in **Quality Control > Standards**. AI will auto-adjust these over time based on your actual production.
+    
+    <Tip>
+      Start with industry standard thresholds (7.0/10 minimum). The system will recommend adjustments after analyzing your first 50 batches.
+    </Tip>
+  </Step>
+  <Step title="Set Up Computer Vision">
+    Position cameras at key production checkpoints and run the calibration routine via the mobile app.
+    
+    The system will guide you through optimal camera placement for maximum coverage.
+  </Step>
+  <Step title="Monitor & Improve">
+    Review AI quality insights daily and let the system learn your production patterns to improve predictions over time.
+    
+    Most customers see prediction accuracy improve from 85% to 95%+ within 60 days.
+  </Step>
+</Steps>
+
+---
+
+## AI Quality Prediction
+
+### Predictive Quality Scoring
+
+Our AI analyzes ingredient quality data and production conditions in real-time to predict final quality scores before batch completion.
+
+<CardGroup cols={2}>
+  <Card title="Ingredient Analysis" icon="flask">
+    Analyzes ingredient quality data and production conditions in real-time to
+    predict final quality scores with 95% accuracy.
+    
+    Factors analyzed:
+    - Ingredient freshness scores
+    - Supplier quality history
+    - Storage temperature compliance
+    - Days since delivery
+  </Card>
+  <Card title="Early Warning System" icon="bell">
+    Provides early warnings for potential issues before they impact your batch,
+    giving you time to intervene.
+    
+    Average warning time: 15-30 minutes before completion.
+  </Card>
+</CardGroup>
+
+```javascript
+// Example: Get AI quality prediction
+const prediction = await salsa.ai.quality.predict({
+  batch_id: "BATCH-2024-001",
+  current_stage: "mixing",
+  include_recommendations: true
+});
+
+console.log(`Predicted quality: ${prediction.score}/10`);
+console.log(`Confidence: ${prediction.confidence}%`);
+
+if (prediction.score < 8.0) {
+  console.log(`⚠️  Warning: ${prediction.warning_message}`);
+  console.log(`Recommendation: ${prediction.recommended_action}`);
+}
+
+// Example response
+{
+  "batch_id": "BATCH-2024-001",
+  "predicted_score": 7.2,
+  "confidence": 92,
+  "current_stage": "mixing",
+  "completion_percentage": 65,
+  "warning_message": "Predicted score below target (8.0)",
+  "recommended_action": "Increase mixing time by 2 minutes to improve consistency",
+  "factors": {
+    "ingredient_quality": 8.5,
+    "mixing_temperature": 6.8,  // Below optimal
+    "mixing_time": 7.0,          // Below optimal
+    "ph_level": 8.2
+  },
+  "time_to_intervention": "18 minutes"
+}
+```
+
+<Warning>
+  **Act Quickly**: When AI predicts quality issues, you typically have 15-30 minutes to make adjustments before the batch is complete.
+</Warning>
+
+### Anomaly Detection
+
+AI continuously monitors production parameters and flags unusual patterns that could affect quality.
+
+<Tabs>
+  <Tab title="Ingredient Anomalies">
+    The system detects unusual ingredient combinations and quality issues:
+    
+    **pH Level Variations**
+    - Monitors tomato acidity levels
+    - Detects over-acidic or under-acidic ingredients
+    - Recommends pH adjustments before mixing
+    
+    **Unusual Combinations**
+    - Flags ingredient ratios outside normal ranges
+    - Detects potential flavor imbalances
+    - Suggests recipe adjustments
+    
+    ```javascript
+    // Example: Check for ingredient anomalies
+    const check = await salsa.ai.quality.checkIngredients({
+      batch_id: "BATCH-2024-001",
+      ingredients: [
+        { id: "ing_123", quantity: 5.0 },
+        { id: "ing_456", quantity: 2.0 }
+      ]
+    });
+    
+    if (check.anomalies.length > 0) {
+      check.anomalies.forEach(anomaly => {
+        console.log(`⚠️  ${anomaly.type}: ${anomaly.message}`);
+      });
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Production Anomalies">
+    Real-time monitoring of production parameters:
+    
+    **Temperature Deviations**
+    - Tracks temperature throughout production
+    - Alerts when temperatures fall outside optimal range
+    - Historical correlation with quality scores
+    
+    **Inconsistent Mixing Times**
+    - Compares mixing duration to historical batches
+    - Detects under-mixing or over-mixing
+    - Recommends optimal mixing times
+    
+    **Equipment Performance**
+    - Monitors equipment efficiency
+    - Detects degraded performance
+    - Predicts maintenance needs
+    
+    <Info>
+      Production anomalies are detected in real-time. Kitchen staff receive mobile notifications immediately.
+    </Info>
+  </Tab>
+  
+  <Tab title="Environmental Factors">
+    External factors that can affect quality:
+    
+    - **Ambient temperature and humidity**
+    - **Seasonal ingredient variations**
+    - **Equipment temperature drift**
+    - **Production schedule impacts**
+    
+    AI learns how these factors affect your specific operation and adjusts predictions accordingly.
+  </Tab>
+</Tabs>
+
+---
+
+## IoT Automated Testing
+
+### Connected Testing Equipment
+
+Automated quality tests run continuously throughout production, with no manual intervention required.
+
+<CardGroup cols={2}>
+  <Card title="pH Meters" icon="flask">
+    Tracks pH levels throughout production to ensure optimal acidity and flavor consistency.
+    
+    - **Continuous monitoring** every 30 seconds
+    - **Target range**: 3.8 - 4.2 pH for most salsas
+    - **Automatic alerts** when outside range
+    - **Historical trending** to detect drift
+  </Card>
+  <Card title="Viscosity Sensors" icon="droplet">
+    Measures salsa consistency and texture to maintain uniformity across every batch.
+    
+    - **Real-time consistency** measurement
+    - **Texture profiling** for different salsa styles
+    - **Chunk size analysis** for chunky varieties
+    - **Flow rate monitoring**
+  </Card>
+  <Card title="Color Sensors" icon="eye">
+    Detects color variations that indicate ingredient quality or production issues.
+    
+    - **RGB color analysis**
+    - **Consistency checking** against master batch
+    - **Visual defect detection**
+    - **Ingredient freshness indicators**
+  </Card>
+  <Card title="Temperature Probes" icon="thermometer">
+    Monitors temperature at every production stage to ensure food safety compliance.
+    
+    - **Multi-point temperature tracking**
+    - **HACCP compliance** monitoring
+    - **Critical control point** verification
+    - **Automatic documentation**
+  </Card>
+</CardGroup>
+
+```javascript
+// Example: Query all sensor readings for a batch
+const sensors = await salsa.iot.quality.getAllReadings({
+  batch_id: "BATCH-2024-001",
+  stage: "mixing"
+});
+
+console.log("Current Quality Metrics:");
+console.log(`pH: ${sensors.ph.current_value} (target: ${sensors.ph.target_range})`);
+console.log(`Viscosity: ${sensors.viscosity.current_value} cP`);
+console.log(`Color: RGB(${sensors.color.r}, ${sensors.color.g}, ${sensors.color.b})`);
+console.log(`Temperature: ${sensors.temperature.current_value}°F`);
+
+// Check if all sensors are in range
+const allInRange = sensors.all_sensors.every(s => s.in_range);
+console.log(`Quality Check: ${allInRange ? '✅ PASS' : '❌ FAIL'}`);
+```
+
+### Computer Vision Inspection
+
+AI-powered cameras inspect 100% of your production for defects and inconsistencies.
+
+<CardGroup cols={2}>
+  <Card title="Visual Inspection" icon="eye">
+    Automated defect detection using cameras - catches contamination and
+    inconsistency across 100% of production.
+    
+    **Detects:**
+    - Foreign objects or contamination
+    - Color inconsistencies
+    - Separation or settling
+    - Surface defects
+    - Packaging issues
+  </Card>
+  <Card title="Portion & Packaging" icon="box">
+    Verifies portion control and packaging quality automatically on every batch.
+    
+    **Verifies:**
+    - Fill levels (±0.5 oz accuracy)
+    - Label placement
+    - Seal integrity
+    - Cap alignment
+    - Packaging defects
+  </Card>
+</CardGroup>
+
+<Accordion title="How Computer Vision Works">
+  Our computer vision system uses deep learning models trained on millions of salsa images:
+  
+  1. **Image Capture**: High-resolution cameras capture images at 30 FPS
+  2. **AI Analysis**: Neural networks analyze each frame in real-time
+  3. **Defect Classification**: Issues are categorized by type and severity
+  4. **Automatic Rejection**: Defective products are flagged for removal
+  5. **Quality Reporting**: All data is logged for analysis and compliance
+  
+  **Accuracy**: 99.5% defect detection rate (better than human inspection)
+  **Speed**: Processes 60 units per minute
+</Accordion>
+
+<Accordion title="Camera Setup and Placement">
+  Optimal camera placement for maximum coverage:
+  
+  **Checkpoint 1: Mixing Stage**
+  - Overhead camera for consistency monitoring
+  - Side-angle camera for texture analysis
+  
+  **Checkpoint 2: Filling Station**
+  - Fill level verification camera
+  - Contamination detection camera
+  
+  **Checkpoint 3: Packaging**
+  - Label verification camera
+  - Seal integrity camera
+  - Final quality inspection camera
+  
+  <Info>
+    Our installation team provides detailed guidance on camera placement during setup.
+  </Info>
+</Accordion>
+
+---
+
+## Quality Scoring System
+
+### AI-Enhanced Scoring
+
+Our quality scoring system combines automated sensor data with manual taste testing for comprehensive quality assessment.
+
+```javascript
+// Example: Record quality with AI assistance
+const qualityCheck = await salsa.ai.quality.recordScore({
+  batch_id: "BATCH-2024-001",
+  automated_scores: {
+    visual_ai: 9.2,        // Computer vision score
+    ph_sensor: 8.8,        // pH within optimal range
+    viscosity: 9.0,        // Consistency score
+    temperature: 10.0,     // Perfect temp compliance
+    color: 8.5             // Color consistency score
+  },
+  manual_scores: {
+    taste: 9.5,            // Manual taste test
+    aroma: 9.0,            // Smell test
+    appearance: 9.2        // Visual inspection
+  },
+  ai_analysis: true,
+  taster_id: "user_123"
+});
+
+console.log(`Overall Quality Score: ${qualityCheck.overall_score}/10`);
+console.log(`Automated: ${qualityCheck.automated_average}/10`);
+console.log(`Manual: ${qualityCheck.manual_average}/10`);
+```
+
+**Score Breakdown:**
+- **Automated Scores (60% weight)**: Objective measurements from sensors
+- **Manual Scores (40% weight)**: Human sensory evaluation
+- **Overall Score**: Weighted average of all factors
+
+<Tip>
+  Maintain at least 3 trained taste testers to ensure consistency in manual scoring. AI tracks tester reliability and can flag outlier scores.
+</Tip>
+
+### Quality Standards Configuration
+
+<CardGroup cols={2}>
+  <Card title="Smart Standards" icon="sliders">
+    AI-adjusted thresholds based on historical data, seasonal variation
+    compensation, supplier quality correlation, and customer feedback
+    integration.
+    
+    Standards automatically adapt to:
+    - Your production capabilities
+    - Seasonal ingredient variations
+    - Customer preferences
+    - Recipe complexity
+  </Card>
+  <Card title="Real-Time Compliance" icon="shield-check">
+    Automated HACCP documentation, FDA regulation tracking, real-time violation
+    alerts, and digital audit trails.
+    
+    Full compliance with:
+    - FDA Food Safety Modernization Act (FSMA)
+    - HACCP principles
+    - Local health department requirements
+    - ISO 22000 standards (optional)
+  </Card>
+</CardGroup>
+
+---
+
+## Predictive Maintenance
+
+AI monitors equipment health to prevent quality issues caused by equipment degradation.
+
+<CardGroup cols={2}>
+  <Card title="Equipment Health" icon="wrench">
+    Predicts equipment failures before they occur and identifies calibration
+    drift in testing equipment.
+    
+    **Monitors:**
+    - Sensor accuracy drift
+    - Equipment performance metrics
+    - Calibration status
+    - Component wear patterns
+  </Card>
+  <Card title="Maintenance Scheduling" icon="calendar">
+    Recommends optimal maintenance schedules and reduces downtime by 75%.
+    
+    **Features:**
+    - Predictive maintenance alerts
+    - Automated work order creation
+    - Maintenance history tracking
+    - Equipment lifecycle management
+  </Card>
+</CardGroup>
+
+<Steps>
+  <Step title="Continuous Monitoring">
+    AI analyzes sensor performance data 24/7, comparing current readings to baseline performance.
+  </Step>
+  <Step title="Anomaly Detection">
+    Machine learning models detect subtle changes that indicate potential equipment issues.
+  </Step>
+  <Step title="Failure Prediction">
+    System predicts equipment failures 3-14 days in advance with 85% accuracy.
+  </Step>
+  <Step title="Maintenance Scheduling">
+    Automatically schedules preventive maintenance during low-production periods.
+  </Step>
+  <Step title="Verification">
+    Post-maintenance testing confirms equipment is operating within specifications.
+  </Step>
+</Steps>
+
+---
+
+## Quality Insights & Analytics
+
+### AI-Powered Analytics
+
+<CardGroup cols={2}>
+  <Card title="Root Cause Analysis" icon="magnifying-glass">
+    AI automatically identifies the root causes of quality issues:
+    
+    - Ingredient quality correlations
+    - Production parameter impacts
+    - Environmental factor analysis
+    - Equipment performance links
+  </Card>
+  <Card title="Supplier Quality Impact" icon="truck">
+    Track how ingredient suppliers affect final product quality:
+    
+    - Supplier quality scores
+    - Ingredient batch tracking
+    - Quality trend analysis
+    - Cost vs. quality optimization
+  </Card>
+  <Card title="Production Optimization" icon="gauge">
+    AI suggests production parameter adjustments:
+    
+    - Optimal mixing times
+    - Temperature recommendations
+    - Ingredient ratios
+    - Process improvements
+  </Card>
+  <Card title="Continuous Improvement" icon="arrow-trend-up">
+    Track quality improvements over time:
+    
+    - Quality score trends
+    - Defect rate reduction
+    - Cost savings from waste reduction
+    - Customer satisfaction correlation
+  </Card>
+</CardGroup>
+
+```graphql
+# Example: GraphQL query for quality analytics
+query GetQualityAnalytics {
+  qualityAnalytics(location: "kitchen_1", period: "30d") {
+    average_score
+    trend
+    top_issues {
+      issue_type
+      frequency
+      impact_score
+      recommended_actions
+    }
+    supplier_impact {
+      supplier_name
+      avg_quality_contribution
+      consistency_score
+    }
+    improvement_opportunities {
+      category
+      potential_impact
+      implementation_difficulty
+      estimated_roi
+    }
+  }
+}
+```
+
+### Quality Reporting
+
+<Accordion title="Daily Quality Reports">
+  Automated daily reports include:
+  
+  - Summary of all batches produced
+  - Quality score distribution
+  - Anomalies detected and resolved
+  - Sensor performance status
+  - Maintenance alerts
+  
+  Reports are automatically emailed to management each morning.
+</Accordion>
+
+<Accordion title="Compliance Documentation">
+  Comprehensive documentation for audits:
+  
+  - Complete batch history with sensor data
+  - HACCP critical control point logs
+  - Equipment calibration records
+  - Temperature logs for food safety
+  - Corrective action documentation
+  
+  All documentation is digitally signed and tamper-proof.
+</Accordion>
+
+<Accordion title="Custom Quality Dashboards">
+  Build custom dashboards to monitor:
+  
+  - Real-time production quality
+  - Trend analysis over time
+  - Comparison across locations
+  - Supplier quality performance
+  - ROI from quality improvements
+</Accordion>
+
+---
+
+## Critical Quality Alerts
+
+<Warning>
+  **Critical Quality Alerts**: AI-detected safety issues trigger immediate
+  production halts and manager notifications.
+</Warning>
+
+When the system detects a critical quality or safety issue:
+
+1. **Immediate Production Halt**: Affected equipment stops automatically
+2. **Manager Notification**: SMS and email alerts sent to all managers
+3. **Mobile App Alert**: Push notifications to all relevant staff
+4. **Incident Documentation**: Automatic logging of all details
+5. **Corrective Action Workflow**: Guided resolution process
+
+**Critical Issues Include:**
+- Temperature excursions beyond safe ranges
+- Contamination detected by vision systems
+- pH levels indicating spoilage
+- Equipment malfunction affecting food safety
+- Allergen cross-contamination risks
+
+---
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Calibrate Sensors Regularly" icon="sliders">
+    Monthly calibration for pH meters and color sensors, quarterly for viscosity sensors. The system will remind you when calibration is due.
+  </Card>
+  <Card title="Train Multiple Taste Testers" icon="users">
+    Have at least 3 certified taste testers for consistent manual scoring. AI tracks tester reliability.
+  </Card>
+  <Card title="Review Quality Insights Daily" icon="chart-line">
+    Check the AI insights dashboard every morning to catch trends before they become problems.
+  </Card>
+  <Card title="Act on Predictions Quickly" icon="clock">
+    When AI predicts quality issues, you typically have 15-30 minutes to intervene. Act immediately.
+  </Card>
+  <Card title="Document Corrective Actions" icon="file-lines">
+    Always document what actions were taken when quality issues occur. This helps AI learn.
+  </Card>
+  <Card title="Compare Across Batches" icon="code-compare">
+    Use the batch comparison feature to understand what makes your best batches successful.
+  </Card>
+</CardGroup>
+
+---
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="Inventory Management" icon="warehouse" href="/features/inventory">
+    Learn how ingredient quality affects production outcomes
+  </Card>
+  <Card title="Analytics" icon="chart-line" href="/features/analytics">
+    View quality analytics and trend reports
+  </Card>
+  <Card title="API Reference" icon="code" href="/api/overview">
+    Complete API documentation for quality endpoints
+  </Card>
+  <Card title="IoT Sensors" icon="sensor" href="/features/iot-monitoring">
+    Detailed guide to IoT sensor setup and configuration
+  </Card>
+</CardGroup>

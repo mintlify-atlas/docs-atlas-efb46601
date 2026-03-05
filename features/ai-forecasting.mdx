@@ -1,0 +1,574 @@
+---
+title: "AI-Powered Demand Forecasting"
+description: "Predict salsa demand with industry-leading accuracy using machine learning models, external data sources, and continuous learning"
+---
+
+## Overview
+
+Salsa as a Service v2.0's AI forecasting engine uses multiple machine learning models to predict demand with up to 98% accuracy. By analyzing historical sales, weather patterns, local events, and seasonal trends, our AI helps you produce the right amount of salsa at the right time.
+
+<CardGroup cols={3}>
+  <Card title="98% Accuracy" icon="bullseye">
+    Multi-model ensemble forecasting delivers industry-leading prediction accuracy
+  </Card>
+  <Card title="7-30 Day Forecasts" icon="calendar">
+    Flexible forecasting windows for daily operations and strategic planning
+  </Card>
+  <Card title="Continuous Learning" icon="brain">
+    AI models retrain weekly and adapt to your unique patterns automatically
+  </Card>
+</CardGroup>
+
+---
+
+## Configuring Forecasting
+
+<Steps>
+  <Step title="Select Forecast Horizon">
+    Choose your forecasting window based on your operational needs:
+    
+    - **Short-term (7 days)**: Daily production planning and staffing
+    - **Medium-term (14 days)**: Ingredient ordering and inventory management
+    - **Long-term (30+ days)**: Strategic planning and seasonal preparation
+    
+    <Note>
+      Short-term forecasts achieve 98% accuracy, while 30-day forecasts maintain 92% accuracy.
+    </Note>
+  </Step>
+  
+  <Step title="Configure Data Sources">
+    Connect additional data sources to improve forecast accuracy:
+    
+    <Tabs>
+      <Tab title="JavaScript">
+```javascript
+const forecastConfig = {
+  data_sources: {
+    pos_sales: true,
+    reservations: true,
+    weather_api: "openweathermap",
+    events: ["eventbrite", "local_calendar"],
+    foot_traffic: "sensor_data",
+    social_media: ["yelp", "google_reviews"],
+  },
+  model_parameters: {
+    confidence_level: 0.95,
+    seasonality: "auto_detect",
+    trend_sensitivity: "medium",
+    anomaly_detection: true,
+  },
+};
+
+await salsa.ai.forecast.configure(forecastConfig);
+```
+      </Tab>
+      <Tab title="Python">
+```python
+from salsa_sdk import SalsaClient
+
+client = SalsaClient(api_key="your_api_key")
+
+forecast_config = {
+    "data_sources": {
+        "pos_sales": True,
+        "reservations": True,
+        "weather_api": "openweathermap",
+        "events": ["eventbrite", "local_calendar"],
+        "foot_traffic": "sensor_data",
+        "social_media": ["yelp", "google_reviews"],
+    },
+    "model_parameters": {
+        "confidence_level": 0.95,
+        "seasonality": "auto_detect",
+        "trend_sensitivity": "medium",
+        "anomaly_detection": True,
+    },
+}
+
+client.ai.forecast.configure(forecast_config)
+```
+      </Tab>
+    </Tabs>
+    
+    <Warning>
+      Weather and event integrations significantly improve accuracy for special occasions and seasonal variations. Connect at least 2 external data sources for optimal results.
+    </Warning>
+  </Step>
+  
+  <Step title="Set Alert Thresholds">
+    Configure alerts for significant forecast changes or demand anomalies:
+    
+    - **Demand spike alerts**: Notifies when forecasted demand exceeds 20% above normal
+    - **Trend change alerts**: Detects significant shifts in demand patterns
+    - **Anomaly alerts**: Flags unusual predictions that may require review
+  </Step>
+  
+  <Step title="Enable Auto-Actions">
+    Let AI automatically adjust operations based on forecasts:
+    
+    - Auto-adjust production schedules
+    - Trigger ingredient reordering
+    - Send staffing recommendations
+    - Update batch quantities
+  </Step>
+</Steps>
+
+---
+
+## Understanding Forecast Results
+
+### Forecast Data Structure
+
+The AI provides rich forecast data with confidence intervals and contributing factors:
+
+<CodeGroup>
+```json Response Example
+{
+  "forecast_date": "2024-01-20",
+  "predicted_demand": {
+    "house_salsa": {
+      "quantity": 12.5,
+      "unit": "gallons",
+      "confidence_interval": [11.2, 13.8],
+      "confidence_level": 0.95
+    },
+    "verde_salsa": {
+      "quantity": 8.3,
+      "unit": "gallons",
+      "confidence_interval": [7.5, 9.1],
+      "confidence_level": 0.95
+    }
+  },
+  "factors": {
+    "historical_trend": "+15%",
+    "day_of_week": "Friday (+20%)",
+    "weather": "Sunny, 72°F (+5%)",
+    "local_events": ["Concert at venue 0.5mi away (+10%)"],
+    "seasonality": "Winter season (-5%)"
+  },
+  "recommendation": {
+    "action": "increase_production",
+    "suggested_batches": 3,
+    "timing": "Start production by 9:00 AM",
+    "confidence": 0.94
+  }
+}
+```
+
+```graphql GraphQL Query
+query GetAIForecast {
+  forecast(location: "loc_123", days: 14) {
+    predictions {
+      date
+      recipe {
+        name
+        predictedDemand
+        confidenceInterval
+      }
+      factors {
+        weather
+        events
+        seasonality
+        historicalTrend
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+### Key Forecast Components
+
+<Accordion title="Confidence Intervals">
+  Every prediction includes a confidence interval (default 95%) showing the range where actual demand is likely to fall. Narrower intervals indicate higher certainty.
+  
+  **Example**: A prediction of 12.5 gallons with interval [11.2, 13.8] means there's a 95% chance actual demand will be between 11.2 and 13.8 gallons.
+</Accordion>
+
+<Accordion title="Contributing Factors">
+  The AI explains which factors influenced each prediction:
+  
+  - **Historical Trend**: Long-term demand changes (growth or decline)
+  - **Day of Week**: Weekly patterns (e.g., Friday rush, Monday slow)
+  - **Weather**: Temperature, precipitation, and seasonal conditions
+  - **Local Events**: Concerts, sports games, festivals within 2 miles
+  - **Seasonality**: Monthly and seasonal demand patterns
+</Accordion>
+
+<Accordion title="Actionable Recommendations">
+  Each forecast includes specific actions:
+  
+  - **Production adjustments**: Increase/decrease batch quantities
+  - **Timing recommendations**: Optimal production start times
+  - **Ingredient orders**: Suggested reorder quantities
+  - **Staffing suggestions**: Recommended labor allocation
+</Accordion>
+
+---
+
+## Forecast Accuracy Tracking
+
+Monitor and improve your forecast accuracy over time with comprehensive metrics:
+
+<CardGroup cols={3}>
+  <Card title="Accuracy Metrics" icon="bullseye">
+    **MAPE (Mean Absolute Percentage Error)**
+    
+    Tracks average prediction error across all forecasts. Lower is better.
+    
+    **RMSE (Root Mean Square Error)**
+    
+    Measures prediction variance. Identifies consistency issues.
+    
+    **Forecast Bias**
+    
+    Detects systematic over/under-prediction patterns.
+  </Card>
+  
+  <Card title="Model Performance" icon="chart-line">
+    **Short vs Long-term Accuracy**
+    
+    Compare 7-day vs 30-day forecast precision.
+    
+    **Recipe-Specific Performance**
+    
+    Track which recipes are easiest/hardest to predict.
+    
+    **Seasonal Pattern Recognition**
+    
+    Monitor how well AI adapts to seasonal changes.
+  </Card>
+  
+  <Card title="Continuous Learning" icon="brain">
+    **Weekly Retraining**
+    
+    Models retrain automatically every week.
+    
+    **Weight Adjustment**
+    
+    AI adjusts factor weights based on accuracy.
+    
+    **A/B Testing**
+    
+    System tests model improvements automatically.
+  </Card>
+</CardGroup>
+
+### Accuracy Dashboard
+
+Access detailed accuracy metrics in your dashboard:
+
+```python
+# Query forecast accuracy metrics
+from salsa_sdk import SalsaClient
+
+client = SalsaClient(api_key="your_api_key")
+
+accuracy = client.ai.forecast.get_accuracy(
+    start_date="2024-01-01",
+    end_date="2024-01-31",
+    recipe_id="house_salsa"
+)
+
+print(f"MAPE: {accuracy.mape}%")
+print(f"RMSE: {accuracy.rmse}")
+print(f"Forecast Bias: {accuracy.bias}")
+print(f"Within Confidence Interval: {accuracy.within_ci}%")
+```
+
+<Note>
+  **Benchmark**: Industry-leading forecasting systems achieve 85-90% accuracy. Our AI consistently delivers 95-98% accuracy for 7-day forecasts.
+</Note>
+
+---
+
+## Advanced Features
+
+### Multi-Recipe Forecasting
+
+Forecast demand for your entire menu simultaneously:
+
+```javascript
+// Get forecasts for all recipes
+const forecasts = await salsa.ai.forecast.getMultiRecipe({
+  location_id: "loc_123",
+  days: 7,
+  recipes: ["house_salsa", "verde_salsa", "mango_salsa", "habanero_salsa"],
+  include_recommendations: true
+});
+
+// AI optimizes production schedule across all recipes
+forecasts.recipes.forEach(recipe => {
+  console.log(`${recipe.name}: ${recipe.predicted_demand} ${recipe.unit}`);
+  console.log(`Production priority: ${recipe.priority}`);
+});
+```
+
+### Event Impact Analysis
+
+Understand how specific events affect your demand:
+
+<Tabs>
+  <Tab title="Dashboard">
+    Navigate to **Analytics > Forecast > Event Analysis** to see:
+    
+    - Historical event impact on demand
+    - Upcoming events with predicted impact
+    - Event type correlation (concerts vs sports vs festivals)
+    - Distance-based impact (nearby vs distant events)
+  </Tab>
+  
+  <Tab title="API">
+```python
+# Analyze event impact
+event_analysis = client.ai.forecast.analyze_event_impact(
+    location_id="loc_123",
+    event_type="concert",
+    distance_miles=0.5,
+    historical_days=90
+)
+
+print(f"Average demand increase: {event_analysis.avg_increase}%")
+print(f"Peak hour: {event_analysis.peak_hour}")
+print(f"Confidence: {event_analysis.confidence}%")
+```
+  </Tab>
+</Tabs>
+
+### Weather Pattern Learning
+
+The AI learns how weather affects your specific location:
+
+<CardGroup cols={2}>
+  <Card title="Temperature Correlation" icon="temperature-half">
+    Identifies optimal temperature ranges for your salsa demand
+    
+    - Hot days (over 85°F): Typically +15-25% demand
+    - Cold days (under 50°F): Often -10-20% demand
+    - Optimal range: 70-80°F for most locations
+  </Card>
+  
+  <Card title="Weather Event Impact" icon="cloud-rain">
+    Tracks how precipitation and conditions affect traffic
+    
+    - Light rain: Minimal impact (-5%)
+    - Heavy rain: Significant decrease (-30%)
+    - Snow/ice: Major decrease (-50%)
+  </Card>
+</CardGroup>
+
+---
+
+## Optimization Strategies
+
+### Reducing Waste
+
+Use AI forecasts to minimize overproduction:
+
+<Steps>
+  <Step title="Align Production with Forecasts">
+    Produce quantities within the forecast confidence interval to balance availability and waste.
+  </Step>
+  
+  <Step title="Monitor Actual vs Predicted">
+    Track variance daily and identify patterns where forecasts miss the mark.
+  </Step>
+  
+  <Step title="Adjust Safety Stock">
+    Use historical accuracy to determine optimal buffer quantities for each recipe.
+  </Step>
+  
+  <Step title="Enable Dynamic Adjustments">
+    Let AI adjust production quantities in real-time based on actual morning sales.
+  </Step>
+</Steps>
+
+<Note>
+  **Average Results**: Customers reduce waste by 40-60% within the first month of using AI forecasting.
+</Note>
+
+### Maximizing Revenue
+
+Capture demand spikes without overproducing:
+
+- **Proactive Production**: Start production early for predicted high-demand days
+- **Staff Optimization**: Schedule extra staff based on demand forecasts
+- **Ingredient Prep**: Pre-prep ingredients during predicted slow periods
+- **Menu Adjustments**: Promote high-demand items identified by AI
+
+---
+
+## Integration with Operations
+
+### Automated Production Scheduling
+
+Connect forecasts directly to production workflows:
+
+```javascript
+const autoSchedule = {
+  enabled: true,
+  forecast_horizon: 7, // days
+  auto_create_batches: true,
+  approval_required: {
+    quantity_threshold: 10, // gallons
+    require_manager_approval: true,
+  },
+  optimization: {
+    minimize_waste: true,
+    maximize_freshness: true,
+    balance_workload: true,
+  },
+};
+
+await salsa.production.configureAutoScheduling(autoSchedule);
+```
+
+### Supplier Integration
+
+Automatically order ingredients based on forecasts:
+
+<CardGroup cols={2}>
+  <Card title="Forecast-Based Ordering" icon="truck">
+    AI calculates required ingredients from demand forecasts and generates purchase orders automatically.
+  </Card>
+  
+  <Card title="Lead Time Optimization" icon="clock">
+    System considers supplier lead times and orders ingredients to arrive just-in-time.
+  </Card>
+</CardGroup>
+
+---
+
+## Best Practices
+
+<Warning>
+  **Critical Success Factors**:
+  
+  1. **Historical Data**: Import at least 90 days of sales data for accurate initial forecasts
+  2. **External Data**: Connect weather and events APIs for 10-15% accuracy improvement
+  3. **Regular Review**: Monitor accuracy weekly and adjust thresholds as needed
+  4. **Trust the AI**: Follow recommendations consistently for 2-4 weeks before adjusting
+</Warning>
+
+### Getting Started Checklist
+
+- [ ] Import historical sales data (minimum 90 days, 180+ days recommended)
+- [ ] Connect POS system for real-time sales sync
+- [ ] Configure weather API integration
+- [ ] Set up local event calendar feeds
+- [ ] Define minimum quality thresholds for each recipe
+- [ ] Configure alert recipients and notification preferences
+- [ ] Enable auto-actions for production and ordering
+- [ ] Schedule daily forecast review meetings
+- [ ] Set accuracy tracking dashboards
+- [ ] Train staff on interpreting and acting on forecasts
+
+---
+
+## API Reference
+
+Key forecast endpoints:
+
+<CodeGroup>
+```bash GET /v2/forecast
+curl -X GET https://api.salsaasaservice.com/v2/forecast \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "location_id": "loc_123",
+    "days": 7,
+    "recipes": ["house_salsa"],
+    "confidence_level": 0.95
+  }'
+```
+
+```bash POST /v2/forecast/configure
+curl -X POST https://api.salsaasaservice.com/v2/forecast/configure \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data_sources": {
+      "weather_api": "openweathermap",
+      "events": ["eventbrite"]
+    },
+    "model_parameters": {
+      "seasonality": "auto_detect",
+      "trend_sensitivity": "medium"
+    }
+  }'
+```
+
+```bash GET /v2/forecast/accuracy
+curl -X GET https://api.salsaasaservice.com/v2/forecast/accuracy \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "start_date": "2024-01-01",
+    "end_date": "2024-01-31",
+    "recipe_id": "house_salsa"
+  }'
+```
+</CodeGroup>
+
+---
+
+## Troubleshooting
+
+<Accordion title="Low Forecast Accuracy (under 90%)">
+  **Common causes**:
+  
+  - Insufficient historical data (need 90+ days)
+  - Missing external data sources (weather, events)
+  - Inconsistent POS sync causing data gaps
+  - Recent menu changes not reflected in model
+  
+  **Solutions**:
+  
+  1. Verify POS integration is syncing correctly
+  2. Connect additional data sources
+  3. Wait 2-4 weeks for model to adapt to changes
+  4. Contact support if accuracy doesn't improve
+</Accordion>
+
+<Accordion title="Forecasts Not Updating">
+  **Check**:
+  
+  - POS connection status in Settings > Integrations
+  - Last sync timestamp in forecast dashboard
+  - API key validity and permissions
+  - Data source connection health
+  
+  **Resolution**: Navigate to Settings > Integrations and click "Reconnect" for each data source.
+</Accordion>
+
+<Accordion title="Unexpected Demand Spikes Not Predicted">
+  The AI requires historical examples to predict unusual events. After 2-3 occurrences of similar events, the model will learn the pattern.
+  
+  **Manual Override**: You can manually adjust forecasts for known one-time events in the dashboard.
+</Accordion>
+
+---
+
+## Support & Resources
+
+<CardGroup cols={2}>
+  <Card title="Video Tutorials" icon="video">
+    Watch step-by-step guides on configuring and optimizing AI forecasting.
+  </Card>
+  
+  <Card title="API Documentation" icon="book">
+    Complete reference for forecast endpoints, webhooks, and SDKs.
+  </Card>
+  
+  <Card title="Community Forum" icon="comments">
+    Share tips and best practices with other Salsa as a Service users.
+  </Card>
+  
+  <Card title="Enterprise Support" icon="headset">
+    24/7 support with 1-hour response SLA for Enterprise customers.
+  </Card>
+</CardGroup>
+
+<Note>
+  **Need Help?** Contact our AI specialists at ai-support@salsaasaservice.com or schedule a consultation through your dashboard.
+</Note>
