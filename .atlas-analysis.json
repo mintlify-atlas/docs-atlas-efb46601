@@ -1,0 +1,94 @@
+{
+  "projectType": "saas",
+  "projectName": "Salsa as a Service",
+  "projectDescription": "AI-powered salsa management platform for restaurants with IoT monitoring, demand forecasting, and enterprise features",
+  "theme": "mint",
+  "primaryColor": "#1be39b",
+  "lightColor": "#0c8c5c",
+  "darkColor": "#040404",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "features/inventory",
+              "features/quality",
+              "features/analytics"
+            ]
+          },
+          {
+            "group": "Advanced Features",
+            "pages": [
+              "features/ai-forecasting",
+              "features/iot-monitoring",
+              "features/integrations"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "support/troubleshooting",
+              "support/pricing"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API Overview",
+            "pages": [
+              "api/overview",
+              "api/authentication"
+            ]
+          },
+          {
+            "group": "Endpoints",
+            "pages": [
+              "api/inventory",
+              "api/recipes",
+              "api/production",
+              "api/analytics"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "AI-powered demand forecasting with 95% accuracy",
+    "Real-time IoT quality monitoring with sensor integration",
+    "Multi-version API support (v1 and v2)",
+    "Multi-language documentation (English and French)",
+    "Enterprise features: SSO, RBAC, compliance automation",
+    "GraphQL API with real-time subscriptions",
+    "50+ pre-built POS and ERP integrations",
+    "Automated ordering and inventory management"
+  ],
+  "publicApiSurface": [
+    "GET /ingredients - Retrieve inventory items",
+    "POST /ingredients - Add new ingredients",
+    "PUT /ingredients/{id}/stock - Update stock levels",
+    "GET /recipes - List all recipes",
+    "POST /recipes - Create new recipe",
+    "PUT /recipes/{id} - Update recipe",
+    "POST /production/batches - Start production batch",
+    "PUT /production/batches/{id}/complete - Complete batch",
+    "GET /production/batches - Get production history",
+    "GET /analytics/production - Production analytics",
+    "GET /analytics/inventory - Inventory insights",
+    "POST /webhooks - Configure webhooks",
+    "GraphQL /graphql - Query and mutation endpoint"
+  ]
+}
